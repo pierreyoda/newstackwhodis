@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx cross-env ANALYSE=true next build",
-    "start": "next start"
+    "start": "next start",
+    "docker:build": "git describe --tags --always | xargs -I {} docker image build -f Dockerfile -t prava/website:{} .",
+    "docker:tag": "git describe --tags --always | xargs -I {} docker image tag prava/website:{} prava/website:latest",
+    "docker:run": "docker run -p 3000:3000 prava/website:latest",
+    "docker": "yarn docker:build && yarn docker:tag && yarn docker:run"
   },
   "dependencies": {
     "next": "10.0.5",
