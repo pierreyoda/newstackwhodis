@@ -1,6 +1,6 @@
 FROM node:15-alpine
 
-WORKDIR /src/app/prava/
+WORKDIR /src/app/praca/
 
 COPY package.json yarn.lock ./
 RUN yarn install

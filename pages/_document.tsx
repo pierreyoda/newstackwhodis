@@ -6,7 +6,7 @@ import Document, {
   DocumentContext,
 } from "next/document";
 
-class PravaDocument extends Document {
+class PracaDocument extends Document {
   static async getInitialProps(context: DocumentContext) {
     const initialProps = await Document.getInitialProps(context);
     return { ...initialProps };
@@ -25,4 +25,4 @@ class PravaDocument extends Document {
   }
 };
 
-export default PravaDocument;
+export default PracaDocument;

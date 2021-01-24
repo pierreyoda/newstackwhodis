@@ -1,6 +1,6 @@
-export const name = "Prava";
+export const name = "Praca";
 
-export const copyrightNotice = "Copyright © 2020 Prava";
+export const copyrightNotice = "Copyright © 2020 Praca";
 
 const Branding = {
   name,
