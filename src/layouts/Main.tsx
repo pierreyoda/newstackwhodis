@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import { copyrightNotice, name } from "@/content/branding";
 
 const MainLayout: FunctionComponent = ({ children }) => (
-  <main className="antialiased w-full font-sans">
+  <main className="antialiased w-full font-sans p-12">
     <div className="absolute top-0 right-O h-12 w-12">
       {/* TODO: dark mode toggle */}
     </div>
