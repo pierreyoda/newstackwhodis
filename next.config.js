@@ -3,7 +3,7 @@ const withMDX = require("@next/mdx");
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
-})
+});
 
 module.exports = withBundleAnalyzer(withMDX({
   // https://nextjs.org/docs/advanced-features/i18n-routing

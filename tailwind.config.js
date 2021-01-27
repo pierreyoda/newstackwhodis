@@ -1,9 +1,10 @@
 module.exports = {
   purge: [
-    "./pages/**/*.tsx",
     "./components/**/*.tsx",
+    "./layouts/**/*.tsx",
+    "./pages/**/*.tsx",
   ],
-  darkMode: false, // or "media" or "class"
+  darkMode: "media",
   theme: {
     extend: {},
   },
