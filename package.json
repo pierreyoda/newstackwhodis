@@ -2,6 +2,7 @@
   "name": "praca-website",
   "version": "0.1.0",
   "private": true,
+  "author": "pierreyoda <pierreyoda@users.noreply.github.com>",
   "scripts": {
     "dev": "next dev",
     "build": "npx cross-env ANALYSE=true next build",
@@ -13,13 +14,16 @@
   },
   "dependencies": {
     "next": "10.0.5",
+    "next-svgr": "^0.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
   "devDependencies": {
+    "@fec/remark-a11y-emoji": "^3.0.0",
     "@mdx-js/loader": "^1.6.22",
     "@next/bundle-analyzer": "^10.0.5",
-    "@next/mdx": "^10.0.5",
+    "@next/mdx": "^10.0.6",
+    "@tailwindcss/typography": "^0.4.0",
     "@types/node": "^14.14.22",
     "@types/react": "^17.0.0",
     "autoprefixer": "^10.2.3",
