@@ -1,5 +1,3 @@
-const typography = require("@tailwindcss/typography");
-
 module.exports = {
   purge: [
     "./components/**/*.tsx",
@@ -8,13 +6,19 @@ module.exports = {
   ],
   darkMode: "media",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        black: "#141416",
+        space: "#2a2b58",
+        lychee: "#e04f4f",
+      },
+    },
   },
   variants: {
-    extend: {},
   },
   plugins: [
-    typography({
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),({
       modifiers: ['lg', 'xl'],
     }),
   ],

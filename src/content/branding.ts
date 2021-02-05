@@ -1,9 +1,9 @@
-export const name = "Praca";
+export const siteName = "Praca";
 
-export const copyrightNotice = "Copyright © 2020 Pierre-Yves Diallo";
+export const copyrightNotice = "Copyright © 2021 Pierre-Yves Diallo";
 
 const Branding = {
-  name,
+  siteName,
   copyrightNotice,
 };
 

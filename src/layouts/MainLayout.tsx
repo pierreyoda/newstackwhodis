@@ -1,11 +1,12 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import Head from "next/head";
+import "twin.macro";
 
-import Navbar from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+// import Navbar from "@/components/layout/Header";
+import SidePanel from "@/components/layout/SidePanel";
 
 const MainLayout: FunctionComponent = ({ children }) => (
-  <div id="app" className="antialiased w-full h-full font-sans flex flex-col">
+  <div id="app" tw="flex w-full h-full font-sans antialiased">
 
     <Head>
       <meta
@@ -14,30 +15,23 @@ const MainLayout: FunctionComponent = ({ children }) => (
       />
     </Head>
 
-    <div className="absolute top-0 right-O w-12 h-8">
-      {/* TODO: dark mode toggle */}
-    </div>
-
-    <Navbar />
-    <main className="flex-grow overflow-auto">
+    <SidePanel
+      selected="project"
+      onSelectedChange={() => {}}
+    />
+    <main tw="flex-grow overflow-auto">
       {children}
     </main>
-    <Footer />
 
-    <style jsx>
-    {`
-      html, body {
+    <style global jsx>{`
+      html,
+      body,
+      body > div:first-child,
+      div#__next,
+      div#__next > div {
         height: 100%;
-        display: flex;
-        flex-direction: column;
       }
-
-      #app {
-        @apply text-gray-700 bg-gray-100;
-        @apply dark:text-gray-300 dark:bg-gray-700;
-      }
-    `}
-    </style>
+    `}</style>
   </div>
 );
 
