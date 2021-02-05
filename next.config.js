@@ -23,7 +23,7 @@ module.exports = withBundleAnalyzer(withMDX(withSvgr({
     defaultLocale: "en-US",
     localeDetection: true,
   },
-  webpack: config => ({
+  webpack: (config, { isServer }) => ({
     ...config,
     resolve: {
       ...config.resolve,
@@ -32,5 +32,12 @@ module.exports = withBundleAnalyzer(withMDX(withSvgr({
         "@": path.resolve(__dirname, "./"),
       },
     },
+    ...isServer ? {
+      // fixes packages depending on fs/module module
+      node: {
+        fs: "empty",
+        module: "empty",
+      }
+    } : {},
   }),
 })));

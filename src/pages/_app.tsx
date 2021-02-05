@@ -1,7 +1,6 @@
-import React from "react";
 import { AppProps } from "next/app";
+import { GlobalStyles } from "twin.macro";
 
-import "@/styles/globals.css";
 import MainLayout from "@/layouts/MainLayout";
 
 const PracaWebsiteApp = ({
@@ -9,6 +8,7 @@ const PracaWebsiteApp = ({
   pageProps,
 }: AppProps) => (
   <MainLayout>
+    <GlobalStyles />
     <Component {...pageProps} />
   </MainLayout>
 );
