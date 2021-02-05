@@ -21,6 +21,6 @@ module.exports = {
     "tailwindcss",
     ...process.env.NODE_ENV === "production"
       ? productionOnlyPlugins
-      : []
+      : [],
   ],
 };
