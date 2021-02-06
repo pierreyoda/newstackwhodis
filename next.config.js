@@ -19,8 +19,8 @@ const withSvgr = require("next-svgr");
 module.exports = withBundleAnalyzer(withMDX(withSvgr({
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
-    locales: ["en-US", "fr"],
-    defaultLocale: "en-US",
+    locales: ["en", "fr"],
+    defaultLocale: "en",
     localeDetection: true,
   },
   webpack: (config, { isServer }) => ({
