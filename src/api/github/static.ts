@@ -1,5 +1,5 @@
 import { join } from "path";
-import { readFile } from "fs/promises";
+import { promises } from "fs";
 
 export interface GithubProject {
   url: string;
@@ -19,8 +19,7 @@ export const parsedGithubPublicRepositories = async (
   if (cachedGithubRepositories) { return cachedGithubRepositories; }
 
   const filepath = join(process.cwd(), "./projects/github/public_repositories.json");
-  console.log(filepath)
-  const filedata = await readFile(filepath);
+  const filedata = await promises.readFile(filepath);
 
   const rawRepositoriesList: readonly {
     url: string;
