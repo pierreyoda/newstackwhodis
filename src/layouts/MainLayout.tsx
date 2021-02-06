@@ -1,38 +1,50 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import Head from "next/head";
 import "twin.macro";
 
-// import Navbar from "@/components/layout/Header";
-import SidePanel from "@/components/layout/SidePanel";
+import { LayoutGetter } from "./types";
+import SidePanel, { SidePanelSelectableCategory } from "@/components/layout/SidePanel";
+import ContentPanel from "@/components/layout/ContentPanel";
 
-const MainLayout: FunctionComponent = ({ children }) => (
-  <div id="app" tw="flex w-full h-full font-sans antialiased">
+const MainLayout: FunctionComponent = ({
+  children,
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState<SidePanelSelectableCategory | null>(null);
 
-    <Head>
-      <meta
-        name="viewport"
-        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+  return (
+    <div id="app" tw="flex w-full h-full font-sans antialiased">
+
+      <Head>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+        />
+      </Head>
+
+      <SidePanel
+        selected={selectedCategory}
+        onSelectedChange={selected => setSelectedCategory(selected)}
       />
-    </Head>
+      {/* TODO: only on main page */}
+      <ContentPanel highlightContentCategory={selectedCategory} />
 
-    <SidePanel
-      selected="project"
-      onSelectedChange={() => {}}
-    />
-    <main tw="flex-grow overflow-auto">
-      {children}
-    </main>
+      <main tw="flex-grow overflow-auto">
+        {children}
+      </main>
 
-    <style global jsx>{`
-      html,
-      body,
-      body > div:first-child,
-      div#__next,
-      div#__next > div {
-        height: 100%;
-      }
-    `}</style>
-  </div>
-);
+      <style global jsx>{`
+        html,
+        body,
+        body > div:first-child,
+        div#__next,
+        div#__next > div {
+          height: 100%;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export const getLayout: LayoutGetter = page => <MainLayout>{page}</MainLayout>;
 
 export default MainLayout;

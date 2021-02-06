@@ -6,7 +6,7 @@ const octokit = new Octokit({
 });
 
 export const fetchOwnPublicRepositoriesList = async (
-): Promise<RestEndpointMethodTypes["repos"]["listForUser"]["response"]> =>
-  await octokit.repos.listForUser({
+): Promise<RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"]> =>
+  (await octokit.repos.listForUser({
     username: "pierreyoda",
-  });
+  })).data.filter(({ private: isPrivate }) => !isPrivate);
