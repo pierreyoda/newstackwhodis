@@ -4,7 +4,7 @@
   "private": true,
   "author": "pierreyoda <pierreyoda@users.noreply.github.com>",
   "scripts": {
-    "fetch:projects": "npx cross-env DEBUG=praca:* npx ts-node --project tsconfig.node.json ./src/api/github/main.ts",
+    "fetch:projects": "npx cross-env DEBUG=praca:* npx ts-node --project tsconfig.node.json ./src/api/fetcher.ts",
     "fetch": "yarn fetch:projects",
     "dev": "npx next dev",
     "build": "npx cross-env ANALYSE=true next build",
@@ -52,6 +52,7 @@
     "@typescript-eslint/parser": "4.14.2",
     "autoprefixer": "10.2.4",
     "babel-plugin-macros": "3.0.1",
+    "chalk": "^4.1.0",
     "cross-env": "7.0.3",
     "dotenv": "8.2.0",
     "eslint": "7.19.0",

@@ -1,31 +1,33 @@
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { configureStore, createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { GithubProject } from "@/api/github/static";
+import { GithubProject } from "@/api/static";
+import { PartiallyRequired } from "@/utils";
 
 const hydrate = createAction(HYDRATE);
+
+interface ProjectsSliceState {
+  fetchingDate: string | null;
+  githubProjects: readonly GithubProject[];
+}
 
 const projectsSlice = createSlice({
   name: "projects",
   initialState: {
+    fetchingDate: null,
     githubProjects: [],
-  } as {
-    githubProjects: readonly GithubProject[];
-  },
+  } as ProjectsSliceState,
   reducers: {
-    loadGithubProjects(state, action: PayloadAction<readonly GithubProject[]>) {
-      return { ...state, githubProjects: action.payload };
+    loadGithubProjects(state, action: PayloadAction<Pick<ProjectsSliceState, "fetchingDate" | "githubProjects">>) {
+      return { ...state, ...action.payload };
     },
   },
   extraReducers(builder) {
     builder.addCase(hydrate, (state, action) => {
-      // TODO: real reconciliation, based on export date?
-      const hydratedGithubProjects = (action.payload as any)[projectsSlice.name].githubProjects;
-      return {
-        githubProjects: state.githubProjects.length < hydratedGithubProjects.length
-          ? hydratedGithubProjects
-          : state.githubProjects,
-      };
+      const incoming = (action.payload as any)[projectsSlice.name] as PartiallyRequired<ProjectsSliceState, "fetchingDate">;
+      return !state.fetchingDate || new Date(state.fetchingDate) < new Date(incoming.fetchingDate)
+        ? { ...incoming }
+        : { ...state };
     });
   },
 });

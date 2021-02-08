@@ -1,18 +1,21 @@
 import { NextPage } from "next";
 
-import {
-  parsedGithubPublicRepositories,
-} from "@/api/github/static";
+import { parsedRepositoriesData } from "@/api/static";
 import { loadGithubProjects, storeWrapper } from "@/store";
 
-const Home: NextPage = () => (
-  <div>
-  </div>
-);
+const Home: NextPage = () => <div></div>;
 
 export const getStaticProps = storeWrapper.getStaticProps(store => async () => {
-  const githubProjects = await parsedGithubPublicRepositories();
-  store.dispatch(loadGithubProjects(githubProjects));
+  const {
+    metadata: { exportDate },
+    githubRepositories,
+  } = await parsedRepositoriesData();
+  store.dispatch(
+    loadGithubProjects({
+      fetchingDate: exportDate,
+      githubProjects: githubRepositories,
+    }),
+  );
   return { props: {} };
 });
 
