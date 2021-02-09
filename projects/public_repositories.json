@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "exportDate": "2021-02-08T14:36:52.201Z"
+    "exportDate": "2021-02-08T19:15:08.349Z"
   },
   "githubRepositories": [
     {
-      "url": "https://api.github.com/repos/pierreyoda/o2r",
+      "url": "https://github.com/pierreyoda/o2r",
       "name": "o2r",
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
@@ -12,7 +12,7 @@
       "stargazersCount": 19
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/rustboycolor",
+      "url": "https://github.com/pierreyoda/rustboycolor",
       "name": "rustboycolor",
       "description": "Simple Game Boy (Color) emulator written in Rust.",
       "fullName": "pierreyoda/rustboycolor",
@@ -20,7 +20,7 @@
       "stargazersCount": 6
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/rust-neuralnet",
+      "url": "https://github.com/pierreyoda/rust-neuralnet",
       "name": "rust-neuralnet",
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
@@ -28,7 +28,7 @@
       "stargazersCount": 4
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/rust-chip8",
+      "url": "https://github.com/pierreyoda/rust-chip8",
       "name": "rust-chip8",
       "description": "A simple Chip8 emulator made in Rust.",
       "fullName": "pierreyoda/rust-chip8",
@@ -36,7 +36,7 @@
       "stargazersCount": 2
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/rust-mal",
+      "url": "https://github.com/pierreyoda/rust-mal",
       "name": "rust-mal",
       "description": "Rust implementation of the Make A Lisp guide.",
       "fullName": "pierreyoda/rust-mal",
@@ -44,7 +44,7 @@
       "stargazersCount": 2
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/GameInc",
+      "url": "https://github.com/pierreyoda/GameInc",
       "name": "GameInc",
       "description": "Game development studio management game made with Unity.",
       "fullName": "pierreyoda/GameInc",
@@ -52,7 +52,7 @@
       "stargazersCount": 1
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/advent-2019-rust",
+      "url": "https://github.com/pierreyoda/advent-2019-rust",
       "name": "advent-2019-rust",
       "description": "Implementation of https://adventofcode.com/2019/ in Rust.",
       "fullName": "pierreyoda/advent-2019-rust",
@@ -60,7 +60,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/advent-2020",
+      "url": "https://github.com/pierreyoda/advent-2020",
       "name": "advent-2020",
       "description": null,
       "fullName": "pierreyoda/advent-2020",
@@ -68,7 +68,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/lsystem-renderer",
+      "url": "https://github.com/pierreyoda/lsystem-renderer",
       "name": "lsystem-renderer",
       "description": "Visualize and edit L-Systems with Qt 5",
       "fullName": "pierreyoda/lsystem-renderer",
@@ -76,7 +76,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/micropolis-rs",
+      "url": "https://github.com/pierreyoda/micropolis-rs",
       "name": "micropolis-rs",
       "description": "The classic Micropolis game rewritten in Rust, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
@@ -84,7 +84,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/rust-lsystem",
+      "url": "https://github.com/pierreyoda/rust-lsystem",
       "name": "rust-lsystem",
       "description": "Create, manipulate and visualize L-systems in Rust.",
       "fullName": "pierreyoda/rust-lsystem",
@@ -92,7 +92,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/Tetris",
+      "url": "https://github.com/pierreyoda/Tetris",
       "name": "Tetris",
       "description": "Simple Java classic Tetris game built with Swing.",
       "fullName": "pierreyoda/Tetris",
@@ -100,7 +100,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/TwitterElectionResults",
+      "url": "https://github.com/pierreyoda/TwitterElectionResults",
       "name": "TwitterElectionResults",
       "description": null,
       "fullName": "pierreyoda/TwitterElectionResults",
@@ -108,7 +108,7 @@
       "stargazersCount": 0
     },
     {
-      "url": "https://api.github.com/repos/pierreyoda/vue-animations-test",
+      "url": "https://github.com/pierreyoda/vue-animations-test",
       "name": "vue-animations-test",
       "description": "Vue.js animations POC with various libraries",
       "fullName": "pierreyoda/vue-animations-test",

@@ -35,10 +35,11 @@ const ContentPanel: FunctionComponent<ContentPanelProps> = ({
     () => githubContent.map(rawItem => ({
       href: rawItem.url,
       title: rawItem.name,
-      description: rawItem.description,
+      description: rawItem.description ?? "",
       highlighted: highlightContentCategory === "project",
       category: "project",
       linkType: "github",
+      githubStars: rawItem.stargazersCount,
     })),
     [githubContent, highlightContentCategory],
   );

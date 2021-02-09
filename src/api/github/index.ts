@@ -20,7 +20,9 @@ const repositoriesBlackList = [
   "pierreyoda/good-first-issue",
   "pierreyoda/osgameclones",
   // Too unfinished
+  "pierreyoda/advent-2019-rust",
   "pierreyoda/advent-2020-ts",
+  "pierreyoda/advent-2020",
   "pierreyoda/hacker-news-pwa",
   "pierreyoda/opensourcegames",
   // Too old and/or too unfinished
@@ -29,6 +31,8 @@ const repositoriesBlackList = [
   "pierreyoda/praca_website",
   "pierreyoda/solar-rust",
   "pierreyoda/space-carrier",
+  // School stuff
+  "pierreyoda/TwitterElectionResults",
 ];
 export const filteredOwnPublicRepositoriesList = (
   repositories: readonly GithubRepositoryMeta[],

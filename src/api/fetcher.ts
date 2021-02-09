@@ -31,14 +31,14 @@ const main = async () => {
   info(`> Kept ${keptGithubRepositoriesMeta.length} GitHub public repositories...`);
 
   const githubRepositories = _orderBy(keptGithubRepositoriesMeta.map(({
-    url,
+    html_url,
     name,
     full_name,
     description,
     forks_count,
     stargazers_count,
   }) => ({
-    url,
+    url: html_url,
     name,
     description,
     fullName: full_name,
@@ -47,7 +47,7 @@ const main = async () => {
   })), repository => repository.stargazersCount, "desc");
 
   // Output
-  info("Writting to file...");
+  info("Writing to file...");
   const output: RepositoriesData = {
     metadata: {
       exportDate: new Date().toISOString(),
