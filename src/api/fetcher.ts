@@ -6,10 +6,26 @@ import _orderBy from "lodash.orderby";
 import { config as dotEnvConfig } from "dotenv";
 
 import { instantiateLogger } from "./utils";
-import { RepositoriesData } from "./static";
 import { fetchOwnPublicRepositoriesList, filteredOwnPublicRepositoriesList } from "./github";
 
 const { info, success } = instantiateLogger("content:fetcher");
+
+export interface GithubRepositoryMeta {
+  url: string;
+  name: string;
+  fullName: string;
+  description: string | null;
+  stargazersCount: number;
+  forksCount: number;
+}
+
+export interface RepositoriesData {
+  metadata: {
+    /** ISO-8601 */
+    exportDate: string;
+  };
+  githubRepositories: GithubRepositoryMeta[];
+}
 
 const main = async () => {
   // Preparation
@@ -32,7 +48,7 @@ const main = async () => {
   const githubRepositories = _orderBy(
     keptGithubRepositoriesMeta.map(({
       html_url, name, full_name, description, forks_count, stargazers_count,
-    }) => ({
+    }): GithubRepositoryMeta => ({
       url: html_url,
       name,
       description,

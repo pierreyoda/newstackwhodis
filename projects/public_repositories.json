@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-02-08T19:15:08.349Z"
+    "exportDate": "2021-03-24T17:37:36.321Z"
   },
   "githubRepositories": [
     {
@@ -9,7 +9,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 19
+      "stargazersCount": 20
     },
     {
       "url": "https://github.com/pierreyoda/rustboycolor",
@@ -33,6 +33,14 @@
       "description": "A simple Chip8 emulator made in Rust.",
       "fullName": "pierreyoda/rust-chip8",
       "forksCount": 0,
+      "stargazersCount": 3
+    },
+    {
+      "url": "https://github.com/pierreyoda/micropolis-rs",
+      "name": "micropolis-rs",
+      "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
+      "fullName": "pierreyoda/micropolis-rs",
+      "forksCount": 0,
       "stargazersCount": 2
     },
     {
@@ -52,18 +60,10 @@
       "stargazersCount": 1
     },
     {
-      "url": "https://github.com/pierreyoda/advent-2019-rust",
-      "name": "advent-2019-rust",
-      "description": "Implementation of https://adventofcode.com/2019/ in Rust.",
-      "fullName": "pierreyoda/advent-2019-rust",
-      "forksCount": 0,
-      "stargazersCount": 0
-    },
-    {
-      "url": "https://github.com/pierreyoda/advent-2020",
-      "name": "advent-2020",
-      "description": null,
-      "fullName": "pierreyoda/advent-2020",
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
       "forksCount": 0,
       "stargazersCount": 0
     },
@@ -72,14 +72,6 @@
       "name": "lsystem-renderer",
       "description": "Visualize and edit L-Systems with Qt 5",
       "fullName": "pierreyoda/lsystem-renderer",
-      "forksCount": 0,
-      "stargazersCount": 0
-    },
-    {
-      "url": "https://github.com/pierreyoda/micropolis-rs",
-      "name": "micropolis-rs",
-      "description": "The classic Micropolis game rewritten in Rust, with WebAssembly support.",
-      "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 0,
       "stargazersCount": 0
     },
@@ -94,16 +86,8 @@
     {
       "url": "https://github.com/pierreyoda/Tetris",
       "name": "Tetris",
-      "description": "Simple Java classic Tetris game built with Swing.",
+      "description": "The classic Tetris game, built with Java and Swing.",
       "fullName": "pierreyoda/Tetris",
-      "forksCount": 0,
-      "stargazersCount": 0
-    },
-    {
-      "url": "https://github.com/pierreyoda/TwitterElectionResults",
-      "name": "TwitterElectionResults",
-      "description": null,
-      "fullName": "pierreyoda/TwitterElectionResults",
       "forksCount": 0,
       "stargazersCount": 0
     },

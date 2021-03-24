@@ -1,10 +1,15 @@
-import { FunctionComponent, useState } from "react";
+import { createContext, FunctionComponent, useState } from "react";
 import Head from "next/head";
 import "twin.macro";
 
 import SidePanel, { SidePanelSelectableCategory } from "@/components/layout/SidePanel";
-import ContentPanel from "@/components/layout/ContentPanel";
 import { LayoutGetter } from "./types";
+
+export const MainLayoutContext = createContext<{
+  selectedCategory: SidePanelSelectableCategory | null;
+}>({
+  selectedCategory: null,
+});
 
 const MainLayout: FunctionComponent = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<SidePanelSelectableCategory | null>(null);
@@ -16,10 +21,14 @@ const MainLayout: FunctionComponent = ({ children }) => {
       </Head>
 
       <SidePanel selected={selectedCategory} onSelectedChange={selected => setSelectedCategory(selected)} />
-      {/* TODO: only on main page */}
-      <ContentPanel highlightContentCategory={selectedCategory} />
 
-      <main tw="flex-grow overflow-auto">{children}</main>
+      <MainLayoutContext.Provider
+        value={{
+          selectedCategory,
+        }}
+      >
+        <main tw="flex-grow overflow-auto">{children}</main>
+      </MainLayoutContext.Provider>
 
       <style global jsx>
         {`

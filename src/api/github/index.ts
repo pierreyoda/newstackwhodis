@@ -5,9 +5,9 @@ const octokit = new Octokit({
   timeZone: "Europe/Paris",
 });
 
-type GithubRepositoryMeta = RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"][0];
+type RawGithubRepositoryMeta = RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"][0];
 
-export const fetchOwnPublicRepositoriesList = async (): Promise<readonly GithubRepositoryMeta[]> =>
+export const fetchOwnPublicRepositoriesList = async (): Promise<readonly RawGithubRepositoryMeta[]> =>
   (
     await octokit.repos.listForUser({
       username: "pierreyoda",
@@ -25,6 +25,7 @@ const repositoriesBlackList = [
   "pierreyoda/advent-2020-ts",
   "pierreyoda/advent-2020",
   "pierreyoda/hacker-news-pwa",
+  // Forks
   "pierreyoda/opensourcegames",
   // Too old and/or too unfinished
   "pierreyoda/7guis",
@@ -36,8 +37,8 @@ const repositoriesBlackList = [
   "pierreyoda/TwitterElectionResults",
 ];
 export const filteredOwnPublicRepositoriesList = (
-  repositories: readonly GithubRepositoryMeta[],
-): readonly GithubRepositoryMeta[] =>
+  repositories: readonly RawGithubRepositoryMeta[],
+): readonly RawGithubRepositoryMeta[] =>
   repositories.filter(
     ({ owner, full_name }) => owner && owner.login === "pierreyoda" && !repositoriesBlackList.includes(full_name),
   );
