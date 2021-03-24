@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { join } from "path";
 import { promises as fs } from "fs";
 import _orderBy from "lodash.orderby";
@@ -5,10 +7,7 @@ import { config as dotEnvConfig } from "dotenv";
 
 import { instantiateLogger } from "./utils";
 import { RepositoriesData } from "./static";
-import {
-  fetchOwnPublicRepositoriesList,
-  filteredOwnPublicRepositoriesList,
-} from "./github";
+import { fetchOwnPublicRepositoriesList, filteredOwnPublicRepositoriesList } from "./github";
 
 const { info, success } = instantiateLogger("content:fetcher");
 
@@ -30,21 +29,20 @@ const main = async () => {
   const keptGithubRepositoriesMeta = filteredOwnPublicRepositoriesList(githubRepositoriesMeta);
   info(`> Kept ${keptGithubRepositoriesMeta.length} GitHub public repositories...`);
 
-  const githubRepositories = _orderBy(keptGithubRepositoriesMeta.map(({
-    html_url,
-    name,
-    full_name,
-    description,
-    forks_count,
-    stargazers_count,
-  }) => ({
-    url: html_url,
-    name,
-    description,
-    fullName: full_name,
-    forksCount: forks_count ?? 0,
-    stargazersCount: stargazers_count ?? 0,
-  })), repository => repository.stargazersCount, "desc");
+  const githubRepositories = _orderBy(
+    keptGithubRepositoriesMeta.map(({
+      html_url, name, full_name, description, forks_count, stargazers_count,
+    }) => ({
+      url: html_url,
+      name,
+      description,
+      fullName: full_name,
+      forksCount: forks_count ?? 0,
+      stargazersCount: stargazers_count ?? 0,
+    })),
+    repository => repository.stargazersCount,
+    "desc",
+  );
 
   // Output
   info("Writing to file...");

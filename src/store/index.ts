@@ -1,5 +1,7 @@
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
-import { configureStore, createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+ configureStore, createAction, createSlice, PayloadAction,
+} from "@reduxjs/toolkit";
 
 import { GithubProject } from "@/api/static";
 import { PartiallyRequired } from "@/utils";
@@ -24,7 +26,10 @@ const projectsSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(hydrate, (state, action) => {
-      const incoming = (action.payload as any)[projectsSlice.name] as PartiallyRequired<ProjectsSliceState, "fetchingDate">;
+      const incoming = (action.payload as any)[projectsSlice.name] as PartiallyRequired<
+        ProjectsSliceState,
+        "fetchingDate"
+      >;
       return !state.fetchingDate || new Date(state.fetchingDate) < new Date(incoming.fetchingDate)
         ? { ...incoming }
         : { ...state };
@@ -32,18 +37,19 @@ const projectsSlice = createSlice({
   },
 });
 
-const makeStore = () => configureStore({
-  reducer: {
-    [projectsSlice.name]: projectsSlice.reducer,
-  },
-  devTools: true,
-});
+const makeStore = () =>
+  configureStore({
+    reducer: {
+      [projectsSlice.name]: projectsSlice.reducer,
+    },
+    devTools: true,
+  });
 
 export type Store = ReturnType<typeof makeStore>;
 export type State = ReturnType<Store["getState"]>;
 
 export const storeWrapper = createWrapper(makeStore, { debug: true });
 
-export const loadGithubProjects = projectsSlice.actions.loadGithubProjects;
+export const { loadGithubProjects } = projectsSlice.actions;
 export const selectGithubProjects = (state: State): readonly GithubProject[] | undefined =>
   state?.[projectsSlice.name].githubProjects;

@@ -7,11 +7,12 @@ const octokit = new Octokit({
 
 type GithubRepositoryMeta = RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"][0];
 
-export const fetchOwnPublicRepositoriesList = async (
-): Promise<readonly GithubRepositoryMeta[]> =>
-  (await octokit.repos.listForUser({
-    username: "pierreyoda",
-  })).data.filter(({ private: isPrivate }) => !isPrivate);
+export const fetchOwnPublicRepositoriesList = async (): Promise<readonly GithubRepositoryMeta[]> =>
+  (
+    await octokit.repos.listForUser({
+      username: "pierreyoda",
+    })
+  ).data.filter(({ private: isPrivate }) => !isPrivate);
 
 const repositoriesBlackList = [
   // Own website
@@ -36,7 +37,7 @@ const repositoriesBlackList = [
 ];
 export const filteredOwnPublicRepositoriesList = (
   repositories: readonly GithubRepositoryMeta[],
-): readonly GithubRepositoryMeta[] => repositories.filter(({
-  owner,
-  full_name,
-}) => owner && owner.login === "pierreyoda" && !repositoriesBlackList.includes(full_name));
+): readonly GithubRepositoryMeta[] =>
+  repositories.filter(
+    ({ owner, full_name }) => owner && owner.login === "pierreyoda" && !repositoriesBlackList.includes(full_name),
+  );

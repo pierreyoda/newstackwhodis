@@ -1,9 +1,7 @@
+/* eslint-disable global-require */
+
 module.exports = {
-  purge: [
-    "./components/**/*.tsx",
-    "./layouts/**/*.tsx",
-    "./pages/**/*.tsx",
-  ],
+  purge: ["./src/components/**/*.tsx", "./src/layouts/**/*.tsx", "./src/pages/**/*.tsx"],
   darkMode: "media",
   theme: {
     extend: {
@@ -16,12 +14,6 @@ module.exports = {
       },
     },
   },
-  variants: {
-  },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),({
-      modifiers: ["lg", "xl"],
-    }),
-  ],
+  variants: {},
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
 };

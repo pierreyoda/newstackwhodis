@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { parsedRepositoriesData } from "@/api/static";
 import { loadGithubProjects, storeWrapper } from "@/store";
 
-const Home: NextPage = () => <div></div>;
+const Home: NextPage = () => <div />;
 
 export const getStaticProps = storeWrapper.getStaticProps(store => async () => {
   const {

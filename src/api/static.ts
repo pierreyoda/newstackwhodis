@@ -18,10 +18,11 @@ export interface RepositoriesData {
   githubRepositories: GithubProject[];
 }
 
-let cachedRepositoriesData: Readonly<RepositoriesData> | undefined = undefined;
-export const parsedRepositoriesData = async (
-): Promise<Readonly<RepositoriesData>> => {
-  if (cachedRepositoriesData) { return cachedRepositoriesData; }
+let cachedRepositoriesData: Readonly<RepositoriesData> | undefined;
+export const parsedRepositoriesData = async (): Promise<Readonly<RepositoriesData>> => {
+  if (cachedRepositoriesData) {
+    return cachedRepositoriesData;
+  }
 
   const filepath = join(process.cwd(), "./projects/public_repositories.json");
   const filedata = await fs.readFile(filepath);

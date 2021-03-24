@@ -1,22 +1,12 @@
 const path = require("path");
 
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [
-      require("@fec/remark-a11y-emoji"),
-    ],
-    rehypePlugins: [],
-  },
-});
-
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
 const withSvgr = require("next-svgr");
 
-module.exports = withBundleAnalyzer(withMDX(withSvgr({
+module.exports = withBundleAnalyzer(withSvgr({
   // https://nextjs.org/docs/advanced-features/i18n-routing
   i18n: {
     locales: ["en", "fr"],
@@ -40,4 +30,4 @@ module.exports = withBundleAnalyzer(withMDX(withSvgr({
       },
     } : {},
   }),
-})));
+}));
