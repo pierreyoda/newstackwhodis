@@ -51,6 +51,7 @@
     "max-len": ["error", 120],
     "no-async-promise-executor": ["off"],
     "no-empty-pattern": ["off"],
+    "no-nested-ternary": ["off"],
     "no-undef": ["error"],
     "no-var": ["error"],
     "object-curly-spacing": ["error", "always"],

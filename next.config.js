@@ -7,12 +7,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const withSvgr = require("next-svgr");
 
 module.exports = withBundleAnalyzer(withSvgr({
-  // https://nextjs.org/docs/advanced-features/i18n-routing
-  i18n: {
-    locales: ["en", "fr"],
-    defaultLocale: "en",
-    localeDetection: true,
-  },
   webpack: (config, { isServer }) => ({
     ...config,
     resolve: {

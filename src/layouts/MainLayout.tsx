@@ -1,4 +1,5 @@
 import { createContext, FunctionComponent, useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import "twin.macro";
 
@@ -12,7 +13,9 @@ export const MainLayoutContext = createContext<{
 });
 
 const MainLayout: FunctionComponent = ({ children }) => {
-  const [selectedCategory, setSelectedCategory] = useState<SidePanelSelectableCategory | null>(null);
+  const router = useRouter();
+  const selectedCategory: SidePanelSelectableCategory =
+    router.asPath === "/blog/1-about" ? "about" : router.route === "/blog/[slug]" ? "blog" : "projects";
 
   return (
     <div id="app" tw="flex w-full h-full font-sans antialiased">
@@ -20,7 +23,7 @@ const MainLayout: FunctionComponent = ({ children }) => {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
       </Head>
 
-      <SidePanel selected={selectedCategory} onSelectedChange={selected => setSelectedCategory(selected)} />
+      <SidePanel selected={selectedCategory} />
 
       <MainLayoutContext.Provider
         value={{
@@ -34,7 +37,6 @@ const MainLayout: FunctionComponent = ({ children }) => {
         {`
           html,
           body,
-          body > div:first-child,
           div#__next,
           div#__next > div {
             height: 100%;
