@@ -30,7 +30,7 @@ const MainLayout: FunctionComponent = ({ children }) => {
           selectedCategory,
         }}
       >
-        <main tw="flex-grow overflow-auto">{children}</main>
+        <main tw="flex-grow overflow-auto pt-2 md:pt-28">{children}</main>
       </MainLayoutContext.Provider>
 
       <style global jsx>

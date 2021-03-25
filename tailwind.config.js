@@ -4,14 +4,17 @@ module.exports = {
   purge: ["./src/components/**/*.tsx", "./src/layouts/**/*.tsx", "./src/pages/**/*.tsx"],
   darkMode: "media",
   theme: {
-    extend: {
-      colors: {
-        black: "#141416",
-        space: "#2a2b58",
-        lychee: "#e04f4f",
-        velvet: "#2d0607",
-        "space-blue": "#1b21dd",
-      },
+    colors: {
+      black: "#141416",
+      gray: "#333238",
+      space: "#2A2B58",
+      lychee: "#E04F4F",
+      velvet: "#2D0607",
+      "space-blue": "#1B21DD",
+      "pale-red": "#D07869",
+      yellow: "#F9F871",
+      orange: "#F9B163",
+      white: "#FFFFFF",
     },
   },
   variants: {},
