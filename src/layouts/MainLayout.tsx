@@ -1,7 +1,6 @@
-import { createContext, FunctionComponent, useState } from "react";
+import { createContext, FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import "twin.macro";
 
 import SidePanel, { SidePanelSelectableCategory } from "@/components/layout/SidePanel";
 import { LayoutGetter } from "./types";
@@ -18,19 +17,18 @@ const MainLayout: FunctionComponent = ({ children }) => {
     router.asPath === "/blog/1-about" ? "about" : router.route === "/blog/[slug]" ? "blog" : "projects";
 
   return (
-    <div id="app" tw="flex w-full h-full font-sans antialiased">
+    <div id="app" className="flex w-full h-full font-sans antialiased">
       <Head>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
       </Head>
 
       <SidePanel selected={selectedCategory} />
-
       <MainLayoutContext.Provider
         value={{
           selectedCategory,
         }}
       >
-        <main tw="flex-grow overflow-auto pt-2 md:pt-28">{children}</main>
+        <main className="flex-grow pt-2 overflow-auto md:pt-28">{children}</main>
       </MainLayoutContext.Provider>
 
       <style global jsx>

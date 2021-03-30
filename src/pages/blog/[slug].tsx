@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import hydrate from "next-mdx-remote/hydrate";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import "twin.macro";
 
 import { BlogPost, getBlogPostBySlug, getBlogPostsSlugs } from "@/api/posts";
 
@@ -15,8 +14,8 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post: { content } }) => {
   const hydratedContent = hydrate(content, { components: mdxComponents });
 
   return (
-    <div tw="flex flex-col items-center pt-4 md:pt-12 h-full mx-auto">
-      <article tw="prose">{hydratedContent}</article>
+    <div className="flex flex-col items-center h-full pt-4 mx-auto md:pt-12">
+      <article className="prose">{hydratedContent}</article>
     </div>
   );
 };

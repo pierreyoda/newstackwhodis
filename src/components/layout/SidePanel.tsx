@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import Link from "next/link";
-import tw from "twin.macro";
+import clsx from "clsx";
 
 import { siteName, copyrightNotice } from "@/content/branding";
 
@@ -12,7 +12,7 @@ const SidePanelLink: FunctionComponent<{
   label: string;
   selected: boolean;
 }> = ({ href, label, selected }) => (
-  <div css={[tw`mt-8 text-white cursor-pointer hover:text-lychee`, selected && tw`text-lychee`]}>
+  <div className={clsx("mt-8 text-white hover:text-lychee", selected && "text-lychee")}>
     <Link href={href}>{label}</Link>
   </div>
 );
@@ -22,15 +22,15 @@ interface SidePanelProps {
 }
 
 const SidePanel: FunctionComponent<SidePanelProps> = ({ selected }) => (
-  <div tw="w-1/3 bg-black text-white flex flex-col p-3 md:p-12">
-    <div tw="flex">
-      <h2 tw="text-3xl">{siteName}</h2>
+  <div className="flex flex-col w-1/3 p-3 text-white bg-black md:p-12">
+    <div className="flex">
+      <h2 className="text-3xl">{siteName}</h2>
     </div>
-    <div tw="flex-grow flex-col justify-between">
+    <div className="flex-col justify-between flex-grow">
       <SidePanelLink href="/" label="Projects" selected={selected === "projects"} />
       <SidePanelLink href="/blog/about/" label="About" selected={selected === "about"} />
     </div>
-    <footer css="flex items-center justify-center text-sm text-gray-200">
+    <footer className="flex items-center justify-center text-sm text-gray-200">
       <span>{copyrightNotice}</span>
     </footer>
   </div>

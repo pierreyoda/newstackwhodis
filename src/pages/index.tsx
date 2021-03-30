@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { GetStaticProps, NextPage } from "next";
-import "twin.macro";
 
 import { RepositoriesData } from "@/api/fetcher";
 import { parsedRepositoriesData } from "@/api/static";
@@ -15,8 +14,8 @@ const HomePage: NextPage<HomePageProps> = ({ repositoriesData: { githubRepositor
   const { selectedCategory } = useContext(MainLayoutContext);
 
   return (
-    <div tw="flex flex-col px-2 md:px-8">
-      <h1 tw="font-bold text-4xl mb-4 md:mb-12">Personal Projects</h1>
+    <div className="flex flex-col px-2 md:px-8">
+      <h1 className="mb-4 text-4xl font-bold md:mb-12">Personal Projects</h1>
       <ContentPanel githubProjects={githubRepositories} highlightContentCategory={selectedCategory} />
     </div>
   );
