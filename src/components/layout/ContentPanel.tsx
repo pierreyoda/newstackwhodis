@@ -3,7 +3,7 @@ import Link from "next/link";
 import clsx from "clsx";
 
 import { GithubRepositoryMeta } from "@/api/fetcher";
-import { SidePanelSelectableCategory } from "./SidePanel";
+import { SidePanelSelectableCategory } from "./Navbar";
 
 const ContentItemContainer: FunctionComponent<{ highlighted: boolean }> = ({ highlighted, children }) => (
   <div

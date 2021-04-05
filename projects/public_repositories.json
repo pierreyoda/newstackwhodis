@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-03-25T16:35:18.679Z"
+    "exportDate": "2021-04-04T16:12:26.477Z"
   },
   "githubRepositories": [
     {
@@ -36,6 +36,14 @@
       "stargazersCount": 3
     },
     {
+      "url": "https://github.com/pierreyoda/GameInc",
+      "name": "GameInc",
+      "description": "Game development studio management game made with Unity.",
+      "fullName": "pierreyoda/GameInc",
+      "forksCount": 3,
+      "stargazersCount": 2
+    },
+    {
       "url": "https://github.com/pierreyoda/micropolis-rs",
       "name": "micropolis-rs",
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
@@ -50,14 +58,6 @@
       "fullName": "pierreyoda/rust-mal",
       "forksCount": 0,
       "stargazersCount": 2
-    },
-    {
-      "url": "https://github.com/pierreyoda/GameInc",
-      "name": "GameInc",
-      "description": "Game development studio management game made with Unity.",
-      "fullName": "pierreyoda/GameInc",
-      "forksCount": 3,
-      "stargazersCount": 1
     },
     {
       "url": "https://github.com/pierreyoda/hncli",
