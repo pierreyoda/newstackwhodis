@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { GetStaticProps, NextPage } from "next";
 
+import { getBlogPostsSlugs } from "@/api/posts";
 import { RepositoriesData } from "@/api/fetcher";
 import { parsedRepositoriesData } from "@/api/static";
 import { MainLayoutContext } from "@/layouts/MainLayout";
-import ContentPanel from "@/components/layout/ContentPanel";
+import ContentPanel, { GithubProjectMeta } from "@/components/layout/ContentPanel";
 
 interface HomePageProps {
   repositoriesData: RepositoriesData;
@@ -21,10 +22,23 @@ const HomePage: NextPage<HomePageProps> = ({ repositoriesData: { githubRepositor
   );
 };
 
-export const getStaticProps: GetStaticProps<HomePageProps> = async () => ({
-  props: {
-    repositoriesData: parsedRepositoriesData(),
-  },
-});
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  const postsSlugs = await getBlogPostsSlugs();
+  const repositoriesData = await parsedRepositoriesData();
+  return {
+    props: {
+      repositoriesData: {
+        ...repositoriesData,
+        githubRepositories: repositoriesData.githubRepositories.map(
+          ({ name, ...meta }): GithubProjectMeta => ({
+            name,
+            ...meta,
+            blogPostSlug: postsSlugs.find(slug => slug === `project-${name}`) ?? null,
+          }),
+        ),
+      },
+    },
+  };
+};
 
 export default HomePage;

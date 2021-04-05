@@ -16,8 +16,12 @@ const ContentItemContainer: FunctionComponent<{ highlighted: boolean }> = ({ hig
   </div>
 );
 
+export type GithubProjectMeta = GithubRepositoryMeta & {
+  blogPostSlug: string | null;
+};
+
 interface ContentPanelProps {
-  githubProjects: readonly GithubRepositoryMeta[];
+  githubProjects: readonly GithubProjectMeta[];
   highlightContentCategory: SidePanelSelectableCategory | null;
 }
 
@@ -34,6 +38,7 @@ const ContentPanel: FunctionComponent<ContentPanelProps> = ({ githubProjects, hi
         linkType: "github",
         forksCount: rawItem.forksCount,
         githubStars: rawItem.stargazersCount ?? 0,
+        blogPostSlug: rawItem.blogPostSlug,
       })),
     [githubProjects, highlightContentCategory],
   );
@@ -41,9 +46,16 @@ const ContentPanel: FunctionComponent<ContentPanelProps> = ({ githubProjects, hi
   // Content rendering
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      {content.map(({ href, highlighted, title, description, githubStars, forksCount }) => (
+      {content.map(({ href, highlighted, title, description, githubStars, forksCount, blogPostSlug }) => (
         <ContentItemContainer key={href} highlighted={highlighted}>
-          <h3 className="text-lg font-bold text-white border-b-2 border-lychee">{title}</h3>
+          <h3
+            className={clsx(
+              "text-lg font-bold text-white border-b-2 border-lychee",
+              blogPostSlug && "hover:text-lychee",
+            )}
+          >
+            {blogPostSlug ? <Link href={`/blog/${blogPostSlug}`}>{title}</Link> : title}
+          </h3>
           <p className="py-3 text-sm text-white">{description}</p>
           <div className="flex items-center justify-between w-full text-sm">
             <div className="text-white rounded">
