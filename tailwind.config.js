@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 
 module.exports = {
+  mode: "jit",
   purge: ["./src/components/**/*.tsx", "./src/layouts/**/*.tsx", "./src/pages/**/*.tsx"],
   darkMode: "media",
   theme: {
