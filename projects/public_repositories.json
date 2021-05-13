@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-04-05T15:58:06.545Z"
+    "exportDate": "2021-05-13T16:02:22.116Z"
   },
   "githubRepositories": [
     {
@@ -9,7 +9,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 20
+      "stargazersCount": 21
     },
     {
       "url": "https://github.com/pierreyoda/rustboycolor",
@@ -40,7 +40,7 @@
       "name": "GameInc",
       "description": "Game development studio management game made with Unity.",
       "fullName": "pierreyoda/GameInc",
-      "forksCount": 3,
+      "forksCount": 4,
       "stargazersCount": 2
     },
     {

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 
 const octokit = new Octokit({
@@ -18,6 +20,7 @@ const repositoriesBlackList = [
   // Own website
   "pierreyoda/praca-website",
   // Forks
+  "pierreyoda/opensourcegames",
   "pierreyoda/good-first-issue",
   "pierreyoda/osgameclones",
   // Too unfinished
@@ -25,8 +28,6 @@ const repositoriesBlackList = [
   "pierreyoda/advent-2020-ts",
   "pierreyoda/advent-2020",
   "pierreyoda/hacker-news-pwa",
-  // Forks
-  "pierreyoda/opensourcegames",
   // Too old and/or too unfinished
   "pierreyoda/7guis",
   "pierreyoda/open-advanced-war",
