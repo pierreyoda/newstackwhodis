@@ -1,6 +1,8 @@
 import { join } from "path";
 import { promises as fs } from "fs";
 import RemarkEmojiPlugin from "remark-emoji";
+import { UserConfigSettings } from "shiki-twoslash";
+import RemarkShikiTwoslash from "remark-shiki-twoslash";
 import renderToString from "next-mdx-remote/render-to-string";
 import { ReactNode } from "react";
 
@@ -30,7 +32,10 @@ export const getBlogPostBySlug = async ({
   const content = await renderToString(fileContent, {
     components,
     mdxOptions: {
-      remarkPlugins: [RemarkEmojiPlugin],
+      remarkPlugins: [
+        RemarkEmojiPlugin,
+        [RemarkShikiTwoslash, { theme: "dark-plus" } as UserConfigSettings],
+      ],
     },
   });
   return { slug, content };

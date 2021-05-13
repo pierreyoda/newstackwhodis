@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { useEffect, ReactNode } from "react";
 import hydrate from "next-mdx-remote/hydrate";
+import { setupTwoslashHovers } from "shiki-twoslash/dist/dom";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
 import { BlogPost, getBlogPostBySlug, getBlogPostsSlugs } from "@/api/posts";
@@ -12,6 +13,9 @@ const mdxComponents: Record<string, ReactNode> = {};
 
 const BlogPostPage: NextPage<BlogPostPageProps> = ({ post: { content } }) => {
   const hydratedContent = hydrate(content, { components: mdxComponents });
+
+  // Add the twoslash hover information for Typescript snippets
+  useEffect(setupTwoslashHovers);
 
   return (
     <div className="flex flex-col items-center h-full pt-4 mx-auto md:pt-12">

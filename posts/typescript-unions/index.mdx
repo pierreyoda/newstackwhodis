@@ -1,0 +1,23 @@
+# Typescript Unions
+
+## What is an Union?
+
+## Usage in Typescript
+
+```typescript twoslash
+type Item =
+  | {
+      type: "story";
+      content: string;
+    }
+  | {
+      type: "job";
+      url: string;
+    };
+```
+
+## Union Strings
+
+```typescript twoslash
+type ItemType = "story" | "job";
+```
