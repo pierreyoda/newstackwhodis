@@ -3,16 +3,15 @@ import { promises as fs } from "fs";
 import RemarkEmojiPlugin from "remark-emoji";
 import { UserConfigSettings } from "shiki-twoslash";
 import RemarkShikiTwoslash from "remark-shiki-twoslash";
-import renderToString from "next-mdx-remote/render-to-string";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 import { ReactNode } from "react";
-
-import { Promised } from "@/utils";
 
 const postsDirectory = join(process.cwd(), "./posts/");
 
 export const getBlogPostsSlugs = async (): Promise<string[]> => fs.readdir(postsDirectory);
 
-export type BlogPostRenderedContent = Promised<ReturnType<typeof renderToString>>;
+export type BlogPostRenderedContent = MDXRemoteSerializeResult;
 
 export interface BlogPost {
   slug: string;
@@ -29,8 +28,8 @@ export const getBlogPostBySlug = async ({
   const filepath = join(postsDirectory, slug, "index.mdx");
   const fileContent = await fs.readFile(filepath, "utf-8");
 
-  const content = await renderToString(fileContent, {
-    components,
+  const content = await serialize(fileContent, {
+    scope: components,
     mdxOptions: {
       remarkPlugins: [
         RemarkEmojiPlugin,
