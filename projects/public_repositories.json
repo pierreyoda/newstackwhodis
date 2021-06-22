@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-05-13T16:02:22.116Z"
+    "exportDate": "2021-06-22T10:42:13.475Z"
   },
   "githubRepositories": [
     {
@@ -20,19 +20,19 @@
       "stargazersCount": 6
     },
     {
-      "url": "https://github.com/pierreyoda/rust-chip8",
-      "name": "rust-chip8",
-      "description": "A simple Chip8 emulator made in Rust.",
-      "fullName": "pierreyoda/rust-chip8",
-      "forksCount": 0,
-      "stargazersCount": 4
-    },
-    {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
       "name": "rust-neuralnet",
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
       "forksCount": 1,
+      "stargazersCount": 5
+    },
+    {
+      "url": "https://github.com/pierreyoda/rust-chip8",
+      "name": "rust-chip8",
+      "description": "A simple Chip8 emulator made in Rust.",
+      "fullName": "pierreyoda/rust-chip8",
+      "forksCount": 0,
       "stargazersCount": 4
     },
     {
