@@ -15,13 +15,10 @@ module.exports = withBundleAnalyzer(withSvgr({
         ...config.resolve.alias,
         "@": path.resolve(__dirname, "./"),
       },
+      // fallback: {
+      //   ...config.resolve.fallback,
+      //   fs: isServer, // fixes npm packages that depend on `fs` module
+      // },
     },
-    ...isServer ? {
-      // fixes packages depending on fs/module module
-      node: {
-        fs: "empty",
-        module: "empty",
-      },
-    } : {},
   }),
 }));
