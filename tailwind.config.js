@@ -6,7 +6,10 @@ module.exports = {
   darkMode: "media",
   theme: {
     colors: {
-      black: "#141416",
+      black: {
+        DEFAULT: "#141416",
+        lighter: "#2B2B2D",
+      },
       gray: "#333238",
       space: "#2A2B58",
       lychee: "#E04F4F",

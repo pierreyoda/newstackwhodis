@@ -8,7 +8,7 @@ import { SidePanelSelectableCategory } from "./Navbar";
 const ContentItemContainer: FunctionComponent<{ highlighted: boolean }> = ({ highlighted, children }) => (
   <div
     className={clsx(
-      "flex flex-col items-start justify-around p-3 border border-black rounded bg-gray md:rounded-lg",
+      "flex flex-col items-start justify-around p-3 border border-black rounded bg-black-lighter md:rounded-lg",
       highlighted && "border-gray",
     )}
   >

@@ -1901,10 +1901,10 @@
     "@typescript-eslint/types" "4.28.0"
     eslint-visitor-keys "^2.0.0"
 
-"@typescript/twoslash@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-2.0.1.tgz#bf6dbd571e832e8f2114810d562eec00632ce107"
-  integrity sha512-+TgjZp0d331A2A9nBBjX/EFax3LnR9MtziICqgo2l23hXV9JY4EiNPdcBSEDBRzaWQIMvSa5YvBENnE6uZ33EA==
+"@typescript/twoslash@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-2.1.0.tgz#0128312e002670367393bb9b48378ac818aceccd"
+  integrity sha512-J72HH+zAMPA9udOuOgAxTXnzeRyz0t33Ww1jQ6CgNfjP3HtrOS4lNgG+m3u1H497U366zbcUOjNkIgNGqefd/A==
   dependencies:
     "@typescript/vfs" "1.3.4"
     debug "^4.1.1"
@@ -3629,6 +3629,11 @@ fastq@^1.6.0:
   integrity sha512-AWuv6Ery3pM+dY7LYS8YIaCiQvUaos9OB1RyNgaOWnaX+Tik7Onvcsf8x8c+YtDeT0maYLniBip2hox5KtEXXA==
   dependencies:
     reusify "^1.0.4"
+
+fenceparser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fenceparser/-/fenceparser-1.1.0.tgz#b509f16e3ce68b04e19caa8636037755cfa4a67b"
+  integrity sha512-2/48W+LjGeYLYc7Z2WodoPv4xP4Bd9e2CsnnFZuzzoNkv+w8NyJKDD/EUhcwv9VkmXsnGtnDzZz6DNykD9JrlA==
 
 file-entry-cache@^6.0.1:
   version "6.0.1"
@@ -6228,16 +6233,17 @@ remark-parse@8.0.3:
     vfile-location "^3.0.0"
     xtend "^4.0.1"
 
-remark-shiki-twoslash@1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/remark-shiki-twoslash/-/remark-shiki-twoslash-1.4.4.tgz#b720a2ea0171332040b9a66bae9717e0fdc014df"
-  integrity sha512-jBLIxbdC52F5bnMTQ25HBsnX558DMEZoakfJCc93et4n3y5byokQUETWIJSHpEqWfHHUD8+MeHiidBzjlOYkEg==
+remark-shiki-twoslash@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/remark-shiki-twoslash/-/remark-shiki-twoslash-2.0.1.tgz#f47a304f044e0d78fdb09505442397fa7104509e"
+  integrity sha512-Xj2pMArldasY6WvqjaVR/G7HJnqIGYGIQlpNCpeq2kGTaABU80nJ5lF7AiELUGbg1f5aK4tosE24zo2ChWi9Zg==
   dependencies:
-    "@typescript/twoslash" "2.0.1"
+    "@typescript/twoslash" "2.1.0"
     "@typescript/vfs" "1.3.4"
+    fenceparser "^1.1.0"
     regenerator-runtime "^0.13.7"
-    shiki "^0.9.3"
-    shiki-twoslash "1.4.3"
+    shiki "0.9.3"
+    shiki-twoslash "2.0.3"
     tslib "2.1.0"
     typescript ">3"
     unist-util-visit "^2.0.0"
@@ -6432,17 +6438,17 @@ shell-quote@1.7.2:
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
 
-shiki-twoslash@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/shiki-twoslash/-/shiki-twoslash-1.4.3.tgz#c7e5e588975cf0102f0fac339a8c1a68e4fc55a9"
-  integrity sha512-VOiIO0p/mRRuSxC0rQLbM/KWRnOtjMC7q2ki/LcsATRbrmDnmC8RQr5uT54rMHKzZu6eeCRwNJDxqXH67KJEew==
+shiki-twoslash@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/shiki-twoslash/-/shiki-twoslash-2.0.3.tgz#b3f212560f63c3a73c2622feb4d92748a91cdd2d"
+  integrity sha512-tUeoek4e0pShUp0AnkfLXl4DCnvcC3iI1pDspPfdWKaBYY8hPW7J4iWxf9VXkdCA7wxwmT1bsiZ6e9h9Tndehg==
   dependencies:
-    "@typescript/twoslash" "2.0.1"
+    "@typescript/twoslash" "2.1.0"
     "@typescript/vfs" "1.3.4"
-    shiki "^0.9.3"
+    shiki "0.9.3"
     typescript ">3"
 
-shiki@^0.9.3:
+shiki@0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/shiki/-/shiki-0.9.3.tgz#7bf7bcf3ed50ca525ec89cc09254abce4264d5ca"
   integrity sha512-NEjg1mVbAUrzRv2eIcUt3TG7X9svX7l3n3F5/3OdFq+/BxUdmBOeKGiH4icZJBLHy354Shnj6sfBTemea2e7XA==

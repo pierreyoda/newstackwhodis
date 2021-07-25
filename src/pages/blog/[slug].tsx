@@ -1,6 +1,6 @@
 import { MDXRemote } from "next-mdx-remote";
-import { useEffect, ReactNode } from "react";
-import { setupTwoslashHovers } from "shiki-twoslash/dist/dom";
+import { ReactNode } from "react";
+// import { setupTwoslashHovers } from "shiki-twoslash/dom";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
 import { BlogPost, getBlogPostBySlug, getBlogPostsSlugs } from "@/api/posts";
@@ -11,18 +11,13 @@ interface BlogPostPageProps {
 
 const mdxComponents: Record<string, ReactNode> = {};
 
-const BlogPostPage: NextPage<BlogPostPageProps> = ({ post: { content } }) => {
-  // Add the twoslash hover information for Typescript snippets
-  useEffect(setupTwoslashHovers);
-
-  return (
-    <div className="flex flex-col items-center h-full pt-4 mx-auto md:pt-12">
-      <article className="prose">
-        <MDXRemote {...content} components={mdxComponents} />
-      </article>
-    </div>
-  );
-};
+const BlogPostPage: NextPage<BlogPostPageProps> = ({ post: { content } }) => (
+  <div className="flex flex-col items-center h-full pt-4 mx-auto md:pt-12">
+    <article className="prose">
+      <MDXRemote {...content} components={mdxComponents} />
+    </article>
+  </div>
+);
 
 export const getStaticProps: GetStaticProps<BlogPostPageProps> = async ({ params }) => {
   const slug = params?.slug;

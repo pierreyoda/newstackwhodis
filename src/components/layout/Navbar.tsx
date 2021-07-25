@@ -14,9 +14,7 @@ const SidePanelLink: FunctionComponent<{
 }> = ({ href, label, selected }) => (
   <div className="mr-6 md:mr-0 md:mt-8">
     <Link href={href} passHref>
-      <a href="/" className={clsx("hover:text-lychee", selected ? "text-lychee" : "text-white")}>
-        {label}
-      </a>
+      <p className={clsx("hover:text-lychee", selected ? "text-lychee" : "text-white")}>{label}</p>
     </Link>
   </div>
 );
