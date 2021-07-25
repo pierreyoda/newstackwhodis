@@ -26,6 +26,7 @@ interface SidePanelProps {
 const SidePanel: FunctionComponent<SidePanelProps> = ({ selected }) => (
   <div className="flex items-center flex-shrink-0 w-full p-3 text-white bg-black md:flex-col md:w-1/3 md:p-12">
     <div className="flex items-center mr-8 md:mr-0">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="w-32 h-auto md:w-64" src="/brand.svg" alt="Praca" />
     </div>
     <div className="flex items-center flex-grow md:justify-start md:flex-col md:text-xl">
