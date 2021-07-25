@@ -7,7 +7,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const withSvgr = require("next-svgr");
 
 module.exports = withBundleAnalyzer(withSvgr({
-  webpack: (config, { isServer }) => ({
+  webpack: (config) => ({
     ...config,
     resolve: {
       ...config.resolve,
@@ -15,10 +15,6 @@ module.exports = withBundleAnalyzer(withSvgr({
         ...config.resolve.alias,
         "@": path.resolve(__dirname, "./"),
       },
-      // fallback: {
-      //   ...config.resolve.fallback,
-      //   fs: isServer, // fixes npm packages that depend on `fs` module
-      // },
     },
   }),
 }));
