@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-07-25T10:52:45.572Z"
+    "exportDate": "2021-08-05T11:24:51.940Z"
   },
   "githubRepositories": [
     {
@@ -16,8 +16,8 @@
       "name": "micropolis-rs",
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
-      "forksCount": 0,
-      "stargazersCount": 6
+      "forksCount": 1,
+      "stargazersCount": 7
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
