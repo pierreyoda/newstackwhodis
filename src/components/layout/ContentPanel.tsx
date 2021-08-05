@@ -34,7 +34,7 @@ const ContentPanel: FunctionComponent<ContentPanelProps> = ({ githubProjects, hi
 
   // Content rendering
   return (
-    <div className="grid gap-4 pb-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-2 xl:grid-cols-3">
       {content.map(projectMeta => (
         <ProjectCard key={projectMeta.githubFullName} highlighted={highlighted} projectMeta={projectMeta} />
       ))}
