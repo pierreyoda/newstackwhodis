@@ -41,7 +41,10 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ highlighted, 
           ? <Link href={`/blog/${projectMeta.blogPostSlug}`}>{projectMeta.title}</Link>
           : projectMeta.title}
       </h3>
-      <p className="py-3 text-sm text-white">{projectMeta.description}</p>
+      <p className="pt-3 text-sm text-white">{projectMeta.description}</p>
+      <div className="flex flex-wrap items-center w-full py-2">
+        {projectTags.map(tag => <ProjectTag key={tag} tag={tag} className="mr-2" />)}
+      </div>
       <div className="flex items-center justify-between w-full text-sm">
         <div className="text-white rounded">
           <Link passHref href={projectMeta.url}>
@@ -63,9 +66,6 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ highlighted, 
           </p>
       )}
         </div>
-      </div>
-      <div className="flex flex-wrap items-center w-full py-2">
-        {projectTags.map(tag => <ProjectTag key={tag} tag={tag} className="mr-2" />)}
       </div>
     </div>
   );
