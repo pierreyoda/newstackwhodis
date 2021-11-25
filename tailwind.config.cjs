@@ -1,5 +1,4 @@
-/* eslint-disable global-require */
-
+/** @type {import('tailwindcss/tailwind-config').TailwindConfig} */
 module.exports = {
   mode: "jit",
   purge: ["./src/components/**/*.tsx", "./src/layouts/**/*.tsx", "./src/pages/**/*.tsx"],
@@ -7,8 +6,8 @@ module.exports = {
   theme: {
     colors: {
       black: {
-        DEFAULT: "#141416",
         lighter: "#2B2B2D",
+        DEFAULT: "#141416",
       },
       gray: "#333238",
       space: "#2A2B58",
