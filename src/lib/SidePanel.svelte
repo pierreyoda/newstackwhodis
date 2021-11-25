@@ -27,13 +27,23 @@
 
 <style lang="postcss">
   .side-panel-container {
-    @apply flex items-center flex-shrink-0 md:flex-col md:w-1/3 md:p-12;
+    @apply flex items-center flex-shrink-0;
     @apply w-full p-3;
     @apply text-white bg-black;
 
     footer {
-      @apply hidden items-center justify-center md:flex;
+      @apply hidden items-center justify-center;
       @apply text-gray;
+    }
+  }
+
+  @screen md {
+    .side-panel-container {
+      @apply flex-col w-1/3 p-12;
+
+      footer {
+        @apply flex;
+      }
     }
   }
 </style>

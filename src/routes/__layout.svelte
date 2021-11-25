@@ -1,6 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import SidePanel from "$lib/SidePanel.svelte";
+  import MobileFooter from "$lib/MobileFooter.svelte";
   import type { SidePanelSelectableCategory } from "$lib/SidePanel.svelte";
 
   let selectedCategory: SidePanelSelectableCategory = "projects";
@@ -12,6 +13,9 @@
     <main class="flex-grow px-2 pt-2 overflow-auto md:pt-28 md:px-0">
       <slot />
     </main>
+    <div class="w-full mt-4 md:hidden">
+      <MobileFooter />
+    </div>
   </div>
 </div>
 
