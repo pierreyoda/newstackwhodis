@@ -11,16 +11,9 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "moduleResolution": "node",
+    "module": "ESNext",
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "~/*": [
-        "./*"
-      ]
-    }
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules"

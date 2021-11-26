@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-08-18T19:06:15.614Z"
+    "exportDate": "2021-11-26T12:52:16.035Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 7
+      "stargazersCount": 9
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -33,7 +33,7 @@
       "description": "Simple Game Boy (Color) emulator written in Rust.",
       "fullName": "pierreyoda/rustboycolor",
       "forksCount": 0,
-      "stargazersCount": 6
+      "stargazersCount": 7
     },
     {
       "url": "https://github.com/pierreyoda/rust-chip8",
@@ -65,7 +65,7 @@
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
       "forksCount": 0,
-      "stargazersCount": 0
+      "stargazersCount": 1
     },
     {
       "url": "https://github.com/pierreyoda/lsystem-renderer",
