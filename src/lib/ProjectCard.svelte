@@ -12,6 +12,7 @@
 </script>
 
 <script lang="ts">
+  import ProjectTag from "$lib/ProjectTag.svelte";
   import { tagsPerProject } from "../api/github/project-tags";
   import type { ProjectTagType } from "../api/github/project-tags";
 import ProjectTag from "./ProjectTag.svelte";
@@ -23,7 +24,7 @@ import ProjectTag from "./ProjectTag.svelte";
 </script>
 
 <div class="project-card-container" class:highlighted="{isHighlighted}">
-  <h3 class="project-card-title">
+  <h3 class="project-card-title" class:has-blog-post="{!!projectMeta.blogPostSlug}">
     {#if projectMeta.blogPostSlug}
       <a sveltekit:prefetch href={`/blog/${projectMeta.blogPostSlug}`}>
         {projectMeta.title}
@@ -45,14 +46,14 @@ import ProjectTag from "./ProjectTag.svelte";
       </a>
     </div>
     <div class="project-card-github-stats">
-      {#if projectMeta.githubForksCount}
+      {#if projectMeta.githubForksCount > 0}
         <p class="mr-4 text-orange">
           {projectMeta.githubForksCount} fork{projectMeta.githubForksCount > 1 ? "s" : ""}
         </p>
       {/if}
-      {#if projectMeta.githubStars}
+      {#if projectMeta.githubStars > 0}
         <p class="text-yellow">
-          {projectMeta.githubStars} fork{projectMeta.githubStars > 1 ? "s" : ""}
+          {projectMeta.githubStars} star{projectMeta.githubStars > 1 ? "s" : ""}
         </p>
       {/if}
     </div>
@@ -62,28 +63,34 @@ import ProjectTag from "./ProjectTag.svelte";
 <style lang="postcss">
   .project-card-container {
     @apply flex flex-col items-start justify-around;
-    @apply p-3 bg-black-lighter border rounded;
+    @apply p-3 border border-black bg-black-lighter;
 
     .project-card-title {
-      @apply text-lg font-bold text-white border-b-2 border-lychee;
-      &:hover {
+      @apply text-lg font-bold text-white;
+      @apply border-b-2 border-lychee;
+      &.has-blog-post:hover {
         @apply text-lychee;
       }
     }
-    .project-card-description {
-      @apply pt-3 text-sm text-white;
-    }
+
     .project-card-tags {
       @apply flex flex-wrap items-center w-full py-2;
     }
+
+    .project-card-description {
+      @apply pt-3 text-sm text-white;
+    }
+
     .project-card-content {
       @apply flex items-center justify-between w-full text-sm;
+
       .project-card-github-link {
-        @apply text-white rounded;
-        a {
-          @apply font-bold hover:text-lychee;
+        @apply font-bold text-white rounded;
+        a:hover {
+          @apply text-lychee;
         }
       }
+
       .project-card-github-stats {
         @apply flex items-center font-semibold;
       }

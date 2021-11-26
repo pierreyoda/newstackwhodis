@@ -33,7 +33,7 @@ const main = async () => {
   dotEnvConfig();
   success("> Success!");
 
-  const outputFolder = join(process.cwd(), "./projects/");
+  const outputFolder = join(process.cwd(), "./static/projects/");
   info("Running content fetcher...");
 
   // Fetch repositories list and metadata

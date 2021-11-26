@@ -9,7 +9,10 @@ module.exports = {
         lighter: "#2B2B2D",
         DEFAULT: "#141416",
       },
-      gray: "#333238",
+      gray: {
+        lighter: "#99989D",
+        DEFAULT: "#333238"
+      },
       space: "#2A2B58",
       lychee: "#E04F4F",
       velvet: "#2D0607",

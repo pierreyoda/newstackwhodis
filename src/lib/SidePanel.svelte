@@ -31,15 +31,23 @@
     @apply w-full p-3;
     @apply text-white bg-black;
 
+    nav {
+      @apply flex items-center flex-grow;
+    }
+
     footer {
       @apply hidden items-center justify-center;
-      @apply text-gray;
+      @apply text-sm text-gray-lighter;
     }
   }
 
   @screen md {
     .side-panel-container {
       @apply flex-col w-1/3 p-12;
+
+      nav {
+        @apply justify-start flex-col text-xl;
+      }
 
       footer {
         @apply flex;

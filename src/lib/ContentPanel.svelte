@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import type { ProjectMeta } from "./ProjectCard.svelte";
   import type { GithubRepositoryMeta } from "../api/fetcher";
   import type { SidePanelSelectableCategory } from "./SidePanel.svelte";
 
@@ -9,45 +10,25 @@
 
 <script lang="ts">
   import ProjectCard from "./ProjectCard.svelte";
-  import type { ProjectMeta } from "./ProjectCard.svelte";
 
   export let githubProjects: readonly GithubProjectMeta[];
-  export let highlightContentCategory: SidePanelSelectableCategory | null;
+  export let highlightContentCategory: SidePanelSelectableCategory;
 
-  $: content = githubProjects.map(
-    (githubProject): ProjectMeta => ({
-      type: "github",
-      url: githubProject.url,
-      title: githubProject.name,
-      githubFullName: githubProject.fullName,
-      description: githubProject.description ?? "",
-      githubForksCount: githubProject.forksCount,
-      githubStars: githubProject.stargazersCount ?? 0,
-      blogPostSlug: githubProject.blogPostSlug,
-    }),
-  );
-
-  $: isHighlighted = highlightContentCategory === "projects";
+  $: content = ((): readonly ProjectMeta[] => githubProjects.map(githubProject => ({
+    type: "github",
+    url: githubProject.url,
+    title: githubProject.name,
+    githubFullName: githubProject.fullName,
+    description: githubProject.description ?? "",
+    githubForksCount: githubProject.forksCount,
+    githubStars: githubProject.stargazersCount ?? 0,
+    blogPostSlug: githubProject.blogPostSlug,
+  })))();
+  $: highlighted = highlightContentCategory === "projects";
 </script>
 
-<div class="content-panel">
+<div class="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-2 xl:grid-cols-3">
   {#each content as projectMeta}
-    <ProjectCard {isHighlighted} {projectMeta} />
+    <ProjectCard {highlighted} {projectMeta} />
   {/each}
 </div>
-
-<style lang="postcss">
-  .content-panel {
-    @apply grid grid-cols-1 gap-4 pb-4;
-  }
-  @screen lg {
-    .content-panel {
-      @apply grid-cols-2;
-    }
-  }
-  @screen xl {
-    .content-panel {
-      @apply grid-cols-3;
-    }
-  }
-</style>

@@ -1,4 +1,4 @@
-import { GithubWhiteListedRepository } from "./whitelist";
+import type { GithubWhiteListedRepository } from "./whitelist";
 
 export const projectTags = [
   "C#",

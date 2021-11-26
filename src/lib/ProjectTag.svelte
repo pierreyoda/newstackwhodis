@@ -19,7 +19,7 @@
   $: tagClass = `project-tag ${extraClass ?? ""}`;
 </script>
 
-<div class={tagClass} style="background-image: {tagColor}">
+<div class="{tagClass}" style="background-color: {tagColor}">
   {tag}
 </div>
 

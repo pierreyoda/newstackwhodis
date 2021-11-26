@@ -20,7 +20,7 @@
 </div>
 
 <style lang="postcss">
-  :global(html, body) {
+  :global(html, body, #svelte) {
     @apply h-full;
   }
 </style>
