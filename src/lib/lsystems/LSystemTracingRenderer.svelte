@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { beforeUpdate } from "svelte";
   import { select } from "d3-selection";
   import type { LSystemTrace } from "./lsystem";
 
@@ -9,10 +9,14 @@
   export let scale: number = 1.0;
   export let strokeWidth: number = 0.0075;
   export let strokeColor: string = "#141416";
+  export let showGenerationLabel: boolean = false;
 
   let svgEl;
 
-  onMount(() => {
+  beforeUpdate(() => {
+    if (!svgEl) {
+      return;
+    }
     const svg = select(svgEl);
     svg.selectAll("*").remove();
 
@@ -47,12 +51,14 @@
 <div class="container">
   <p class="meta">
     <span class="label">State: </span>
-    <span title={trace.forState}>{shortenedState}</span>
+    {shortenedState}
   </p>
-  <p class="meta">
-    <span class="label">Generation: </span>
-    {trace.forGeneration}
-  </p>
+  {#if showGenerationLabel}
+    <p class="meta">
+      <span class="label">Generation: </span>
+      {trace.forGeneration}
+    </p>
+  {/if}
   <svg bind:this={svgEl} />
 </div>
 

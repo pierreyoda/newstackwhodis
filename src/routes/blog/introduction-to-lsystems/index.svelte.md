@@ -1,30 +1,19 @@
 <script lang="ts">
   import {
-    traceLSystem,
     createLSystem,
-    iterateLSystem,
     lsystemAlgaeDescriptor,
     lsystemTreeDescriptorFactory,
     lsystemSierpinskiTriangleDescriptorFactory,
   } from "$lib/lsystems/lsystem";
   import LSystemDescriptorWidget from "$lib/lsystems/LSystemDescriptorWidget.svelte";
   import LSystemTracingRenderer from "$lib/lsystems/LSystemTracingRenderer.svelte";
+  import LSystemControllableTracingRenderer from "$lib/lsystems/LSystemControllableTracingRenderer.svelte";
 
   // Sierpinski Triangle
   const lsystemSierpinski = createLSystem(lsystemSierpinskiTriangleDescriptorFactory(120));
-  iterateLSystem(lsystemSierpinski);
-  iterateLSystem(lsystemSierpinski);
-  const lsystemSierpinskiTrace = traceLSystem(lsystemSierpinski);
-  iterateLSystem(lsystemSierpinski);
-  iterateLSystem(lsystemSierpinski);
-  const lsystemSierpinskiTraceBis = traceLSystem(lsystemSierpinski);
 
   // "Tree"
   const lsystemTree = createLSystem(lsystemTreeDescriptorFactory(22.5));
-  for (let i = 1; i <= 9; ++i) {
-    iterateLSystem(lsystemTree);
-  }
-  const lsystemTreeTrace = traceLSystem(lsystemTree, 90);
 </script>
 
 # Introduction to L-Systems
@@ -53,19 +42,26 @@ This is a slightly more evolved L-System than our algae. We now have constants, 
 
 <LSystemDescriptorWidget descriptor={lsystemSierpinski.descriptor} />
 
-Let's see what this gives us after two iterations:
+Let's see what this gives us after several iterations (you can control the current generation with the slider):
 
-<LSystemTracingRenderer trace={lsystemSierpinskiTrace} />
-
-Then, after four iterations:
-
-<LSystemTracingRenderer trace={lsystemSierpinskiTraceBis} />
+<LSystemControllableTracingRenderer
+  lsystem={lsystemSierpinski}
+  minGeneration={1}
+  maxGeneration={8}
+  strokeWidthScale={g => g / 50}
+/>
 
 ## Applications
 
 <LSystemDescriptorWidget descriptor={lsystemTree.descriptor} />
 
-<LSystemTracingRenderer trace={lsystemTreeTrace} strokeWidth={1.0} strokeColor="#689311" />
+<LSystemControllableTracingRenderer
+  lsystem={lsystemTree}
+  minGeneration={2}
+  maxGeneration={9}
+  strokeWidthScale={() => 1.0}
+  strokeColor="#689311"
+/>
 
 ## Sources
 

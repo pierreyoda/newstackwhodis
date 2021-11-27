@@ -127,7 +127,7 @@ export const createLSystem = <A extends string>(descriptor: LSystemDescriptor<A>
   state: descriptor.axiom,
 });
 
-const iteratedLSystem = <A extends string>(lsystem: Readonly<LSystem<A>>): string =>
+export const iteratedLSystem = <A extends string>(lsystem: Readonly<LSystem<A>>): string =>
   lsystem.state.split("").reduce((acc, letter) => {
     const rule = lsystem.descriptor.rules[letter as A];
     return rule?.type === "variable" ? `${acc}${rule.production}` : `${acc}${letter}`;
