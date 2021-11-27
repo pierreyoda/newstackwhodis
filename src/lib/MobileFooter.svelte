@@ -8,7 +8,7 @@
 
 <style lang="postcss">
   footer {
-    @apply flex flex-col w-full md:hidden;
+    @apply flex flex-col w-full;
     @apply p-3 text-white bg-black;
   }
 </style>
