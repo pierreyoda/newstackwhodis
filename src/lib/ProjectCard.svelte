@@ -15,7 +15,6 @@
   import ProjectTag from "$lib/ProjectTag.svelte";
   import { tagsPerProject } from "../api/github/project-tags";
   import type { ProjectTagType } from "../api/github/project-tags";
-import ProjectTag from "./ProjectTag.svelte";
 
   export let isHighlighted: boolean;
   export let projectMeta: ProjectMeta;
@@ -24,7 +23,7 @@ import ProjectTag from "./ProjectTag.svelte";
 </script>
 
 <div class="project-card-container" class:highlighted="{isHighlighted}">
-  <h3 class="project-card-title" class:has-blog-post="{!!projectMeta.blogPostSlug}">
+  <h2 class="project-card-title" class:has-blog-post="{!!projectMeta.blogPostSlug}">
     {#if projectMeta.blogPostSlug}
       <a sveltekit:prefetch href={`/blog/${projectMeta.blogPostSlug}`}>
         {projectMeta.title}
@@ -32,7 +31,7 @@ import ProjectTag from "./ProjectTag.svelte";
     {:else}
       {projectMeta.title}
     {/if}
-  </h3>
+  </h2>
   <p class="project-card-description">{projectMeta.description}</p>
   <div class="project-card-tags">
     {#each projectTags as tag}
@@ -63,7 +62,7 @@ import ProjectTag from "./ProjectTag.svelte";
 <style lang="postcss">
   .project-card-container {
     @apply flex flex-col items-start justify-around;
-    @apply p-3 border border-black bg-black-lighter;
+    @apply p-3 border border-gray-lighter;
 
     .project-card-title {
       @apply text-lg font-bold text-white;
@@ -73,12 +72,12 @@ import ProjectTag from "./ProjectTag.svelte";
       }
     }
 
-    .project-card-tags {
-      @apply flex flex-wrap items-center w-full py-2;
+    .project-card-description {
+      @apply py-5 text-sm text-white;
     }
 
-    .project-card-description {
-      @apply pt-3 text-sm text-white;
+    .project-card-tags {
+      @apply flex flex-wrap items-center w-full py-2;
     }
 
     .project-card-content {

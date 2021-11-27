@@ -4,7 +4,7 @@
   export let isSelected: boolean;
 </script>
 
-<li class="mr-6 md:mr-0 md:mt-8">
+<li class="mr-8 last:mr-0">
   <a sveltekit:prefetch {href} class:selected="{isSelected}">
     {label}
   </a>

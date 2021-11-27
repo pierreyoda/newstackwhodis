@@ -8,7 +8,6 @@
       return {};
     }
     const post: BlogPost = await fetch(`${page.path}.json`).then(res => res.json());
-    console.log(post)
     return {
       props: {
         slug: post.slug,
@@ -20,28 +19,33 @@
 
 <script lang="ts">
   import "../app.css";
-  import SidePanel from "$lib/SidePanel.svelte";
-  import MobileFooter from "$lib/MobileFooter.svelte";
-  import type { SidePanelSelectableCategory } from "$lib/SidePanel.svelte";
-import path from "path/posix";
+  import Navbar from "$lib/Navbar.svelte";
+  import Footer from "$lib/Footer.svelte";
+  import type { SidePanelSelectableCategory } from "$lib/Navbar.svelte";
 
   let selectedCategory: SidePanelSelectableCategory = "projects";
 </script>
 
-<div class="flex flex-col justify-between w-full h-full font-sans antialiased">
-  <div class="flex flex-col flex-grow w-full md:flex-row">
-    <SidePanel {selectedCategory} />
+<div class="layout-container">
+  <div class="flex flex-col flex-grow w-full">
+    <Navbar {selectedCategory} />
     <main class="flex-grow px-2 pt-2 overflow-auto md:pt-28 md:px-0">
       <slot />
     </main>
-    <div class="w-full mt-4 md:hidden">
-      <MobileFooter />
-    </div>
+    <Footer />
   </div>
 </div>
 
 <style lang="postcss">
   :global(html, body, #svelte) {
-    @apply h-full;
+    @apply h-full bg-black-darker;
+  }
+  :global(#svelte) {
+    @apply font-sans antialiased;
+  }
+
+  .layout-container {
+    @apply flex flex-col w-full h-full;
+    @apply max-w-3xl mx-auto;
   }
 </style>

@@ -1,4 +1,5 @@
-import { emojify } from "node-emoji";
+import nodeEmojiPkg from "node-emoji";
+const { emojify } = nodeEmojiPkg;
 
 import type { RepositoriesData } from "./fetcher";
 import GithubPublicRepositoriesMeta from "../../static/projects/public_repositories.json";

@@ -8,10 +8,11 @@ module.exports = {
       black: {
         lighter: "#2B2B2D",
         DEFAULT: "#141416",
+        darker: "#0E0E14",
       },
       gray: {
         lighter: "#99989D",
-        DEFAULT: "#333238"
+        DEFAULT: "#333238",
       },
       space: "#2A2B58",
       lychee: "#E04F4F",

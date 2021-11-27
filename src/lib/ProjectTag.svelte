@@ -5,7 +5,7 @@
     "C#": "#aaffaa",
     "C++": "#ffffff",
     Java: "#ffaaaa",
-    Rust: "#ef3300",
+    Rust: "#d62626",
     React: "#61dafb",
     "Vue.js": "#42b983",
     Unity3D: "#ccffcc",

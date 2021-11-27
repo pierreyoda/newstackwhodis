@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import type { ProjectMeta } from "./ProjectCard.svelte";
   import type { GithubRepositoryMeta } from "../api/fetcher";
-  import type { SidePanelSelectableCategory } from "./SidePanel.svelte";
+  import type { SidePanelSelectableCategory } from "./Navbar.svelte";
 
   export type GithubProjectMeta = GithubRepositoryMeta & {
     blogPostSlug: string | null;
@@ -27,7 +27,7 @@
   $: highlighted = highlightContentCategory === "projects";
 </script>
 
-<div class="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-2 xl:grid-cols-3">
+<div class="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-2">
   {#each content as projectMeta}
     <ProjectCard {highlighted} {projectMeta} />
   {/each}
