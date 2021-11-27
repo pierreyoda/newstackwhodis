@@ -19,7 +19,7 @@
 
 <style lang="postcss">
   .container {
-    @apply flex flex-col items-start justify-start w-full h-full pl-10;
+    @apply flex flex-col items-start justify-start w-full h-full;
     @apply text-gray-lighter;
   }
 </style>

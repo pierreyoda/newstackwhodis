@@ -4,7 +4,6 @@
 
 <style lang="postcss">
   .post-container {
-    @apply p-4;
     @apply text-white;
 
     :global(> *) {

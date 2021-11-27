@@ -10,7 +10,7 @@
 <div class="layout-container">
   <div class="flex flex-col flex-grow w-full">
     <Navbar {selectedCategory} />
-    <main class="flex-grow px-2 pt-2 overflow-auto md:pt-28 md:px-0">
+    <main class="flex-grow px-2 pt-2 overflow-auto md:px-8">
       <slot />
     </main>
     <Footer />
