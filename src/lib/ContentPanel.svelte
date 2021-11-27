@@ -25,11 +25,11 @@
       githubStars: githubProject.stargazersCount ?? 0,
       blogPostSlug: githubProject.blogPostSlug,
     })))();
-  $: highlighted = highlightContentCategory === "projects";
+  $: isHighlighted = highlightContentCategory === "projects";
 </script>
 
 <div class="grid grid-cols-1 gap-4 pb-4 lg:grid-cols-2">
   {#each content as projectMeta}
-    <ProjectCard {highlighted} {projectMeta} />
+    <ProjectCard {isHighlighted} {projectMeta} />
   {/each}
 </div>
