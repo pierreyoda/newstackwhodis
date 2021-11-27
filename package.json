@@ -17,6 +17,8 @@
     "test": "yarn jest"
   },
   "dependencies": {
+    "d3-path": "^3.0.1",
+    "d3-selection": "^3.0.0",
     "debug": "4.3.2",
     "lodash.orderby": "4.6.0",
     "node-emoji": "1.11.0"
@@ -26,7 +28,10 @@
     "@sveltejs/adapter-vercel": "1.0.0-next.31",
     "@sveltejs/kit": "next",
     "@tailwindcss/typography": "0.4.1",
+    "@types/d3-path": "^3.0.0",
+    "@types/d3-selection": "^3.0.1",
     "@types/debug": "4.1.7",
+    "@types/jest": "^27.0.3",
     "@types/lodash.orderby": "4.6.6",
     "@types/node": "16.11.10",
     "@types/node-emoji": "1.8.1",
@@ -42,6 +47,7 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-svelte3": "3.2.1",
     "husky": "7.0.4",
+    "jest": "^27.3.1",
     "mdsvex": "0.9.8",
     "postcss": "8.4.3",
     "postcss-load-config": "3.1.0",
@@ -53,6 +59,7 @@
     "svelte-check": "2.2.10",
     "svelte-preprocess": "4.9.8",
     "tailwindcss": "2.2.19",
+    "ts-jest": "^27.0.7",
     "ts-node": "10.4.0",
     "tslib": "2.3.1",
     "typescript": "4.5.2"
