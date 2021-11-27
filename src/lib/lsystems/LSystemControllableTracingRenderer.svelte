@@ -6,6 +6,7 @@
   import { iteratedLSystem, LSystem, LSystemTrace, traceLSystem } from "./lsystem";
 
   export let lsystem: LSystem<string>;
+  export let initialAngle: number = 0;
   // controls
   export let minGeneration: number = 0;
   export let maxGeneration: number = 6;
@@ -29,7 +30,7 @@
       currentLSystem.generation = currentGeneration;
       currentLSystem.state = statesPerGeneration[currentGeneration];
     }
-    return traceLSystem(currentLSystem);
+    return traceLSystem(currentLSystem, initialAngle);
   })();
   $: strokeWidth = strokeWidthScale(forGeneration);
 </script>

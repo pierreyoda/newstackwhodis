@@ -61,6 +61,7 @@ Let's see what this gives us after several iterations (you can control the curre
   maxGeneration={9}
   strokeWidthScale={() => 1.0}
   strokeColor="#689311"
+  initialAngle={90}
 />
 
 ## Sources
