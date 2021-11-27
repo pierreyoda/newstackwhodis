@@ -1,8 +1,11 @@
 export type LSystemPosition = { x: number; y: number };
 
 export interface LSystemTracingContext {
+  /** Save the current position and angle. */
   pushPosition: () => void;
-  popPosition: () => { position: LSystemPosition; angle: number };
+  /** Restore the position and angle from the stack. */
+  popPosition: () => void;
+  /** Rotate the current angle by X degrees. */
   rotate: (angleInDegrees: number) => void;
 }
 
@@ -74,6 +77,44 @@ export const lsystemSierpinskiTriangleDescriptorFactory = (
   },
 });
 
+export const lsystemTreeAlphabet = ["F", "X", "+", "-", "[", "]"] as const;
+export type LSystemTreeAlphabet = typeof lsystemTreeAlphabet[number];
+export const lsystemTreeDescriptorFactory = (angle: number): LSystemDescriptor<LSystemTreeAlphabet> => ({
+  name: "Tree",
+  alphabet: lsystemTreeAlphabet,
+  axiom: "X",
+  rules: {
+    "+": {
+      type: "constant",
+      description: "Turn counterclockwise by X°.",
+      operation: ctx => ctx.rotate(angle),
+    },
+    "-": {
+      type: "constant",
+      description: "Turn clockwise by X°.",
+      operation: ctx => ctx.rotate(-angle),
+    },
+    "[": {
+      type: "constant",
+      description: "Save the current turtle's state to the stack.",
+      operation: ctx => ctx.pushPosition(),
+    },
+    "]": {
+      type: "constant",
+      description: "Restore the turtle's state from the stack.",
+      operation: ctx => ctx.popPosition(),
+    },
+    X: {
+      type: "variable",
+      production: "F-[[X]+X]+F[+FX]-X",
+    },
+    F: {
+      type: "variable",
+      production: "FF",
+    },
+  },
+});
+
 export interface LSystem<A extends string> {
   descriptor: LSystemDescriptor<A>;
   generation: number;
@@ -104,7 +145,9 @@ const PI_BY_180 = Math.PI / 180;
  * @see https://www.wikiwand.com/en/Logo_(programming_language)
  */
 export const traceLSystem = <A extends string>(
-  lsystem: LSystem<A>,
+  lsystem: Readonly<LSystem<A>>,
+  /** In degrees. */
+  initialAngle = 0,
 ): {
   width: number;
   height: number;
@@ -112,7 +155,7 @@ export const traceLSystem = <A extends string>(
   forGeneration: number;
   positions: LSystemPosition[];
 } => {
-  let currentAngle = 0; // in degrees
+  let currentAngle = initialAngle;
   const positions: LSystemPosition[] = [{ x: 0, y: 0 }];
   const stack: { position: LSystemPosition; angle: number }[] = [];
   let [minBoundary, maxBoundary]: LSystemPosition[] = [
@@ -122,7 +165,11 @@ export const traceLSystem = <A extends string>(
 
   const tracingContext: LSystemTracingContext = {
     pushPosition: () => stack.push({ position: positions[positions.length - 1], angle: currentAngle }),
-    popPosition: () => stack.pop(),
+    popPosition: () => {
+      const { position, angle } = stack.pop();
+      positions.push(position);
+      currentAngle = angle;
+    },
     rotate: angleInDegrees => {
       currentAngle = (currentAngle + angleInDegrees) % 360;
     },

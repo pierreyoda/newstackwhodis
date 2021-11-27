@@ -1,14 +1,19 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { select } from "d3-selection";
-  import type { LSystem, LSystemTrace } from "./lsystem";
+  import type { LSystemTrace } from "./lsystem";
 
-  export let scale: number = 1.0;
+  // L-System trace
   export let trace: LSystemTrace;
-  export let lsystem: LSystem<string>;
+  // rendering parameters
+  export let scale: number = 1.0;
+  export let strokeWidth: number = 0.0075;
+  export let strokeColor: string = "#141416";
+
+  let svgEl;
 
   onMount(() => {
-    const svg = select("svg");
+    const svg = select(svgEl);
     svg.selectAll("*").remove();
 
     // svg path elements
@@ -27,8 +32,8 @@
     svg
       .append("path")
       .attr("d", line.join(", "))
-      .attr("stroke", "#141416")
-      .attr("stroke-width", 0.0075)
+      .attr("stroke", strokeColor)
+      .attr("stroke-width", strokeWidth)
       .attr("fill", "none");
   });
 
@@ -48,7 +53,7 @@
     <span class="label">Generation: </span>
     {trace.forGeneration}
   </p>
-  <svg class="transform scale-50" />
+  <svg bind:this={svgEl} />
 </div>
 
 <style lang="postcss">
