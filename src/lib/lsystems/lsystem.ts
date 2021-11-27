@@ -51,21 +51,21 @@ export const lsystemSierpinskiTriangleDescriptorFactory = (
 ): LSystemDescriptor<LSystemSierpinskiTriangleAlphabet> => ({
   name: "Sierpinski Triangle",
   alphabet: lsystemSierpinskiTriangleAlphabet,
-  axiom: "F−G−G",
+  axiom: "F-G-G",
   rules: {
     "+": {
       type: "constant",
-      description: "Turn left by X°.",
+      description: "Turn counterclockwise by X°.",
       operation: ctx => ctx.rotate(angle),
     },
     "-": {
       type: "constant",
-      description: "Turn right by X°.",
-      operation: ctx => ctx.rotate(angle),
+      description: "Turn clockwise by X°.",
+      operation: ctx => ctx.rotate(-angle),
     },
     F: {
       type: "variable",
-      production: "F−G+F+G−F",
+      production: "F-G+F+G-F",
     },
     G: {
       type: "variable",
@@ -99,7 +99,7 @@ export const iterateLSystem = <A extends string>(lsystem: LSystem<A>) => {
 
 const PI_BY_180 = Math.PI / 180;
 /**
- * Interpret an L-System state into a set of coordinates to draw, based on turtle-like logic.
+ * Interpret an L-System state into a set of coordinates to draw, based on Logo turtle-like logic.
  *
  * @see https://www.wikiwand.com/en/Logo_(programming_language)
  */
@@ -108,6 +108,8 @@ export const traceLSystem = <A extends string>(
 ): {
   width: number;
   height: number;
+  forState: string;
+  forGeneration: number;
   positions: LSystemPosition[];
 } => {
   let currentAngle = 0; // in degrees
@@ -126,7 +128,8 @@ export const traceLSystem = <A extends string>(
     },
   };
 
-  for (const letter of lsystem.state) {
+  const { state: forState } = lsystem;
+  for (const letter of forState) {
     const rule = lsystem.descriptor.rules[letter as A];
     if (!rule) {
       continue;
@@ -152,11 +155,15 @@ export const traceLSystem = <A extends string>(
     }
   }
 
-  console.log(minBoundary);
-  console.log(maxBoundary);
-
   return {
-    positions,
+    forState,
+    forGeneration: lsystem.generation,
+    // center the final drawing by zeroing out each position
+    // taken from https://github.com/alipman88/l-systems
+    positions: positions.map(({ x, y }) => ({
+      x: parseFloat((x - minBoundary.x).toFixed(1)),
+      y: parseFloat((maxBoundary.y - y).toFixed(1)), // flip vertically
+    })),
     width: maxBoundary.x - minBoundary.x,
     height: maxBoundary.y - minBoundary.y,
   };

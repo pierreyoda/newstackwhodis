@@ -48,7 +48,7 @@
         @apply mb-2;
       }
       ul > li {
-        @apply mb-1;
+        @apply mb-1 text-sm;
       }
     }
   }

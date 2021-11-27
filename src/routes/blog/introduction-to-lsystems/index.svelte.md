@@ -23,10 +23,12 @@ A [Lindenmayer system](https://www.wikiwand.com/en/L-system) is "a parallel rewr
 
 An L-System is composed of an alphabet, some constants, an axiom describing the initial state and evolution rules for each variable.
 
-For instance, here is Lindenmayer's original L-System modelling the growth of an algea:
+For instance, here is Lindenmayer's original L-System modelling the growth of an algae:
 
 <LSystemDescriptorWidget descriptor={lsystemAlgaeDescriptor} />
 
 ## Rendering
 
-<LSystemTracingRenderer lsystem={lsystemSierpinski} trace={lsystemSierpinskiTrace} />
+<LSystemDescriptorWidget descriptor={lsystemSierpinski.descriptor} />
+
+<LSystemTracingRenderer lsystem={lsystemSierpinski} trace={lsystemSierpinskiTrace} scale={1} />
