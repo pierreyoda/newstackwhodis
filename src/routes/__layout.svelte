@@ -1,10 +1,21 @@
+<script context="module" lang="ts">
+  import type { Load } from "@sveltejs/kit";
+
+  export const load: Load = async ({ page: { path } }) => ({
+    props: {
+      selectedCategory: ((): NavigationSelectableCategory =>
+        path === "/blog/about" ? "about" : path.startsWith("/blog") ? "blog" : "projects")(),
+    },
+  });
+</script>
+
 <script lang="ts">
   import "../app.css";
   import Navbar from "$lib/Navbar.svelte";
   import Footer from "$lib/Footer.svelte";
-  import type { SidePanelSelectableCategory } from "$lib/Navbar.svelte";
+  import type { NavigationSelectableCategory } from "$lib/Navbar.svelte";
 
-  let selectedCategory: SidePanelSelectableCategory = "projects";
+  export let selectedCategory: NavigationSelectableCategory;
 </script>
 
 <div class="layout-container">

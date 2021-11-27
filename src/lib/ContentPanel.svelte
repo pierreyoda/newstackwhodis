@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import type { ProjectMeta } from "./ProjectCard.svelte";
   import type { GithubRepositoryMeta } from "../api/fetcher";
-  import type { SidePanelSelectableCategory } from "./Navbar.svelte";
+  import type { NavigationSelectableCategory } from "./Navbar.svelte";
 
   export type GithubProjectMeta = GithubRepositoryMeta & {
     blogPostSlug: string | null;
@@ -12,7 +12,7 @@
   import ProjectCard from "./ProjectCard.svelte";
 
   export let githubProjects: readonly GithubProjectMeta[];
-  export let highlightContentCategory: SidePanelSelectableCategory;
+  export let highlightContentCategory: NavigationSelectableCategory;
 
   $: content = ((): readonly ProjectMeta[] =>
     githubProjects.map(githubProject => ({

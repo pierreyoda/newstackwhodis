@@ -1,12 +1,12 @@
 <script context="module" lang="ts">
-  export const sidePanelSelectableCategories = ["blog", "projects", "about"] as const;
-  export type SidePanelSelectableCategory = typeof sidePanelSelectableCategories[number];
+  export const navigationSelectableCategories = ["blog", "projects", "about"] as const;
+  export type NavigationSelectableCategory = typeof navigationSelectableCategories[number];
 </script>
 
 <script lang="ts">
   import NavbarLink from "./NavbarLink.svelte";
 
-  export let selectedCategory: SidePanelSelectableCategory;
+  export let selectedCategory: NavigationSelectableCategory;
 </script>
 
 <div class="navbar-container">

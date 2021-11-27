@@ -14,7 +14,7 @@
 
 <div class="container">
   <h2>Error</h2>
-  <p class="message">{message ?? 'An error has occurred.'}</p>
+  <p class="message">{message ?? "An error has occurred."}</p>
 </div>
 
 <style lang="postcss">
