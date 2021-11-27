@@ -19,11 +19,11 @@
   export let isHighlighted: boolean;
   export let projectMeta: ProjectMeta;
 
-  $: projectTags = ((): readonly ProjectTagType[] => tagsPerProject[projectMeta.githubFullName] ?? [])()
+  $: projectTags = ((): readonly ProjectTagType[] => tagsPerProject[projectMeta.githubFullName] ?? [])();
 </script>
 
-<div class="project-card-container" class:highlighted="{isHighlighted}">
-  <h2 class="project-card-title" class:has-blog-post="{!!projectMeta.blogPostSlug}">
+<div class="project-card-container" class:highlighted={isHighlighted}>
+  <h2 class="project-card-title" class:has-blog-post={!!projectMeta.blogPostSlug}>
     {#if projectMeta.blogPostSlug}
       <a sveltekit:prefetch href={`/blog/${projectMeta.blogPostSlug}`}>
         {projectMeta.title}
@@ -40,9 +40,7 @@
   </div>
   <div class="project-card-content">
     <div class="project-card-github-link">
-      <a href={projectMeta.url} target="_blank" rel="nofollow noopener noreferrer">
-        View on GitHub
-      </a>
+      <a href={projectMeta.url} target="_blank" rel="nofollow noopener noreferrer"> View on GitHub </a>
     </div>
     <div class="project-card-github-stats">
       {#if projectMeta.githubForksCount > 0}

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The more I work with Typescript, the more I find that it is most of all about *combining* simple types together.
+The more I work with Typescript, the more I find that it is most of all about _combining_ simple types together.
 
 Two of the main ways of composing types are **union** and **intersection** types.
 
@@ -10,7 +10,7 @@ As described by the [Typescript Handbook](https://www.typescriptlang.org/docs/ha
 
 ## A Touch of Theory: Algebraic Types
 
-In computer science, an **algebraic data type** (*ADT*) is a composite type, *i.e.* a type formed by composing other types.
+In computer science, an **algebraic data type** (_ADT_) is a composite type, _i.e._ a type formed by composing other types.
 
 ## Typescript Unions
 
@@ -24,9 +24,9 @@ type ButtonColors = "red" | "green" | "blue";
 
 But what happens when we need those values at **runtime**?
 
-For instance, what if we need to *validate* the button color above from an untrusted source (when serving an API for instance)?
+For instance, what if we need to _validate_ the button color above from an untrusted source (when serving an API for instance)?
 
-Fortunately, Typescript 3.4 introduced [*const assertions*](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) which allows us to do the following:
+Fortunately, Typescript 3.4 introduced [_const assertions_](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) which allows us to do the following:
 
 ```typescript
 const BUTTON_COLORS = ["red", "green", "blue"] as const;
@@ -34,11 +34,10 @@ type ButtonColor = typeof BUTTON_COLORS[number];
 
 // ...
 
-const isButtonColor = (rawColor: string): rawColor is ButtonColor =>
-  BUTTON_COLORS.includes(rawColor);
+const isButtonColor = (rawColor: string): rawColor is ButtonColor => BUTTON_COLORS.includes(rawColor);
 ```
 
-We now have the best of both worlds with runtime-available values (as opposed to the naked union string above) *and* strong type-safety (as opposed to Javascript enums).
+We now have the best of both worlds with runtime-available values (as opposed to the naked union string above) _and_ strong type-safety (as opposed to Javascript enums).
 
 ### Types Mapping
 
@@ -61,18 +60,24 @@ Union strings are also very useful when it comes to types discrimination.
 Here's a simple example to explain the concept:
 
 ```typescript
-type ApiResponse = {
-  type: "success";
-  result: number;
-} | {
-  type: "error";
-  message: string;
-}
+type ApiResponse =
+  | {
+      type: "success";
+      result: number;
+    }
+  | {
+      type: "error";
+      message: string;
+    };
 
 const response: ApiResponse = await fetchApi();
 switch (response.type) {
-  case "success": console.log(response.result); break;
-  case "error": console.error(response.message); break;
+  case "success":
+    console.log(response.result);
+    break;
+  case "error":
+    console.error(response.message);
+    break;
 } // this will not build if a case is missing
 ```
 

@@ -46,16 +46,16 @@ const main = async () => {
   info(`> Kept ${keptGithubRepositoriesMeta.length} GitHub public repositories...`);
 
   const githubRepositories = _orderBy(
-    keptGithubRepositoriesMeta.map(({
-      html_url, name, full_name, description, forks_count, stargazers_count,
-    }): GithubRepositoryMeta => ({
-      url: html_url,
-      name,
-      description,
-      fullName: full_name,
-      forksCount: forks_count ?? 0,
-      stargazersCount: stargazers_count ?? 0,
-    })),
+    keptGithubRepositoriesMeta.map(
+      ({ html_url, name, full_name, description, forks_count, stargazers_count }): GithubRepositoryMeta => ({
+        url: html_url,
+        name,
+        description,
+        fullName: full_name,
+        forksCount: forks_count ?? 0,
+        stargazersCount: stargazers_count ?? 0,
+      }),
+    ),
     repository => repository.stargazersCount,
     "desc",
   );

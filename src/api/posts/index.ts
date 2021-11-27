@@ -12,11 +12,7 @@ export interface BlogPost {
   code: string;
 }
 
-export const getBlogPostBySlug = async ({
-  slug,
-}: {
-  slug: string;
-}): Promise<BlogPost> => {
+export const getBlogPostBySlug = async ({ slug }: { slug: string }): Promise<BlogPost> => {
   const filepath = join(postsDirectory, slug, "index.svelte.md");
   const fileContent = await fs.readFile(filepath, "utf-8");
 

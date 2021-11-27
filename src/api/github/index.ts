@@ -22,6 +22,6 @@ export const filteredOwnPublicRepositoriesList = (
   repositories: readonly RawGithubRepositoryMeta[],
 ): readonly RawGithubRepositoryMeta[] =>
   repositories.filter(
-    ({ owner, full_name }) => owner &&
-    owner.login === "pierreyoda" && (repositoriesWhiteList as readonly string[]).includes(full_name),
+    ({ owner, full_name }) =>
+      owner && owner.login === "pierreyoda" && (repositoriesWhiteList as readonly string[]).includes(full_name),
   );

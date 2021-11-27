@@ -10,13 +10,13 @@ export const get: RequestHandler = async ({ params }) => {
     return {
       body: {
         slug: post.slug,
-        code: post.code
+        code: post.code,
       },
-    }
+    };
   } catch (e) {
     console.error(e);
     return {
-      status: 500
-    }
+      status: 500,
+    };
   }
-}
+};

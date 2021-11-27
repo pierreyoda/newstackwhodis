@@ -1,9 +1,4 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-} from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class PracaDocument extends Document {
   // static async getInitialProps(context: DocumentContext): Promise<DocumentInitialProps> {

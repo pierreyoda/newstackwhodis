@@ -14,16 +14,17 @@
   export let githubProjects: readonly GithubProjectMeta[];
   export let highlightContentCategory: SidePanelSelectableCategory;
 
-  $: content = ((): readonly ProjectMeta[] => githubProjects.map(githubProject => ({
-    type: "github",
-    url: githubProject.url,
-    title: githubProject.name,
-    githubFullName: githubProject.fullName,
-    description: githubProject.description ?? "",
-    githubForksCount: githubProject.forksCount,
-    githubStars: githubProject.stargazersCount ?? 0,
-    blogPostSlug: githubProject.blogPostSlug,
-  })))();
+  $: content = ((): readonly ProjectMeta[] =>
+    githubProjects.map(githubProject => ({
+      type: "github",
+      url: githubProject.url,
+      title: githubProject.name,
+      githubFullName: githubProject.fullName,
+      description: githubProject.description ?? "",
+      githubForksCount: githubProject.forksCount,
+      githubStars: githubProject.stargazersCount ?? 0,
+      blogPostSlug: githubProject.blogPostSlug,
+    })))();
   $: highlighted = highlightContentCategory === "projects";
 </script>
 

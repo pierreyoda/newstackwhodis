@@ -14,4 +14,3 @@ My main professional specialty is Typescript, both on the front-end (React, Angu
 I also do **a lot** of Rust for my [personal projects](https://github.com/pierreyoda)!
 
 You can check out my [LinkedIn profile](https://www.linkedin.com/in/pierre-yves-diallo-567028113/) for more information about my career.
-

@@ -1,22 +1,3 @@
-<script context="module" lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  import type { BlogPost } from "../api/posts";
-
-  export const load: Load = async ({ page, fetch }) => {
-    if (!page.path.includes("blog/")) {
-      return {};
-    }
-    const post: BlogPost = await fetch(`${page.path}.json`).then(res => res.json());
-    return {
-      props: {
-        slug: post.slug,
-        code: post.code,
-      },
-    };
-  };
-</script>
-
 <script lang="ts">
   import "../app.css";
   import Navbar from "$lib/Navbar.svelte";

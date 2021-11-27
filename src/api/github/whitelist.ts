@@ -12,4 +12,4 @@ export const repositoriesWhiteList = [
   "pierreyoda/Tetris",
   "pierreyoda/vue-animations-test",
 ] as const;
-export type GithubWhiteListedRepository = typeof repositoriesWhiteList[number]
+export type GithubWhiteListedRepository = typeof repositoriesWhiteList[number];

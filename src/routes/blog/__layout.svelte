@@ -16,7 +16,13 @@
     }
 
     :global(h1) {
-      @apply font-semibold text-2xl;
+      @apply font-semibold text-2xl mb-4;
+    }
+    :global(h2) {
+      @apply font-semibold text-xl mb-2;
+    }
+    :global(h3) {
+      @apply font-semibold;
     }
   }
 </style>
