@@ -67,8 +67,12 @@
 
 <style lang="postcss">
   .container {
-    :global(.slider .pipVal) {
-      @apply text-lychee;
+    .viewer {
+      @apply mt-6;
+    }
+
+    :global(.rangeSlider .pipVal) {
+      @apply text-white;
     }
   }
 </style>

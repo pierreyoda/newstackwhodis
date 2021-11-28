@@ -15,13 +15,13 @@
     }
 
     :global(h1) {
-      @apply font-semibold text-2xl mb-4;
+      @apply font-semibold text-2xl mb-10;
     }
     :global(h2) {
-      @apply font-semibold text-xl mb-2;
+      @apply font-semibold text-xl mt-8 mb-8;
     }
     :global(h3) {
-      @apply font-semibold;
+      @apply font-semibold mt-6 mb-6;
     }
   }
 </style>

@@ -77,6 +77,33 @@ export const lsystemSierpinskiTriangleDescriptorFactory = (
   },
 });
 
+// https://www.wikiwand.com/en/Koch_snowflake
+export const lsystemKochSnowflakeAlphabet = ["F", "+", "-"] as const;
+export type LSystemKochSnowflakeAlphabet = typeof lsystemKochSnowflakeAlphabet[number];
+export const lsystemKochSnowflakeDescriptorFactory = (
+  angle: number,
+): LSystemDescriptor<LSystemKochSnowflakeAlphabet> => ({
+  name: "Koch's Snowflake",
+  alphabet: lsystemKochSnowflakeAlphabet,
+  axiom: "F",
+  rules: {
+    "+": {
+      type: "constant",
+      description: "Turn counterclockwise by X°.",
+      operation: ctx => ctx.rotate(angle),
+    },
+    "-": {
+      type: "constant",
+      description: "Turn clockwise by X°.",
+      operation: ctx => ctx.rotate(-angle),
+    },
+    F: {
+      type: "variable",
+      production: "F+F--F+F",
+    },
+  },
+});
+
 export const lsystemTreeAlphabet = ["F", "X", "+", "-", "[", "]"] as const;
 export type LSystemTreeAlphabet = typeof lsystemTreeAlphabet[number];
 export const lsystemTreeDescriptorFactory = (angle: number): LSystemDescriptor<LSystemTreeAlphabet> => ({
