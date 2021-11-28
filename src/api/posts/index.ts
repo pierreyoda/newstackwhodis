@@ -5,19 +5,38 @@ import remarkEmoji from "remark-emoji";
 
 const postsDirectory = join(process.cwd(), "./src/routes/blog/");
 
-export const getBlogPostsSlugs = async (): Promise<string[]> => fs.readdir(postsDirectory);
+export const getBlogPostsSlugs = async (): Promise<string[]> =>
+  (await fs.readdir(postsDirectory, { withFileTypes: true }))
+    .filter(fileOrDirectory => fileOrDirectory.isDirectory() && fileOrDirectory.name !== "about")
+    .map(({ name }) => name);
 
-export interface BlogPost {
+/**
+ * FrontMatter metadata.
+ */
+export interface BlogPostMeta {
   slug: string;
-  code: string;
+  title: string;
+  description: string;
+  /** Format: YYYY-MM-DD */
+  date: string;
+  published?: boolean;
 }
 
-export const getBlogPostBySlug = async ({ slug }: { slug: string }): Promise<BlogPost> => {
-  const filepath = join(postsDirectory, slug, "index.svelte.md");
-  const fileContent = await fs.readFile(filepath, "utf-8");
-
-  const { code } = await compile(fileContent, {
-    remarkPlugins: [remarkEmoji],
-  });
-  return { slug, code };
+export const getBlogPostMetaBySlug = async ({ slug }: { slug: string }): Promise<BlogPostMeta | null> => {
+  try {
+    const filepath = join(postsDirectory, slug, "index.svelte.md");
+    const fileContent = await fs.readFile(filepath, "utf-8");
+    const { data } = await compile(fileContent, {
+      remarkPlugins: [remarkEmoji],
+    });
+    return data?.fm
+      ? {
+          ...(data.fm as BlogPostMeta),
+          slug,
+        }
+      : null;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
 };

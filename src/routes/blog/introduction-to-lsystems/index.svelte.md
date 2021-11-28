@@ -1,3 +1,10 @@
+---
+title: "Introduction to L-Systems"
+description: "A brief introduction to Lindenmayer Systems and their applications."
+date: "2021-12-10"
+published: true
+---
+
 <script lang="ts">
   import {
     createLSystem,
