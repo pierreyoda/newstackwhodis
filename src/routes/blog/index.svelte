@@ -2,9 +2,6 @@
   import dayjs from "dayjs";
   import type { Load } from "@sveltejs/kit";
   import type { BlogPostMeta } from "../../api/posts";
-  import customParseFormat from "dayjs/plugin/customParseFormat";
-
-  dayjs.extend(customParseFormat);
 
   export const load: Load = async ({ fetch }) => {
     const { postsMeta } = await fetch("/blog.json").then(res => res.json());
