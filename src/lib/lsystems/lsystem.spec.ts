@@ -29,10 +29,11 @@ describe("L-System implementation", () => {
     const lsystem = createLSystem(lsystemSierpinskiTriangleDescriptorFactory(120));
     iterateLSystem(lsystem);
     expect(lsystem.generation).toEqual(1);
-    expect(lsystem.state).toEqual("F−G+F+G−F−GG−GG");
+    expect(lsystem.state).toEqual("F-G+F+G-F-GG-GG");
 
-    const { width, height } = traceLSystem(lsystem);
-    expect(width).toBeCloseTo(3.5);
-    expect(height).toBeCloseTo(5.2);
+    const { width, height, positions } = traceLSystem(lsystem);
+    expect(width).toBeCloseTo(2.0);
+    expect(height).toBeCloseTo(1.73);
+    expect(positions).toHaveLength(10);
   });
 });
