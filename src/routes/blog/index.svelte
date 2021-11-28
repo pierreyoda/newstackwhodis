@@ -15,29 +15,16 @@
 
 <script lang="ts">
   export let postsMeta: readonly BlogPostMeta[];
-
-  interface ProcessedBlogPostMeta {
-    slug: string;
-    title: string;
-    description: string;
-    date: dayjs.Dayjs;
-  }
-
-  $: processedPostsMeta = ((): readonly ProcessedBlogPostMeta[] =>
-    postsMeta.map(({ date, ...meta }) => ({
-      ...meta,
-      date: dayjs(date, "YYYY-MM-DD"),
-    })))();
 </script>
 
 <div class="container">
   <h1 class="mb-4 text-4xl font-bold md:mb-12">Posts</h1>
-  {#each processedPostsMeta as meta}
+  {#each postsMeta as meta}
     <div class="post-meta">
       <a sveltekit:prefetch href={`/blog/${meta.slug}`}>
         <h2 class="title">{meta.title}</h2>
       </a>
-      <p class="date">{meta.date.format("YYYY-MM-DD")}</p>
+      <p class="date">{meta.date}</p>
       <p class="description">{meta.description}</p>
     </div>
   {/each}
