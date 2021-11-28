@@ -15,8 +15,8 @@
   export let strokeWidthScale: (generation: number) => number;
   export let strokeColor: string = "#141416";
 
-  const DEFAULT_GENERATION = 2;
-  let forGeneration = DEFAULT_GENERATION;
+  export let initialGeneration: number = 2;
+  let forGeneration = initialGeneration;
 
   const statesPerGeneration: Record<number, string> = {};
 
@@ -49,7 +49,7 @@
       step={1}
       values={[forGeneration]}
       on:change={event => {
-        forGeneration = event.detail?.value ?? DEFAULT_GENERATION;
+        forGeneration = event.detail?.value ?? initialGeneration;
       }}
       springValues={{ stiffness: 1, damping: 1 }}
     />

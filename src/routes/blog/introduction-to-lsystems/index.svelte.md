@@ -115,6 +115,7 @@ We saw Sierpinski's Triangle just above, here is another famous example:
   lsystem={lsystemKochSnowflake}
   minGeneration={0}
   maxGeneration={6}
+  initialGeneration={4}
   strokeWidthScale={g => (g + 1) / 5}
 />
 
@@ -126,6 +127,7 @@ We saw Sierpinski's Triangle just above, here is another famous example:
   lsystem={lsystemTree}
   minGeneration={2}
   maxGeneration={8}
+  initialGeneration={4}
   strokeWidthScale={() => 1.0}
   strokeColor="#689311"
   initialAngle={90}
