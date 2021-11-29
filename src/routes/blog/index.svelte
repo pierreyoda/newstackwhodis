@@ -32,7 +32,7 @@
 
 <style lang="postcss">
   .post-meta {
-    @apply mb-4;
+    @apply mb-8;
     &:last-of-type {
       @apply mb-0;
     }
