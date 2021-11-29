@@ -1,7 +1,7 @@
 import { mdsvex } from "mdsvex";
 import preprocess from "svelte-preprocess";
 import remarkEmoji from "remark-emoji";
-import vercel from "@sveltejs/adapter-vercel";
+import staticAdapter from "@sveltejs/adapter-static";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -19,7 +19,11 @@ const config = {
   ],
 
   kit: {
-    adapter: vercel(),
+    adapter: staticAdapter({
+      pages: "./build/",
+      assets: "./build/",
+      fallback: null,
+    }),
     // hydrate the <div id="svelte"> element in src/app.html
     target: "#svelte",
   },

@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@octokit/rest": "18.12.0",
-    "@sveltejs/adapter-vercel": "1.0.0-next.31",
-    "@sveltejs/kit": "next",
+    "@sveltejs/adapter-static": "^1.0.0-next.21",
+    "@sveltejs/kit": "1.0.0-next.201",
     "@tailwindcss/typography": "0.4.1",
     "@types/d3-path": "3.0.0",
     "@types/d3-selection": "3.0.1",
