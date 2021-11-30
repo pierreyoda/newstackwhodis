@@ -51,12 +51,9 @@ type Chip8InstructionsParametersTypesTable = {
   JP_ADDR: [NNN: ParameterTypeAddress];
 };
 
-type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> =
-  (Chip8InstructionsParametersTypesTable[ID]["length"] extends 0
-    ? Record<string, never>
-    : {
-      parameters: Chip8InstructionsParametersTypesTable[ID];
-    }) | false;
+type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> = {
+  parameters: Chip8InstructionsParametersTypesTable[ID];
+} | false;
 
 export interface Chip8Instruction<ID extends Chip8InstructionID = Chip8InstructionID> {
   id: ID,
@@ -116,7 +113,9 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
 };
 
 export type Chip8DisassembledInstruction<ID extends Chip8InstructionID = Chip8InstructionID> =
-  Omit<Chip8Instruction<ID>, "matchOpcode"> & Chip8MatchOpcodeOutputForInstructionID<ID>;
+  Omit<Chip8Instruction<ID>, "matchOpcode"> & {
+    parameters: Chip8InstructionsParametersTypesTable[ID];
+  };
 
 /**
  * Try to disassemble an opcode word (2 bytes = 16 bits) into the internal
