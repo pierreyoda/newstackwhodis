@@ -23,6 +23,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "checkJs": true,
+    "strict": true,
     "paths": {
       "$lib": ["src/lib"],
       "$lib/*": ["src/lib/*"]
