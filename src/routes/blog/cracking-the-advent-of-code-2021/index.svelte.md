@@ -29,7 +29,7 @@ export interface AdventOfCodeDay<Section = AdventOfCodeDaySection> {
 }
 ```
 
-You can see that `Section` is parametized in order to differenciate between section metadata and the full-blown section data.
+You can see that `Section` is parametrized in order to differentiate between section metadata and the full-blown section data.
 
 A section is then defined as follows:
 
@@ -44,7 +44,7 @@ export interface AdventOfCodeDaySection<Type extends AdventOfCodeDayComputeFunct
 }
 ```
 
-We parametize over the input data's type since it will change the type of the computing function and, if any, of the function pre-processing the inputs.
+We parametrize over the input data's type since it will change the type of the computing function and, if any, of the function pre-processing the inputs.
 
 Finally, here is how we define a solving function:
 
@@ -55,7 +55,7 @@ export type AdventOfCodeDayComputeFunction<Type extends AdventOfCodeDayComputeFu
 }
 ```
 
-Like many "low-level" Typescript definitions - have you ever looked at React's definitions -, this may seem over-complicated at first but it will pay off in the actual usage.
+Like many "low-level" Typescript definitions - for instance, have you ever looked at React's definitions? -, this may seem over-complicated at first but it will pay off in the actual usage.
 
 ## Solving a challenge
 

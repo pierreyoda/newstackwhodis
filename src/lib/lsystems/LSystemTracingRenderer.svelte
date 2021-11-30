@@ -9,6 +9,7 @@
   export let scale: number = 1.0;
   export let strokeWidth: number = 0.0075;
   export let strokeColor: string = "#141416";
+  export let showCurrentState: boolean = false;
   export let showGenerationLabel: boolean = false;
 
   let svgEl;
@@ -49,10 +50,12 @@
 </script>
 
 <div class="container">
-  <p class="meta">
-    <span class="label">State: </span>
-    {shortenedState}
-  </p>
+  {#if showCurrentState}
+    <p class="meta">
+      <span class="label">State: </span>
+      {shortenedState}
+    </p>
+  {/if}
   {#if showGenerationLabel}
     <p class="meta">
       <span class="label">Generation: </span>
@@ -66,13 +69,21 @@
   .container {
     @apply rounded p-3 bg-white text-black;
     .meta {
-      @apply w-full flex items-center justify-center;
+      @apply hidden w-full items-center justify-center;
       &:last-of-type {
         @apply mb-4;
       }
       .label {
         @apply text-gray-lighter;
         @apply mr-2;
+      }
+    }
+  }
+
+  @screen md {
+    .container {
+      .meta {
+        @apply flex;
       }
     }
   }
