@@ -17,9 +17,9 @@
 
   /** Rendering color for OFF pixels. */
   export let offColor: ColorRGB = {
-    r: 0,
-    g: 0,
-    b: 0,
+    r: 43,
+    g: 43,
+    b: 45,
   };
   /** Rendering color for ON pixels. */
   export let onColor: ColorRGB = {
