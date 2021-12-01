@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-// TODO: find a way to avoid non-null assertion checks (`!`) in the instruction dispatcher
-
-import { instructionFromOpcode } from "./instructions";
+import { Chip8DisassembledInstruction, instructionFromOpcode } from "./instructions";
 
 const DISPLAY_WIDTH = 64;
 const DISPLAY_HEIGHT = 32;
@@ -68,10 +65,69 @@ export class Chip8VirtualMachine {
       console.warn(`Chip8VirtualMachine: unknown opcode "${opcode.toString(16)}" at "${this.data.pc.toString(16)}".`);
       return;
     }
-    switch (decodedInstruction.id) {
-      case "CLS": this.#clearScreen(); break;
-      case "RET": this.#return(); break;
-      case "JP_ADDR": this.#jumpAddress(decodedInstruction.parameters[0]!.address); break;
+
+    // TODO: can we reduce boilerplate here? inference seems to break
+    if (decodedInstruction.id === "CLS") {
+      this.#clearScreen();
+    } else if (decodedInstruction.id === "RET") {
+      this.#return();
+    } else if (decodedInstruction.id === "JP_ADDR") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"JP_ADDR">;
+      this.#jumpAddress(parameters[0].address);
+    } else if (decodedInstruction.id === "CALL_ADDR") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"CALL_ADDR">;
+      this.#callAddress(parameters[0].address);
+    } else if (decodedInstruction.id === "SE_VX_NN") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SE_VX_NN">;
+      this.#skipIfVxEqualsNN(parameters[0].registerIndex, parameters[1].byte);
+    } else if (decodedInstruction.id === "SNE_VX_NN") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SNE_VX_NN">;
+      this.#skipIfVxDoesNotEqualNN(parameters[0].registerIndex, parameters[1].byte);
+    } else if (decodedInstruction.id === "SE_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SE_VX_VY">;
+      this.#skipIfVxEqualsVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "LD_VX_NN") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_NN">;
+      this.#loadVxNN(parameters[0].registerIndex, parameters[1].byte);
+    } else if (decodedInstruction.id === "ADD_VX_NN") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_NN">;
+      this.#addVxNN(parameters[0].registerIndex, parameters[1].byte);
+    } else if (decodedInstruction.id === "LD_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_VY">;
+      this.#loadVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "OR_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"OR_VX_VY">;
+      this.#orVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "AND_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"AND_VX_VY">;
+      this.#andVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "XOR_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"XOR_VX_VY">;
+      this.#xorVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "ADD_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"ADD_VX_VY">;
+      this.#addVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "SUB_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SUB_VX_VY">;
+      this.#subVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "SHR_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SHR_VX_VY">;
+      this.#shiftRightVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "SUBN_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SUBN_VX_VY">;
+      this.#subnVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "SHL_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SHL_VX_VY">;
+      this.#shiftLeftVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "SNE_VX_VY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SNE_VX_VY">;
+      this.#skipIfVxDoesNotEqualVy(parameters[0].registerIndex, parameters[1].registerIndex);
+    } else if (decodedInstruction.id === "LD_I_ADDR") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_I_ADDR">;
+      this.#loadIAddress(parameters[0].address);
+    } else if (decodedInstruction.id === "ADD_I_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"ADD_I_VX">;
+      this.#addIVx(parameters[0].registerIndex);
     }
   }
 
@@ -89,13 +145,96 @@ export class Chip8VirtualMachine {
   #jumpAddress(nnn: number) {
     this.data.pc = nnn;
   }
+
+  #callAddress(nnn: number) {
+    this.data.stack[this.data.sp++] = this.data.pc;
+    this.#jumpAddress(nnn);
+  }
+
+  #skipIfVxEqualsNN(x: number, nn: number) {
+    this.data.pc += this.data.registers[x] === nn ? 4 : 2;
+  }
+  #skipIfVxDoesNotEqualNN(x: number, nn: number) {
+    this.data.pc += this.data.registers[x] !== nn ? 4 : 2;
+  }
+  #skipIfVxEqualsVy(x: number, y: number) {
+    this.data.pc += this.data.registers[x] === this.data.registers[y] ? 4 : 2;
+  }
+  #skipIfVxDoesNotEqualVy(x: number, y: number) {
+    this.data.pc += this.data.registers[x] !== this.data.registers[y] ? 4 : 2;
+  }
+
+  #loadVxNN(x: number, nn: number) {
+    this.data.registers[x] = nn;
+    this.data.pc += 2;
+  }
+  #loadVxVy(x: number, y: number) {
+    this.data.registers[x] = this.data.registers[y];
+    this.data.pc += 2;
+  }
+  #loadIAddress(nnn: number) {
+    this.data.i = nnn;
+    this.data.pc += 2;
+  }
+
+  #addVxNN(x: number, nn: number) {
+    const value = (this.data.registers[x] + nn) % 256;
+    this.data.registers[x] = value;
+    this.data.pc += 2;
+  }
+  #orVxVy(x: number, y: number) {
+    this.data.registers[x] |= this.data.registers[y];
+    this.data.pc += 2;
+  }
+  #andVxVy(x: number, y: number) {
+    this.data.registers[x] &= this.data.registers[y];
+    this.data.pc += 2;
+  }
+  #xorVxVy(x: number, y: number) {
+    this.data.registers[x] ^= this.data.registers[y];
+    this.data.pc += 2;
+  }
+  #addVxVy(x: number, y: number) {
+    const value = this.data.registers[x] + this.data.registers[y];
+    this.data.registers[x] = value;
+    this.data.registers[0xF] = value > 0xFF ? 1 : 0;
+    this.data.pc += 2;
+  }
+  #subVxVy(x: number, y: number) {
+    const value = this.data.registers[x] - this.data.registers[y];
+    this.data.registers[x] = value;
+    this.data.registers[0xF] = value < 0 ? 1 : 0;
+    this.data.pc += 2;
+  }
+  #subnVxVy(x: number, y: number) {
+    const value = this.data.registers[y] - this.data.registers[x];
+    this.data.registers[x] = value;
+    this.data.registers[0xF] = value < 0 ? 1 : 0;
+    this.data.pc += 2;
+  }
+  #shiftRightVxVy(x: number, y: number) {
+    const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
+    this.data.registers[0xF] = this.data.registers[shiftOnIndex] & 0x01;
+    this.data.registers[x] = this.data.registers[shiftOnIndex] >> 1;
+    this.data.pc += 2;
+  }
+  #shiftLeftVxVy(x: number, y: number) {
+    const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
+    this.data.registers[0xF] = this.data.registers[shiftOnIndex] & 0x80;
+    this.data.registers[x] = this.data.registers[shiftOnIndex] << 1;
+    this.data.pc += 2;
+  }
+  #addIVx(x: number) {
+    this.data.i += this.data.registers[x];
+    this.data.pc += 2;
+  }
 }
 
 export const initChip8VirtualMachineData = (): Chip8VirtualMachineData => ({
   memory: new Uint8Array(4096),
   registers: new Uint8Array(16),
   stack: new Uint16Array(16),
-  sp: -1,
+  sp: 0,
   i: 0,
   pc: 0x200,
   ST: 0,

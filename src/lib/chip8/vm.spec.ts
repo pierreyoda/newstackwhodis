@@ -15,7 +15,7 @@ describe("Chip8 Virtual Machine", () => {
     expect(vm.data.pc).toEqual(0x0BBB);
     expect(vm.data.stack[0]).toEqual(0x200);
     vm.executeOpcode(0x00EE);
-    expect(vm.data.pc).toEqual(0);
+    expect(vm.data.pc).toEqual(0x200 + 2);
 
     vm.reset();
     expect(vm.data.stack[0]).toEqual(0);
@@ -99,12 +99,12 @@ describe("Chip8 Virtual Machine", () => {
     vm.executeOpcode(0x1FAF);
     vm.executeOpcode(0x6803);
     vm.executeOpcode(0x78FF); // add_vx_nn
-    expect(vm.data.registers[8]).toEqual(0x03 + 0xFF);
+    expect(vm.data.registers[8]).toEqual((0x03 + 0xFF) % 256);
     vm.executeOpcode(0x6EAF);
     vm.executeOpcode(0x6DFF);
     vm.executeOpcode(0x8ED4); // add_vx_vy
     expect(vm.data.registers[0xF]).toEqual(0x1);
-    expect(vm.data.registers[14]).toEqual(0xAF + 0xFF);
+    expect(vm.data.registers[14]).toEqual((0xAF + 0xFF) % 256);
     vm.executeOpcode(0x6013);
     vm.executeOpcode(0x6114);
     vm.executeOpcode(0x8014);

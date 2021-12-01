@@ -193,7 +193,8 @@ export const traceLSystem = <A extends string>(
   const tracingContext: LSystemTracingContext = {
     pushPosition: () => stack.push({ position: positions[positions.length - 1], angle: currentAngle }),
     popPosition: () => {
-      const { position, angle } = stack.pop();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const { position, angle } = stack.pop()!;
       positions.push(position);
       currentAngle = angle;
     },
