@@ -11,7 +11,7 @@ published: true
 
 ## The Stack
 
-For each problem, the associated "metadata" (challenge description, inputs, *etc.*) and the corresponding solution for each sub-part is written in raw Typescript.
+For each problem, the associated "metadata" (challenge description, inputs, _etc._) and the corresponding solution for each sub-part is written in raw Typescript.
 
 The website itself is written in SvelteKit and Typescript, just like this blog - minus the [MDsveX](https://github.com/pngwn/MDsveX) stuff.
 
@@ -34,13 +34,15 @@ You can see that `Section` is parametrized in order to differentiate between sec
 A section is then defined as follows:
 
 ```typescript
-export interface AdventOfCodeDaySection<Type extends AdventOfCodeDayComputeFunctionType = AdventOfCodeDayComputeFunctionType> {
+export interface AdventOfCodeDaySection<
+  Type extends AdventOfCodeDayComputeFunctionType = AdventOfCodeDayComputeFunctionType,
+> {
   inputs: string;
   /** In **raw** markdown. */
   description: string;
   computeFunction: AdventOfCodeDayComputeFunction<Type>;
   expectedAnswer: AdventOfCodeDayComputeFunctionOutput;
-  processInputs?: (rawInputs: string) => AdventOfCodeDayComputeFunctionInputs<Type>,
+  processInputs?: (rawInputs: string) => AdventOfCodeDayComputeFunctionInputs<Type>;
 }
 ```
 
@@ -49,10 +51,12 @@ We parametrize over the input data's type since it will change the type of the c
 Finally, here is how we define a solving function:
 
 ```typescript
-export type AdventOfCodeDayComputeFunction<Type extends AdventOfCodeDayComputeFunctionType = AdventOfCodeDayComputeFunctionType> = {
+export type AdventOfCodeDayComputeFunction<
+  Type extends AdventOfCodeDayComputeFunctionType = AdventOfCodeDayComputeFunctionType,
+> = {
   type: Type;
   compute: (inputs: AdventOfCodeDayComputeFunctionInputs<Type>) => AdventOfCodeDayComputeFunctionOutput;
-}
+};
 ```
 
 Like many "low-level" Typescript definitions - for instance, have you ever looked at React's definitions? -, this may seem over-complicated at first but it will pay off in the actual usage.
@@ -62,4 +66,5 @@ Like many "low-level" Typescript definitions - for instance, have you ever looke
 Let's take the first day's challenge as an example:
 
 ```typescript
+
 ```

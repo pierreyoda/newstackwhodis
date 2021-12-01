@@ -12,7 +12,7 @@
   export let showCurrentState: boolean = false;
   export let showGenerationLabel: boolean = false;
 
-  let svgEl;
+  let svgEl: SVGSVGElement;
 
   beforeUpdate(() => {
     if (!svgEl) {

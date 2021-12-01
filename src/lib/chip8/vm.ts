@@ -1,21 +1,20 @@
+import { Chip8Keypad } from "./keypad";
+import { Chip8Display, FONT_SET } from "./display";
 import { Chip8DisassembledInstruction, instructionFromOpcode } from "./instructions";
-
-const DISPLAY_WIDTH = 64;
-const DISPLAY_HEIGHT = 32;
 
 export interface Chip8VirtualMachineData {
   /** 4KB of RAM (4096 bytes), from 0x000 to 0xFFF. */
-  memory: Uint8Array,
+  memory: Uint8Array;
   /** 16 8-bit registers (V0 to VF, VF being a flag register). */
-  registers: Uint8Array,
+  registers: Uint8Array;
   /** Subroutines address stack (16 16-bit values). */
-  stack: Uint16Array,
+  stack: Uint16Array;
   /** The stack pointer (8 bits) points to the top level of the stack. */
-  sp: number,
+  sp: number;
   /** Index register nibble (4 bits). */
   i: number;
   /** The program counter (8 bits) is the memory address of the current instruction. */
-  pc: number,
+  pc: number;
   /** Sound timer (8 bits). */
   ST: number;
   /** Delay timer (8 bits). */
@@ -29,13 +28,27 @@ export interface Chip8VirtualMachineData {
    * See http://mattmik.com/chip8.html for more detail.
    */
   shouldShiftOpcodeUseVY: boolean;
+  /**
+   * If defined, points to the register where the next, awaited for key press
+   * index is to be saved.
+   */
+  waitingForKeyRegisterIndex: number | null;
+}
+
+export interface Chip8ExecutionContext {
+  onWaitingForKey: () => void;
 }
 
 export class Chip8VirtualMachine {
   data: Chip8VirtualMachineData = initChip8VirtualMachineData();
+  display: Chip8Display = new Chip8Display();
+  keypad: Chip8Keypad = new Chip8Keypad();
+
+  constructor(private context?: Chip8ExecutionContext) {}
 
   reset() {
     this.data = initChip8VirtualMachineData();
+    this.display.clear();
   }
 
   setShouldShiftOpcodeUseVY(shouldShiftOpcodeUseVY: boolean) {
@@ -50,6 +63,16 @@ export class Chip8VirtualMachine {
     if (this.data.ST > 0) {
       --this.data.DT;
     }
+  }
+
+  endWaitingForKey(keyIndex: number) {
+    if (!this.data.waitingForKeyRegisterIndex) {
+      console.warn("Chip8VM: called endWaitingForKey without pending key state.");
+      return;
+    }
+    this.data.registers[this.data.waitingForKeyRegisterIndex] = keyIndex;
+    this.data.waitingForKeyRegisterIndex = null;
+    this.data.pc += 2;
   }
 
   step() {
@@ -172,7 +195,7 @@ export class Chip8VirtualMachine {
   }
 
   #clearScreen() {
-    // TODO: this.context.display.clear();
+    this.display.clear();
     this.data.pc += 2;
   }
 
@@ -204,10 +227,10 @@ export class Chip8VirtualMachine {
     this.data.pc += this.data.registers[x] !== this.data.registers[y] ? 4 : 2;
   }
   #skipIfVxKey(x: number) {
-    // TODO:
+    this.data.pc += this.keypad.isKeyPressed(this.data.registers[x]) ? 4 : 2;
   }
   #skipIfNotVxKey(x: number) {
-    // TODO:
+    this.data.pc += this.keypad.isKeyPressed(this.data.registers[x]) ? 2 : 4;
   }
 
   #loadVxNN(x: number, nn: number) {
@@ -230,8 +253,15 @@ export class Chip8VirtualMachine {
     this.data.ST = this.data.registers[x];
     this.data.pc += 2;
   }
+  /**
+   * Wait for a key (blocking operation) to be pressed and store it into register VX.
+   *
+   * Works by notifying the emulation application context the VM is waiting for a key press.
+   * Then, that context MUST call `endWaitingForKey`.
+   */
   #loadVxKey(x: number) {
-    // TODO:
+    this.data.waitingForKeyRegisterIndex = x;
+    this.context?.onWaitingForKey();
     this.data.pc += 2;
   }
   #loadIAddress(nnn: number) {
@@ -278,7 +308,7 @@ export class Chip8VirtualMachine {
   }
 
   #randomVxNN(x: number, nn: number) {
-    this.data.registers[x] = this.#randomIntegerInInclusiveRange(0x00, 0xFF) & nn;
+    this.data.registers[x] = this.#randomIntegerInInclusiveRange(0x00, 0xff) & nn;
     this.data.pc += 2;
   }
   #randomIntegerInInclusiveRange(min: number, max: number): number {
@@ -305,30 +335,30 @@ export class Chip8VirtualMachine {
   #addVxVy(x: number, y: number) {
     const value = this.data.registers[x] + this.data.registers[y];
     this.data.registers[x] = value;
-    this.data.registers[0xF] = value > 0xFF ? 1 : 0;
+    this.data.registers[0xf] = value > 0xff ? 1 : 0;
     this.data.pc += 2;
   }
   #subVxVy(x: number, y: number) {
     const value = this.data.registers[x] - this.data.registers[y];
     this.data.registers[x] = value;
-    this.data.registers[0xF] = value < 0 ? 1 : 0;
+    this.data.registers[0xf] = value < 0 ? 1 : 0;
     this.data.pc += 2;
   }
   #subnVxVy(x: number, y: number) {
     const value = this.data.registers[y] - this.data.registers[x];
     this.data.registers[x] = value;
-    this.data.registers[0xF] = value < 0 ? 1 : 0;
+    this.data.registers[0xf] = value < 0 ? 1 : 0;
     this.data.pc += 2;
   }
   #shiftRightVxVy(x: number, y: number) {
     const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
-    this.data.registers[0xF] = this.data.registers[shiftOnIndex] & 0x01;
+    this.data.registers[0xf] = this.data.registers[shiftOnIndex] & 0x01;
     this.data.registers[x] = this.data.registers[shiftOnIndex] >> 1;
     this.data.pc += 2;
   }
   #shiftLeftVxVy(x: number, y: number) {
     const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
-    this.data.registers[0xF] = this.data.registers[shiftOnIndex] & 0x80;
+    this.data.registers[0xf] = this.data.registers[shiftOnIndex] & 0x80;
     this.data.registers[x] = this.data.registers[shiftOnIndex] << 1;
     this.data.pc += 2;
   }
@@ -348,19 +378,30 @@ export class Chip8VirtualMachine {
   #drawVxVyN(x: number, y: number, n: number) {
     const [positionX, positionY] = [this.data.registers[x], this.data.registers[y]];
     const [memoryStart, memoryEnd] = [this.data.i, this.data.i + n];
-    // TODO:
+    const sprite = Array.from(this.data.memory.slice(memoryStart, memoryEnd));
+    this.data.registers[0xf] = this.display.draw(positionX, positionY, sprite) ? 1 : 0;
     this.data.pc += 2;
   }
 }
 
-export const initChip8VirtualMachineData = (): Chip8VirtualMachineData => ({
-  memory: new Uint8Array(4096),
-  registers: new Uint8Array(16),
-  stack: new Uint16Array(16),
-  sp: 0,
-  i: 0,
-  pc: 0x200,
-  ST: 0,
-  DT: 0,
-  shouldShiftOpcodeUseVY: false,
-});
+export const initChip8VirtualMachineData = (): Chip8VirtualMachineData => {
+  // init the data with sensible defaults
+  const data: Chip8VirtualMachineData = {
+    memory: new Uint8Array(4096),
+    registers: new Uint8Array(16),
+    stack: new Uint16Array(16),
+    sp: 0,
+    i: 0,
+    pc: 0x200,
+    ST: 0,
+    DT: 0,
+    shouldShiftOpcodeUseVY: false,
+    waitingForKeyRegisterIndex: null,
+  };
+  // load the font set into the memory space [0x0..80].
+  for (let j = 0; j < FONT_SET.length; j++) {
+    data.memory[j] = FONT_SET[j];
+  }
+
+  return data;
+};

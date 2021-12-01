@@ -88,20 +88,20 @@ type BaseParameter<Type extends Chip8InstructionParameterType = Chip8Instruction
 
 type ParameterTypeAddress = BaseParameter<"Address"> & {
   address: number;
-}
+};
 
 type ParameterByteConstant = BaseParameter<"ByteConstant"> & {
   byte: number;
-}
+};
 
 type ParameterNibbleConstant = BaseParameter<"NibbleConstant"> & {
   nibble: number;
-}
+};
 
 type ParameterRegister = BaseParameter<"Register"> & {
   /** From 0x0 to 0xF (nibble). */
   registerIndex: number;
-}
+};
 
 type Chip8InstructionsParametersTypesTable = {
   CLS: [];
@@ -140,18 +140,26 @@ type Chip8InstructionsParametersTypesTable = {
   LD_REGS_MEM_I: [X: ParameterRegister];
 };
 
-type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> = {
-  parameters: Chip8InstructionsParametersTypesTable[ID];
-} | false;
+type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> =
+  | {
+      parameters: Chip8InstructionsParametersTypesTable[ID];
+    }
+  | false;
 
 export interface Chip8Instruction<ID extends Chip8InstructionID = Chip8InstructionID> {
-  id: ID,
+  id: ID;
   /**
    * Opcode matcher.
    *
    * Returns all of the instruction's parameters, if any.
    */
-  matchOpcode: ({ n4, n3, n2, n1, opcode }: {
+  matchOpcode: ({
+    n4,
+    n3,
+    n2,
+    n1,
+    opcode,
+  }: {
     n1: number;
     n2: number;
     n3: number;
@@ -178,461 +186,554 @@ const wordFromNibbles = ([n1, n2, n3]: [n1: number, n2?: number, n3?: number]): 
 export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> = {
   CLS: {
     id: "CLS",
-    matchOpcode: ({ opcode }) => opcode === 0x00E0 ? {
-      parameters: [],
-    } : false,
+    matchOpcode: ({ opcode }) =>
+      opcode === 0x00e0
+        ? {
+            parameters: [],
+          }
+        : false,
   },
   RET: {
     id: "RET",
-    matchOpcode: ({ opcode }) => opcode === 0x00EE ? {
-      parameters: [],
-    } : false,
+    matchOpcode: ({ opcode }) =>
+      opcode === 0x00ee
+        ? {
+            parameters: [],
+          }
+        : false,
   },
   JP_ADDR: {
     id: "JP_ADDR",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x1
-      ? {
-        parameters: [{
-          type: "Address",
-          address: wordFromNibbles([n1, n2, n3]),
-        }],
-      }
-      : false
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x1
+        ? {
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
+        : false,
   },
   CALL_ADDR: {
     id: "CALL_ADDR",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x2
-      ? {
-        parameters: [{
-          type: "Address",
-          address: wordFromNibbles([n1, n2, n3]),
-        }],
-      }
-      : false
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x2
+        ? {
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
+        : false,
   },
   SE_VX_NN: {
     id: "SE_VX_NN",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x3
-      ? {
-        parameters: [
-          {
-            type: "Register",
-            registerIndex: n3,
-          },
-          {
-            type: "ByteConstant",
-            byte: wordFromNibbles([n1, n2]),
-          },
-        ]
-      } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x3
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
+        : false,
   },
   SNE_VX_NN: {
     id: "SE_VX_NN",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x4
-      ? {
-        parameters: [
-          {
-            type: "Register",
-            registerIndex: n3,
-          },
-          {
-            type: "ByteConstant",
-            byte: wordFromNibbles([n1, n2]),
-          },
-        ]
-      } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x4
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
+        : false,
   },
   SE_VX_VY: {
     id: "SE_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x5 && n1 === 0x0
-      ? {
-        parameters: [
-          {
-            type: "Register",
-            registerIndex: n3,
-          },
-          {
-            type: "Register",
-            registerIndex: n2,
-          },
-        ],
-      } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x5 && n1 === 0x0
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   LD_VX_NN: {
     id: "LD_VX_NN",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x6 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "ByteConstant",
-          byte: wordFromNibbles([n1, n2]),
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x6
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
+        : false,
   },
   ADD_VX_NN: {
     id: "ADD_VX_NN",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x7 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "ByteConstant",
-          byte: wordFromNibbles([n1, n2]),
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x7
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
+        : false,
   },
   LD_VX_VY: {
     id: "LD_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x0 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x0
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   OR_VX_VY: {
     id: "OR_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x1 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x1
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   AND_VX_VY: {
     id: "AND_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x2 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x2
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   XOR_VX_VY: {
     id: "XOR_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x3 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x3
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   ADD_VX_VY: {
     id: "ADD_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x4 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x4
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   SUB_VX_VY: {
     id: "SUB_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x5 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x5
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   SHR_VX_VY: {
     id: "SHR_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x6 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x6
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   SUBN_VX_VY: {
     id: "SUBN_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0x7 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0x7
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   SHL_VX_VY: {
     id: "SHL_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x8 && n1 === 0xE ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x8 && n1 === 0xe
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   SNE_VX_VY: {
     id: "SNE_VX_VY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0x9 && n1 === 0x0 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0x9 && n1 === 0x0
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
+        : false,
   },
   LD_I_ADDR: {
     id: "LD_I_ADDR",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xA ? {
-      parameters: [
-        {
-          type: "Address",
-          address: wordFromNibbles([n1, n2, n3]),
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xa
+        ? {
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
+        : false,
   },
   JP_ADDR_V0: {
     id: "JP_ADDR_V0",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xB ? {
-      parameters: [
-        {
-          type: "Address",
-          address: wordFromNibbles([n1, n2, n3]),
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xb
+        ? {
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
+        : false,
   },
   RND_VX_NN: {
     id: "RND_VX_NN",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xC ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "ByteConstant",
-          byte: wordFromNibbles([n1, n2]),
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xc
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
+        : false,
   },
   DRW_VX_VY_N: {
     id: "DRW_VX_VY_N",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xD ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-        {
-          type: "Register",
-          registerIndex: n2,
-        },
-        {
-          type: "NibbleConstant",
-          nibble: n1,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xd
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+              {
+                type: "NibbleConstant",
+                nibble: n1,
+              },
+            ],
+          }
+        : false,
   },
   SKP_VX: {
     id: "SKP_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xE && n2 === 0x9 && n1 === 0xE ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xe && n2 === 0x9 && n1 === 0xe
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   SKNP_VX: {
     id: "SKNP_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xE && n2 === 0xA && n1 === 0x1 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xe && n2 === 0xa && n1 === 0x1
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_VX_DT: {
     id: "LD_VX_DT",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x0 && n1 === 0x7 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x0 && n1 === 0x7
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_VX_KEY: {
     id: "LD_VX_KEY",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x0 && n1 === 0xA ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x0 && n1 === 0xa
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_DT_VX: {
     id: "LD_DT_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0x5 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x1 && n1 === 0x5
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_ST_VX: {
     id: "LD_ST_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0x8 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x1 && n1 === 0x8
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   ADD_I_VX: {
     id: "ADD_I_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0xE ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x1 && n1 === 0xe
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_I_FONT_VX: {
     id: "LD_I_FONT_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x2 && n1 === 0x9 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x2 && n1 === 0x9
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_MEM_I_BCD_VX: {
     id: "LD_MEM_I_BCD_VX",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x3 && n1 === 0x3 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x3 && n1 === 0x3
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_MEM_I_REGS: {
     id: "LD_MEM_I_REGS",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x5 && n1 === 0x5 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x5 && n1 === 0x5
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
   LD_REGS_MEM_I: {
     id: "LD_REGS_MEM_I",
-    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x6 && n1 === 0x5 ? {
-      parameters: [
-        {
-          type: "Register",
-          registerIndex: n3,
-        },
-      ],
-    } : false,
+    matchOpcode: ({ n4, n3, n2, n1 }) =>
+      n4 === 0xf && n2 === 0x6 && n1 === 0x5
+        ? {
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
+        : false,
   },
 };
 
-export type Chip8DisassembledInstruction<ID extends Chip8InstructionID> =
-  Omit<Chip8Instruction<ID>, "matchOpcode"> & {
-    parameters: Chip8InstructionsParametersTypesTable[ID];
-  };
+export type Chip8DisassembledInstruction<ID extends Chip8InstructionID> = Omit<Chip8Instruction<ID>, "matchOpcode"> & {
+  parameters: Chip8InstructionsParametersTypesTable[ID];
+};
 
 /**
  * Try to disassemble an opcode word (2 bytes = 16 bits) into the internal
  * instruction representation.
  */
 export const instructionFromOpcode = (opcode: number): Chip8DisassembledInstruction<Chip8InstructionID> | null => {
-  const [n4, n3, n2, n1] = [
-    (opcode & 0xF000) >> 12,
-    (opcode & 0x0F00) >> 8,
-    (opcode & 0x00F0) >> 4,
-    (opcode & 0x000F),
-  ];
+  const [n4, n3, n2, n1] = [(opcode & 0xf000) >> 12, (opcode & 0x0f00) >> 8, (opcode & 0x00f0) >> 4, opcode & 0x000f];
   for (const { matchOpcode, ...instruction } of Object.values(chip8InstructionSet)) {
     const matchOutput = matchOpcode({ n4, n3, n2, n1, opcode });
     if (matchOutput) {

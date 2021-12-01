@@ -5,9 +5,9 @@ import { getBlogPostMetaBySlug, getBlogPostsSlugs } from "../../api/posts";
 export const get: RequestHandler = async () => {
   try {
     const slugs: readonly string[] = await getBlogPostsSlugs();
-    const postsMeta = (await Promise.all(slugs.map(slug => getBlogPostMetaBySlug({ slug })))).filter(
-      meta => meta?.published,
-    ).sort((a, b) => b.date.localeCompare(a.date));
+    const postsMeta = (await Promise.all(slugs.map(slug => getBlogPostMetaBySlug({ slug }))))
+      .filter(meta => meta?.published)
+      .sort((a, b) => b.date.localeCompare(a.date));
     return {
       body: {
         postsMeta: JSON.stringify(postsMeta),

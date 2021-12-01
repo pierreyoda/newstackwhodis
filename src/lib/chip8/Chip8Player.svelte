@@ -1,0 +1,119 @@
+<script lang="ts">
+  import { onMount } from "svelte";
+  import { browser } from "$app/env";
+  import { select } from "d3-selection";
+
+  import { Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
+  import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
+
+  interface ColorRGB {
+    r: number;
+    g: number;
+    b: number;
+  }
+
+  /** Size (in pixels) of an individual virtual CHIP-8 pixel. */
+  export let scale: number = 16;
+
+  /** Rendering color for OFF pixels. */
+  export let offColor: ColorRGB = {
+    r: 255,
+    g: 255,
+    b: 255,
+  };
+  /** Rendering color for ON pixels. */
+  export let onColor: ColorRGB = {
+    r: 43,
+    g: 43,
+    b: 45,
+  };
+
+  // CHIP-8 virtual machine timing
+  const VM_TICK_RATE_MS = 1000 / 60;
+  const VM_CPU_TICK_RATE_MS = 1000 / 240;
+  // CHIP-8 virtual machine management
+  let refreshDisplay = (display: Chip8Display) => {};
+  let [running, isWaitingForKey] = [false, false];
+  const context: Chip8ExecutionContext = {
+    onWaitingForKey: () => {
+      isWaitingForKey = true;
+    },
+  };
+  const vm = new Chip8VirtualMachine(context);
+  const run = () => {
+    running = true;
+    // timers
+    setTimeout(() => {
+      if (!running) {
+        return;
+      }
+      vm.tick();
+    }, VM_TICK_RATE_MS);
+    // CPU
+    setTimeout(() => {
+      if (!running || isWaitingForKey) {
+        return;
+      }
+      vm.step();
+      if (vm.display.data.isDirty) {
+        refreshDisplay(vm.display);
+      }
+    }, VM_CPU_TICK_RATE_MS);
+  };
+
+  // CHIP-8 display rendering
+  let containerEl: HTMLElement;
+  onMount(() => {
+    // sanity check
+    if (!browser || !containerEl) {
+      return;
+    }
+    const container = select(containerEl);
+    container.selectAll("*").remove();
+
+    // canvas creation
+    const [canvasWidth, canvasHeight] = [DISPLAY_WIDTH * scale, DISPLAY_HEIGHT * scale];
+    const canvas = container
+      .append("canvas")
+      .attr("width", DISPLAY_WIDTH * scale)
+      .attr("height", DISPLAY_HEIGHT * scale);
+    const context = canvas.node()?.getContext("2d");
+    if (!context) {
+      return;
+    }
+
+    // rendering function
+    refreshDisplay = display => {
+      if (!display.data.isDirty) {
+        return;
+      }
+      const offColorString = `rgb(${offColor.r}, ${offColor.g}, ${offColor.b})`;
+      const onColorString = `rgb(${onColor.r}, ${onColor.g}, ${onColor.b})`;
+
+      context.fillStyle = offColorString;
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.fillStyle = onColorString;
+      for (let y = 0; y < DISPLAY_HEIGHT; y++) {
+        const canvasY = y * scale;
+        for (let x = 0; x < DISPLAY_WIDTH; x++) {
+          const virtualPixel = display.data.gfx[y][x];
+          if (virtualPixel === 0) {
+            continue;
+          }
+          context.fillRect(x * scale, canvasY, scale, scale);
+        }
+      }
+    };
+
+    // TODO: add trigger button
+    run();
+  });
+</script>
+
+<div bind:this={containerEl} class="container" />
+
+<style lang="postcss">
+  .container {
+    @apply bg-white rounded;
+  }
+</style>
