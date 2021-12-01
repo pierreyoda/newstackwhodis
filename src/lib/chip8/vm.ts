@@ -125,9 +125,49 @@ export class Chip8VirtualMachine {
     } else if (decodedInstruction.id === "LD_I_ADDR") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_I_ADDR">;
       this.#loadIAddress(parameters[0].address);
+    } else if (decodedInstruction.id === "JP_ADDR_V0") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"JP_ADDR_V0">;
+      const address = parameters[0].address + this.data.registers[0];
+      this.#jumpAddress(address);
+    } else if (decodedInstruction.id === "RND_VX_NN") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"RND_VX_NN">;
+      this.#randomVxNN(parameters[0].registerIndex, parameters[1].byte);
+    } else if (decodedInstruction.id === "DRW_VX_VY_N") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"DRW_VX_VY_N">;
+      this.#drawVxVyN(parameters[0].registerIndex, parameters[1].registerIndex, parameters[2].nibble);
+    } else if (decodedInstruction.id === "SKP_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SKP_VX">;
+      this.#skipIfVxKey(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "SKNP_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SKNP_VX">;
+      this.#skipIfNotVxKey(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_VX_DT") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_DT">;
+      this.#loadVxDt(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_VX_KEY") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_KEY">;
+      this.#loadVxKey(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_DT_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_DT_VX">;
+      this.#loadDtVx(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_ST_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_ST_VX">;
+      this.#loadStVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "ADD_I_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"ADD_I_VX">;
       this.#addIVx(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_I_FONT_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_I_FONT_VX">;
+      this.#loadIFontVx(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_MEM_I_BCD_VX") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_MEM_I_BCD_VX">;
+      this.#loadMemoryIBcdVx(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_MEM_I_REGS") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_MEM_I_REGS">;
+      this.#loadMemoryIRegisters(parameters[0].registerIndex);
+    } else if (decodedInstruction.id === "LD_REGS_MEM_I") {
+      const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_REGS_MEM_I">;
+      this.#loadRegistersMemoryI(parameters[0].registerIndex);
     }
   }
 
@@ -163,6 +203,12 @@ export class Chip8VirtualMachine {
   #skipIfVxDoesNotEqualVy(x: number, y: number) {
     this.data.pc += this.data.registers[x] !== this.data.registers[y] ? 4 : 2;
   }
+  #skipIfVxKey(x: number) {
+    // TODO:
+  }
+  #skipIfNotVxKey(x: number) {
+    // TODO:
+  }
 
   #loadVxNN(x: number, nn: number) {
     this.data.registers[x] = nn;
@@ -172,9 +218,71 @@ export class Chip8VirtualMachine {
     this.data.registers[x] = this.data.registers[y];
     this.data.pc += 2;
   }
+  #loadVxDt(x: number) {
+    this.data.registers[x] = this.data.DT;
+    this.data.pc += 2;
+  }
+  #loadDtVx(x: number) {
+    this.data.DT = this.data.registers[x];
+    this.data.pc += 2;
+  }
+  #loadStVx(x: number) {
+    this.data.ST = this.data.registers[x];
+    this.data.pc += 2;
+  }
+  #loadVxKey(x: number) {
+    // TODO:
+    this.data.pc += 2;
+  }
   #loadIAddress(nnn: number) {
     this.data.i = nnn;
     this.data.pc += 2;
+  }
+
+  /**
+   * Set I to the memory address of the sprite data corresponding to the
+   * hexadecimal digit (0x0..0xF) stored in register VX.
+   *
+   * Will use the internal fontset stored in memory.
+   */
+  #loadIFontVx(x: number) {
+    // the font set is in the memory range 0x0..0x80
+    // and each character is represented by 5 bytes
+    this.data.i = this.data.registers[x] * 5;
+    this.data.pc += 2;
+  }
+
+  /**
+   * Store the Binary-Coded Decimal equivalent of the value stored in
+   * register VX in memory at the addresses I, I+1, and I+2.
+   */
+  #loadMemoryIBcdVx(x: number) {
+    const vx = this.data.registers[x];
+    this.data.memory[this.data.i] = vx / 100;
+    this.data.memory[this.data.i + 1] = (vx / 10) % 10;
+    this.data.memory[this.data.i + 2] = (vx % 100) % 10;
+    this.data.pc += 2;
+  }
+  #loadMemoryIRegisters(x: number) {
+    for (let j = 0; j <= x; j++) {
+      this.data.memory[this.data.i + j] = this.data.registers[j];
+    }
+    this.data.i += x + 1;
+    this.data.pc += 2;
+  }
+  #loadRegistersMemoryI(x: number) {
+    for (let j = 0; j <= x; j++) {
+      this.data.registers[j] = this.data.memory[this.data.i + j];
+    }
+    this.data.pc += 2;
+  }
+
+  #randomVxNN(x: number, nn: number) {
+    this.data.registers[x] = this.#randomIntegerInInclusiveRange(0x00, 0xFF) & nn;
+    this.data.pc += 2;
+  }
+  #randomIntegerInInclusiveRange(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min) + min);
   }
 
   #addVxNN(x: number, nn: number) {
@@ -226,6 +334,21 @@ export class Chip8VirtualMachine {
   }
   #addIVx(x: number) {
     this.data.i += this.data.registers[x];
+    this.data.pc += 2;
+  }
+
+  /**
+   * Draw a sprite at position VX, VY with 0xN bytes of sprite data starting
+   * at the address stored in I, where N is the height of the sprite.
+   *
+   * The drawing itself is implemented in the `display` module as a XOR operation.
+   * VF will act here as a collision flag, i.e. if any set pixel is erased
+   * set it to 0x1, and to 0x0 otherwise.
+   */
+  #drawVxVyN(x: number, y: number, n: number) {
+    const [positionX, positionY] = [this.data.registers[x], this.data.registers[y]];
+    const [memoryStart, memoryEnd] = [this.data.i, this.data.i + n];
+    // TODO:
     this.data.pc += 2;
   }
 }

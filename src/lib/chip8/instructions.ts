@@ -39,8 +39,34 @@ export const chip8InstructionsIDs = [
   "SNE_VX_VY",
   /// 0xANNN: Set I to `NNN`.
   "LD_I_ADDR",
+  /// 0xBNNN: Jump to the address `NNN + V0`.
+  "JP_ADDR_V0",
+  /// 0xCXNN: Set VX to the result of an AND operation on a random number (from 0 to 255) and `NN`.
+  "RND_VX_NN",
+  /// 0xDXYN: Draw a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels.
+  "DRW_VX_VY_N",
+  /// 0xEX9E: Skip the next instruction if the key stored in VX is pressed.
+  "SKP_VX",
+  /// 0xEXA1: Skip the next instruction if the key stored in VX is not pressed.
+  "SKNP_VX",
+  /// 0xFX07: Set VX to the value of the delay timer.
+  "LD_VX_DT",
+  /// 0xFX0A: A key press is awaited, and then stored in VX (blocking operation).
+  "LD_VX_KEY",
+  /// 0xFX15: Set the delay timer to VX.
+  "LD_DT_VX",
+  /// 0xFX18: Set the sound timer to VX.
+  "LD_ST_VX",
   /// 0xFX1E: Add VX to I (without changing the carry flag).
   "ADD_I_VX",
+  /// 0xFX29: Set I to the location of the sprite for the character in VX.
+  "LD_I_FONT_VX",
+  /// 0xFX33: Store the Binary-Coded Decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2.
+  "LD_MEM_I_BCD_VX",
+  /// 0xFX55: Store from V0 to VX (included) in memory, starting at address I.
+  "LD_MEM_I_REGS",
+  /// 0xFX65: Fill V0 to VX (included) with values from memory, starting at address I.
+  "LD_REGS_MEM_I",
 ] as const;
 export type Chip8InstructionID = typeof chip8InstructionsIDs[number];
 
@@ -98,7 +124,20 @@ type Chip8InstructionsParametersTypesTable = {
   SHL_VX_VY: [X: ParameterRegister, Y: ParameterRegister];
   SNE_VX_VY: [X: ParameterRegister, Y: ParameterRegister];
   LD_I_ADDR: [NNN: ParameterTypeAddress];
+  JP_ADDR_V0: [NNN: ParameterTypeAddress];
+  RND_VX_NN: [X: ParameterRegister, NN: ParameterByteConstant];
+  DRW_VX_VY_N: [X: ParameterRegister, Y: ParameterRegister, N: ParameterNibbleConstant];
+  SKP_VX: [X: ParameterRegister];
+  SKNP_VX: [X: ParameterRegister];
+  LD_VX_DT: [X: ParameterRegister];
+  LD_VX_KEY: [X: ParameterRegister];
+  LD_DT_VX: [X: ParameterRegister];
+  LD_ST_VX: [X: ParameterRegister];
   ADD_I_VX: [X: ParameterRegister];
+  LD_I_FONT_VX: [X: ParameterRegister];
+  LD_MEM_I_BCD_VX: [X: ParameterRegister];
+  LD_MEM_I_REGS: [X: ParameterRegister];
+  LD_REGS_MEM_I: [X: ParameterRegister];
 };
 
 type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> = {
@@ -125,9 +164,9 @@ const wordFromNibbles = ([n1, n2, n3]: [n1: number, n2?: number, n3?: number]): 
   let output = n1;
   if (n2) {
     output |= n2 << 4;
-    if (n3) {
-      output |= n3 << 8;
-    }
+  }
+  if (n3) {
+    output |= n3 << 8;
   }
   return output;
 };
@@ -410,9 +449,164 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
       ],
     } : false,
   },
+  JP_ADDR_V0: {
+    id: "JP_ADDR_V0",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xB ? {
+      parameters: [
+        {
+          type: "Address",
+          address: wordFromNibbles([n1, n2, n3]),
+        },
+      ],
+    } : false,
+  },
+  RND_VX_NN: {
+    id: "RND_VX_NN",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xC ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+        {
+          type: "ByteConstant",
+          byte: wordFromNibbles([n1, n2]),
+        },
+      ],
+    } : false,
+  },
+  DRW_VX_VY_N: {
+    id: "DRW_VX_VY_N",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xD ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+        {
+          type: "Register",
+          registerIndex: n2,
+        },
+        {
+          type: "NibbleConstant",
+          nibble: n1,
+        },
+      ],
+    } : false,
+  },
+  SKP_VX: {
+    id: "SKP_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xE && n2 === 0x9 && n1 === 0xE ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  SKNP_VX: {
+    id: "SKNP_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xE && n2 === 0xA && n1 === 0x1 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_VX_DT: {
+    id: "LD_VX_DT",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x0 && n1 === 0x7 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_VX_KEY: {
+    id: "LD_VX_KEY",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x0 && n1 === 0xA ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_DT_VX: {
+    id: "LD_DT_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0x5 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_ST_VX: {
+    id: "LD_ST_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0x8 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
   ADD_I_VX: {
     id: "ADD_I_VX",
     matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x1 && n1 === 0xE ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_I_FONT_VX: {
+    id: "LD_I_FONT_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x2 && n1 === 0x9 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_MEM_I_BCD_VX: {
+    id: "LD_MEM_I_BCD_VX",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x3 && n1 === 0x3 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_MEM_I_REGS: {
+    id: "LD_MEM_I_REGS",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x5 && n1 === 0x5 ? {
+      parameters: [
+        {
+          type: "Register",
+          registerIndex: n3,
+        },
+      ],
+    } : false,
+  },
+  LD_REGS_MEM_I: {
+    id: "LD_REGS_MEM_I",
+    matchOpcode: ({ n4, n3, n2, n1 }) => n4 === 0xF && n2 === 0x6 && n1 === 0x5 ? {
       parameters: [
         {
           type: "Register",

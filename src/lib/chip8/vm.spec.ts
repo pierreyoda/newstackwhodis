@@ -46,7 +46,7 @@ describe("Chip8 Virtual Machine", () => {
     expect(vm.data.pc).toEqual(0x200 + 2 * 6);
   });
 
-  it("should correctly handle loading memory from registers", () => {
+  it("should correctly handle loading memory from and into registers", () => {
     const vm = new Chip8VirtualMachine();
     vm.executeOpcode(0x1321);
 
@@ -55,23 +55,26 @@ describe("Chip8 Virtual Machine", () => {
     vm.executeOpcode(0x6233);
     vm.executeOpcode(0x6321);
     vm.executeOpcode(0xA500);
+    expect(vm.data.i).toEqual(0x500);
     vm.executeOpcode(0xF355); // ld_mem_i_regs
     expect(vm.data.memory[0x500 + 0]).toEqual(0x11);
     expect(vm.data.memory[0x500 + 1]).toEqual(0x22);
     expect(vm.data.memory[0x500 + 2]).toEqual(0x33);
     expect(vm.data.memory[0x500 + 3]).toEqual(0x21);
     expect(vm.data.i).toEqual(0x500 + 4);
+    expect(vm.data.pc).toEqual(0x321 + 2 * 6);
 
     vm.data.memory[0x500 + 0] = 0x12;
     vm.data.memory[0x500 + 1] = 0x24;
     vm.data.memory[0x500 + 2] = 0x56;
     vm.executeOpcode(0xA500);
+    expect(vm.data.i).toEqual(0x500);
     vm.executeOpcode(0xF365); // ld_regs_mem_i
     expect(vm.data.registers[0x0]).toEqual(0x12);
     expect(vm.data.registers[0x1]).toEqual(0x24);
     expect(vm.data.registers[0x2]).toEqual(0x56);
     expect(vm.data.registers[0x3]).toEqual(0x21);
-    expect(vm.data.i).toEqual(0x500 + 4);
+    expect(vm.data.i).toEqual(0x500); // I should not be changed
 
     expect(vm.data.pc).toEqual(0x0321 + 2 * 8);
   });
