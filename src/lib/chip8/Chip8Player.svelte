@@ -17,22 +17,23 @@
 
   /** Rendering color for OFF pixels. */
   export let offColor: ColorRGB = {
-    r: 255,
-    g: 255,
-    b: 255,
+    r: 0,
+    g: 0,
+    b: 0,
   };
   /** Rendering color for ON pixels. */
   export let onColor: ColorRGB = {
-    r: 43,
-    g: 43,
-    b: 45,
+    r: 255,
+    g: 255,
+    b: 255,
   };
 
   // CHIP-8 virtual machine timing
   const VM_TICK_RATE_MS = 1000 / 60;
   const VM_CPU_TICK_RATE_MS = 1000 / 240;
   // CHIP-8 virtual machine management
-  let refreshDisplay = (display: Chip8Display) => {};
+  export let dataROM: Uint8Array = new Uint8Array();
+  let refreshDisplay = (_display: Chip8Display) => {};
   let [running, isWaitingForKey] = [false, false];
   const context: Chip8ExecutionContext = {
     onWaitingForKey: () => {
@@ -41,16 +42,19 @@
   };
   const vm = new Chip8VirtualMachine(context);
   const run = () => {
+    vm.loadROM(dataROM);
     running = true;
     // timers
-    setTimeout(() => {
+    const timersCycle = () => {
       if (!running) {
         return;
       }
       vm.tick();
-    }, VM_TICK_RATE_MS);
+      setTimeout(timersCycle, VM_TICK_RATE_MS);
+    };
+    setTimeout(timersCycle, VM_TICK_RATE_MS);
     // CPU
-    setTimeout(() => {
+    const cpuCycle = () => {
       if (!running || isWaitingForKey) {
         return;
       }
@@ -58,7 +62,9 @@
       if (vm.display.data.isDirty) {
         refreshDisplay(vm.display);
       }
-    }, VM_CPU_TICK_RATE_MS);
+      setTimeout(cpuCycle, VM_CPU_TICK_RATE_MS);
+    };
+    setTimeout(cpuCycle, VM_CPU_TICK_RATE_MS);
   };
 
   // CHIP-8 display rendering
@@ -114,6 +120,6 @@
 
 <style lang="postcss">
   .container {
-    @apply bg-white rounded;
+    @apply rounded;
   }
 </style>

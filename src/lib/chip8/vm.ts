@@ -1,6 +1,7 @@
 import { Chip8Keypad } from "./keypad";
 import { Chip8Display, FONT_SET } from "./display";
-import { Chip8DisassembledInstruction, instructionFromOpcode } from "./instructions";
+import { instructionFromOpcode } from "./instructions";
+import type { Chip8DisassembledInstruction } from "./instructions";
 
 export interface Chip8VirtualMachineData {
   /** 4KB of RAM (4096 bytes), from 0x000 to 0xFFF. */
@@ -39,6 +40,7 @@ export interface Chip8ExecutionContext {
   onWaitingForKey: () => void;
 }
 
+// TODO: we can't use the new "#" private method syntax due to Svelte's compiler not supporting it currently
 export class Chip8VirtualMachine {
   data: Chip8VirtualMachineData = initChip8VirtualMachineData();
   display: Chip8Display = new Chip8Display();
@@ -49,6 +51,20 @@ export class Chip8VirtualMachine {
   reset() {
     this.data = initChip8VirtualMachineData();
     this.display.clear();
+  }
+
+  loadROM(rom: Uint8Array) {
+    this.reset();
+    // the original CHIP-8 interpreters used [0x00..0x200] to store themselves
+    const memoryStart = 0x200;
+    // FIXME:
+    this.data.memory.set(rom, memoryStart);
+    // conversion/loading: ROM is 8 bits but opcodes are 16
+    // for (let j = 0; j < rom.length; j++) {
+    //   const romByte = rom[j];
+    //   this.data.memory[memoryStart + j * 2] = romByte >> 8; // Most Significant Byte
+    //   this.data.memory[memoryStart + j * 2 + 1] = romByte & 0x00FF; // Least Significant Byte
+    // }
   }
 
   setShouldShiftOpcodeUseVY(shouldShiftOpcodeUseVY: boolean) {
@@ -91,165 +107,165 @@ export class Chip8VirtualMachine {
 
     // TODO: can we reduce boilerplate here? inference seems to break
     if (decodedInstruction.id === "CLS") {
-      this.#clearScreen();
+      this._clearScreen();
     } else if (decodedInstruction.id === "RET") {
-      this.#return();
+      this._return();
     } else if (decodedInstruction.id === "JP_ADDR") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"JP_ADDR">;
-      this.#jumpAddress(parameters[0].address);
+      this._jumpAddress(parameters[0].address);
     } else if (decodedInstruction.id === "CALL_ADDR") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"CALL_ADDR">;
-      this.#callAddress(parameters[0].address);
+      this._callAddress(parameters[0].address);
     } else if (decodedInstruction.id === "SE_VX_NN") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SE_VX_NN">;
-      this.#skipIfVxEqualsNN(parameters[0].registerIndex, parameters[1].byte);
+      this._skipIfVxEqualsNN(parameters[0].registerIndex, parameters[1].byte);
     } else if (decodedInstruction.id === "SNE_VX_NN") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SNE_VX_NN">;
-      this.#skipIfVxDoesNotEqualNN(parameters[0].registerIndex, parameters[1].byte);
+      this._skipIfVxDoesNotEqualNN(parameters[0].registerIndex, parameters[1].byte);
     } else if (decodedInstruction.id === "SE_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SE_VX_VY">;
-      this.#skipIfVxEqualsVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._skipIfVxEqualsVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "LD_VX_NN") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_NN">;
-      this.#loadVxNN(parameters[0].registerIndex, parameters[1].byte);
+      this._loadVxNN(parameters[0].registerIndex, parameters[1].byte);
     } else if (decodedInstruction.id === "ADD_VX_NN") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_NN">;
-      this.#addVxNN(parameters[0].registerIndex, parameters[1].byte);
+      this._addVxNN(parameters[0].registerIndex, parameters[1].byte);
     } else if (decodedInstruction.id === "LD_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_VY">;
-      this.#loadVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._loadVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "OR_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"OR_VX_VY">;
-      this.#orVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._orVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "AND_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"AND_VX_VY">;
-      this.#andVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._andVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "XOR_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"XOR_VX_VY">;
-      this.#xorVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._xorVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "ADD_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"ADD_VX_VY">;
-      this.#addVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._addVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "SUB_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SUB_VX_VY">;
-      this.#subVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._subVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "SHR_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SHR_VX_VY">;
-      this.#shiftRightVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._shiftRightVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "SUBN_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SUBN_VX_VY">;
-      this.#subnVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._subnVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "SHL_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SHL_VX_VY">;
-      this.#shiftLeftVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._shiftLeftVxVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "SNE_VX_VY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SNE_VX_VY">;
-      this.#skipIfVxDoesNotEqualVy(parameters[0].registerIndex, parameters[1].registerIndex);
+      this._skipIfVxDoesNotEqualVy(parameters[0].registerIndex, parameters[1].registerIndex);
     } else if (decodedInstruction.id === "LD_I_ADDR") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_I_ADDR">;
-      this.#loadIAddress(parameters[0].address);
+      this._loadIAddress(parameters[0].address);
     } else if (decodedInstruction.id === "JP_ADDR_V0") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"JP_ADDR_V0">;
       const address = parameters[0].address + this.data.registers[0];
-      this.#jumpAddress(address);
+      this._jumpAddress(address);
     } else if (decodedInstruction.id === "RND_VX_NN") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"RND_VX_NN">;
-      this.#randomVxNN(parameters[0].registerIndex, parameters[1].byte);
+      this._randomVxNN(parameters[0].registerIndex, parameters[1].byte);
     } else if (decodedInstruction.id === "DRW_VX_VY_N") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"DRW_VX_VY_N">;
-      this.#drawVxVyN(parameters[0].registerIndex, parameters[1].registerIndex, parameters[2].nibble);
+      this._drawVxVyN(parameters[0].registerIndex, parameters[1].registerIndex, parameters[2].nibble);
     } else if (decodedInstruction.id === "SKP_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SKP_VX">;
-      this.#skipIfVxKey(parameters[0].registerIndex);
+      this._skipIfVxKey(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "SKNP_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"SKNP_VX">;
-      this.#skipIfNotVxKey(parameters[0].registerIndex);
+      this._skipIfNotVxKey(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_VX_DT") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_DT">;
-      this.#loadVxDt(parameters[0].registerIndex);
+      this._loadVxDt(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_VX_KEY") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_VX_KEY">;
-      this.#loadVxKey(parameters[0].registerIndex);
+      this._loadVxKey(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_DT_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_DT_VX">;
-      this.#loadDtVx(parameters[0].registerIndex);
+      this._loadDtVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_ST_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_ST_VX">;
-      this.#loadStVx(parameters[0].registerIndex);
+      this._loadStVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "ADD_I_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"ADD_I_VX">;
-      this.#addIVx(parameters[0].registerIndex);
+      this._addIVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_I_FONT_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_I_FONT_VX">;
-      this.#loadIFontVx(parameters[0].registerIndex);
+      this._loadIFontVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_MEM_I_BCD_VX") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_MEM_I_BCD_VX">;
-      this.#loadMemoryIBcdVx(parameters[0].registerIndex);
+      this._loadMemoryIBcdVx(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_MEM_I_REGS") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_MEM_I_REGS">;
-      this.#loadMemoryIRegisters(parameters[0].registerIndex);
+      this._loadMemoryIRegisters(parameters[0].registerIndex);
     } else if (decodedInstruction.id === "LD_REGS_MEM_I") {
       const { parameters } = decodedInstruction as Chip8DisassembledInstruction<"LD_REGS_MEM_I">;
-      this.#loadRegistersMemoryI(parameters[0].registerIndex);
+      this._loadRegistersMemoryI(parameters[0].registerIndex);
     }
   }
 
-  #clearScreen() {
+  _clearScreen() {
     this.display.clear();
     this.data.pc += 2;
   }
 
-  #return() {
+  _return() {
     const address = this.data.stack[--this.data.sp];
-    this.#jumpAddress(address);
+    this._jumpAddress(address);
     this.data.pc += 2;
   }
 
-  #jumpAddress(nnn: number) {
+  _jumpAddress(nnn: number) {
     this.data.pc = nnn;
   }
 
-  #callAddress(nnn: number) {
+  _callAddress(nnn: number) {
     this.data.stack[this.data.sp++] = this.data.pc;
-    this.#jumpAddress(nnn);
+    this._jumpAddress(nnn);
   }
 
-  #skipIfVxEqualsNN(x: number, nn: number) {
+  _skipIfVxEqualsNN(x: number, nn: number) {
     this.data.pc += this.data.registers[x] === nn ? 4 : 2;
   }
-  #skipIfVxDoesNotEqualNN(x: number, nn: number) {
+  _skipIfVxDoesNotEqualNN(x: number, nn: number) {
     this.data.pc += this.data.registers[x] !== nn ? 4 : 2;
   }
-  #skipIfVxEqualsVy(x: number, y: number) {
+  _skipIfVxEqualsVy(x: number, y: number) {
     this.data.pc += this.data.registers[x] === this.data.registers[y] ? 4 : 2;
   }
-  #skipIfVxDoesNotEqualVy(x: number, y: number) {
+  _skipIfVxDoesNotEqualVy(x: number, y: number) {
     this.data.pc += this.data.registers[x] !== this.data.registers[y] ? 4 : 2;
   }
-  #skipIfVxKey(x: number) {
+  _skipIfVxKey(x: number) {
     this.data.pc += this.keypad.isKeyPressed(this.data.registers[x]) ? 4 : 2;
   }
-  #skipIfNotVxKey(x: number) {
+  _skipIfNotVxKey(x: number) {
     this.data.pc += this.keypad.isKeyPressed(this.data.registers[x]) ? 2 : 4;
   }
 
-  #loadVxNN(x: number, nn: number) {
+  _loadVxNN(x: number, nn: number) {
     this.data.registers[x] = nn;
     this.data.pc += 2;
   }
-  #loadVxVy(x: number, y: number) {
+  _loadVxVy(x: number, y: number) {
     this.data.registers[x] = this.data.registers[y];
     this.data.pc += 2;
   }
-  #loadVxDt(x: number) {
+  _loadVxDt(x: number) {
     this.data.registers[x] = this.data.DT;
     this.data.pc += 2;
   }
-  #loadDtVx(x: number) {
+  _loadDtVx(x: number) {
     this.data.DT = this.data.registers[x];
     this.data.pc += 2;
   }
-  #loadStVx(x: number) {
+  _loadStVx(x: number) {
     this.data.ST = this.data.registers[x];
     this.data.pc += 2;
   }
@@ -259,12 +275,12 @@ export class Chip8VirtualMachine {
    * Works by notifying the emulation application context the VM is waiting for a key press.
    * Then, that context MUST call `endWaitingForKey`.
    */
-  #loadVxKey(x: number) {
+  _loadVxKey(x: number) {
     this.data.waitingForKeyRegisterIndex = x;
     this.context?.onWaitingForKey();
     this.data.pc += 2;
   }
-  #loadIAddress(nnn: number) {
+  _loadIAddress(nnn: number) {
     this.data.i = nnn;
     this.data.pc += 2;
   }
@@ -275,7 +291,7 @@ export class Chip8VirtualMachine {
    *
    * Will use the internal fontset stored in memory.
    */
-  #loadIFontVx(x: number) {
+  _loadIFontVx(x: number) {
     // the font set is in the memory range 0x0..0x80
     // and each character is represented by 5 bytes
     this.data.i = this.data.registers[x] * 5;
@@ -286,83 +302,83 @@ export class Chip8VirtualMachine {
    * Store the Binary-Coded Decimal equivalent of the value stored in
    * register VX in memory at the addresses I, I+1, and I+2.
    */
-  #loadMemoryIBcdVx(x: number) {
+  _loadMemoryIBcdVx(x: number) {
     const vx = this.data.registers[x];
     this.data.memory[this.data.i] = vx / 100;
     this.data.memory[this.data.i + 1] = (vx / 10) % 10;
     this.data.memory[this.data.i + 2] = (vx % 100) % 10;
     this.data.pc += 2;
   }
-  #loadMemoryIRegisters(x: number) {
+  _loadMemoryIRegisters(x: number) {
     for (let j = 0; j <= x; j++) {
       this.data.memory[this.data.i + j] = this.data.registers[j];
     }
     this.data.i += x + 1;
     this.data.pc += 2;
   }
-  #loadRegistersMemoryI(x: number) {
+  _loadRegistersMemoryI(x: number) {
     for (let j = 0; j <= x; j++) {
       this.data.registers[j] = this.data.memory[this.data.i + j];
     }
     this.data.pc += 2;
   }
 
-  #randomVxNN(x: number, nn: number) {
-    this.data.registers[x] = this.#randomIntegerInInclusiveRange(0x00, 0xff) & nn;
+  _randomVxNN(x: number, nn: number) {
+    this.data.registers[x] = this._randomIntegerInInclusiveRange(0x00, 0xff) & nn;
     this.data.pc += 2;
   }
-  #randomIntegerInInclusiveRange(min: number, max: number): number {
+  _randomIntegerInInclusiveRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min) + min);
   }
 
-  #addVxNN(x: number, nn: number) {
+  _addVxNN(x: number, nn: number) {
     const value = (this.data.registers[x] + nn) % 256;
     this.data.registers[x] = value;
     this.data.pc += 2;
   }
-  #orVxVy(x: number, y: number) {
+  _orVxVy(x: number, y: number) {
     this.data.registers[x] |= this.data.registers[y];
     this.data.pc += 2;
   }
-  #andVxVy(x: number, y: number) {
+  _andVxVy(x: number, y: number) {
     this.data.registers[x] &= this.data.registers[y];
     this.data.pc += 2;
   }
-  #xorVxVy(x: number, y: number) {
+  _xorVxVy(x: number, y: number) {
     this.data.registers[x] ^= this.data.registers[y];
     this.data.pc += 2;
   }
-  #addVxVy(x: number, y: number) {
+  _addVxVy(x: number, y: number) {
     const value = this.data.registers[x] + this.data.registers[y];
     this.data.registers[x] = value;
     this.data.registers[0xf] = value > 0xff ? 1 : 0;
     this.data.pc += 2;
   }
-  #subVxVy(x: number, y: number) {
+  _subVxVy(x: number, y: number) {
     const value = this.data.registers[x] - this.data.registers[y];
     this.data.registers[x] = value;
     this.data.registers[0xf] = value < 0 ? 1 : 0;
     this.data.pc += 2;
   }
-  #subnVxVy(x: number, y: number) {
+  _subnVxVy(x: number, y: number) {
     const value = this.data.registers[y] - this.data.registers[x];
     this.data.registers[x] = value;
     this.data.registers[0xf] = value < 0 ? 1 : 0;
     this.data.pc += 2;
   }
-  #shiftRightVxVy(x: number, y: number) {
+  _shiftRightVxVy(x: number, y: number) {
     const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
     this.data.registers[0xf] = this.data.registers[shiftOnIndex] & 0x01;
     this.data.registers[x] = this.data.registers[shiftOnIndex] >> 1;
     this.data.pc += 2;
   }
-  #shiftLeftVxVy(x: number, y: number) {
+  _shiftLeftVxVy(x: number, y: number) {
     const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
     this.data.registers[0xf] = this.data.registers[shiftOnIndex] & 0x80;
     this.data.registers[x] = this.data.registers[shiftOnIndex] << 1;
     this.data.pc += 2;
   }
-  #addIVx(x: number) {
+  _addIVx(x: number) {
     this.data.i += this.data.registers[x];
     this.data.pc += 2;
   }
@@ -375,7 +391,7 @@ export class Chip8VirtualMachine {
    * VF will act here as a collision flag, i.e. if any set pixel is erased
    * set it to 0x1, and to 0x0 otherwise.
    */
-  #drawVxVyN(x: number, y: number, n: number) {
+  _drawVxVyN(x: number, y: number, n: number) {
     const [positionX, positionY] = [this.data.registers[x], this.data.registers[y]];
     const [memoryStart, memoryEnd] = [this.data.i, this.data.i + n];
     const sprite = Array.from(this.data.memory.slice(memoryStart, memoryEnd));

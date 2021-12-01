@@ -724,7 +724,10 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
   },
 };
 
-export type Chip8DisassembledInstruction<ID extends Chip8InstructionID> = Omit<Chip8Instruction<ID>, "matchOpcode"> & {
+export type Chip8DisassembledInstruction<ID extends Chip8InstructionID = Chip8InstructionID> = Omit<
+  Chip8Instruction<ID>,
+  "matchOpcode"
+> & {
   parameters: Chip8InstructionsParametersTypesTable[ID];
 };
 
@@ -732,7 +735,7 @@ export type Chip8DisassembledInstruction<ID extends Chip8InstructionID> = Omit<C
  * Try to disassemble an opcode word (2 bytes = 16 bits) into the internal
  * instruction representation.
  */
-export const instructionFromOpcode = (opcode: number): Chip8DisassembledInstruction<Chip8InstructionID> | null => {
+export const instructionFromOpcode = (opcode: number): Chip8DisassembledInstruction | null => {
   const [n4, n3, n2, n1] = [(opcode & 0xf000) >> 12, (opcode & 0x0f00) >> 8, (opcode & 0x00f0) >> 4, opcode & 0x000f];
   for (const { matchOpcode, ...instruction } of Object.values(chip8InstructionSet)) {
     const matchOutput = matchOpcode({ n4, n3, n2, n1, opcode });

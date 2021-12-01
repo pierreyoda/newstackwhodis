@@ -6,12 +6,14 @@ published: true
 ---
 
 <script lang="ts">
+  import { MAZE_ROM } from "$lib/chip8/rom-fetcher";
   import Chip8Player from "$lib/chip8/Chip8Player.svelte";
+
 </script>
 
 # Getting Into Emulator Development with the CHIP-8
 
-<Chip8Player />
+<Chip8Player dataROM={MAZE_ROM} scale={10} />
 
 ## Emulators
 
