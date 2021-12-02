@@ -6,9 +6,8 @@ published: true
 ---
 
 <script lang="ts">
-  import { MAZE_ROM } from "$lib/chip8/rom-fetcher";
+  import { MAZE_ROM, SIERPINSKI_ROM, KEYPAD_ROM } from "$lib/chip8/rom-fetcher";
   import Chip8Player from "$lib/chip8/Chip8Player.svelte";
-
 </script>
 
 # Getting Into Emulator Development with the CHIP-8
@@ -21,4 +20,6 @@ published: true
 
 ## The CHIP-8 Virtual Machine
 
-## CHIP-8 in your browser!
+## CHIP-8 in your browser
+
+<Chip8Player dataROM={KEYPAD_ROM} scale={10} />

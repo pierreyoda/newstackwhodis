@@ -5,6 +5,7 @@
 
   import { Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
   import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
+  import { chip8AzertyInputsMap, chip8QwertyInputsMap } from "./input";
 
   interface ColorRGB {
     r: number;
@@ -67,6 +68,32 @@
     setTimeout(cpuCycle, VM_CPU_TICK_RATE_MS);
   };
 
+  // CHIP-8 input management
+  let isPlayerFocused = false;
+  export let inputScheme: "QWERTY" | "AZERTY" = "QWERTY";
+  $: inputsMap = inputScheme === "QWERTY" ? chip8QwertyInputsMap : chip8AzertyInputsMap;
+  onMount(() => {
+    if (!browser || typeof document === "undefined") {
+      return;
+    }
+    let latestEventKeyCode: string | null = null;
+    const handleKeydownEvent = (event: KeyboardEvent) => {
+      const { code } = event;
+      if (!isPlayerFocused || code === latestEventKeyCode) {
+        return;
+      }
+      const keypadIndex = inputsMap[code];
+      if (!keypadIndex) {
+        return;
+      }
+      vm.keypad.setIsKeyPressed(keypadIndex, true);
+      if (isWaitingForKey) {
+        vm.endWaitingForKey(keypadIndex);
+      }
+    };
+    document.addEventListener("keydown", handleKeydownEvent);
+  });
+
   // CHIP-8 display rendering
   let containerEl: HTMLElement;
   onMount(() => {
@@ -116,7 +143,19 @@
   });
 </script>
 
-<div bind:this={containerEl} class="container" />
+<div
+  bind:this={containerEl}
+  on:click={() => {
+    isPlayerFocused = true;
+  }}
+  on:focus={() => {
+    isPlayerFocused = true;
+  }}
+  on:blur={() => {
+    isPlayerFocused = false;
+  }}
+  class="container"
+/>
 
 <style lang="postcss">
   .container {

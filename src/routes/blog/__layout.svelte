@@ -8,10 +8,14 @@
   // type LoadedROMsRegistry = Record<HostedROM, { data: Uint8Array }>;
 
   // export const load: Load = async ({ fetch, stuff }) => {
-  //   const loadedROMs = (await Promise.all(hostedROMs.map(async (hostedROMName): Promise<[name: HostedROM, data: Uint8Array] | null> => {
-  //     const data = await fetchHostedROM(fetch, hostedROMName);
-  //     return data ? [hostedROMName, data] : null;
-  //   }))).filter(isDefined);
+  //   const loadedROMs = (
+  //     await Promise.all(
+  //       hostedROMs.map(async (hostedROMName): Promise<[name: HostedROM, data: Uint8Array] | null> => {
+  //         const data = await fetchHostedROM(fetch, hostedROMName);
+  //         return data ? [hostedROMName, data] : null;
+  //       }),
+  //     )
+  //   ).filter(isDefined);
   //   const loadedROMsRegistry = loadedROMs.reduce(
   //     (acc: LoadedROMsRegistry, [name, data]) => ({
   //       ...acc,
@@ -19,13 +23,13 @@
   //     }),
   //     {} as any,
   //   );
-  //   stuff.test = "hello";
+  //   console.log(loadedROMsRegistry);
   //   return {
   //     props: {
   //       loadedROMsRegistry,
   //     },
   //   };
-  // }
+  // };
 </script>
 
 <script lang="ts">
