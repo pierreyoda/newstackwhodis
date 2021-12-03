@@ -57,14 +57,7 @@ export class Chip8VirtualMachine {
     this.reset();
     // the original CHIP-8 interpreters used [0x00..0x200] to store themselves
     const memoryStart = 0x200;
-    // FIXME:
     this.data.memory.set(rom, memoryStart);
-    // conversion/loading: ROM is 8 bits but opcodes are 16
-    // for (let j = 0; j < rom.length; j++) {
-    //   const romByte = rom[j];
-    //   this.data.memory[memoryStart + j * 2] = romByte >> 8; // Most Significant Byte
-    //   this.data.memory[memoryStart + j * 2 + 1] = romByte & 0x00FF; // Least Significant Byte
-    // }
   }
 
   setShouldShiftOpcodeUseVY(shouldShiftOpcodeUseVY: boolean) {
@@ -357,13 +350,13 @@ export class Chip8VirtualMachine {
   _subVxVy(x: number, y: number) {
     const value = this.data.registers[x] - this.data.registers[y];
     this.data.registers[x] = value;
-    this.data.registers[0xf] = value < 0 ? 1 : 0;
+    this.data.registers[0xf] = value < 0 ? 0 : 1;
     this.data.pc += 2;
   }
   _subnVxVy(x: number, y: number) {
     const value = this.data.registers[y] - this.data.registers[x];
     this.data.registers[x] = value;
-    this.data.registers[0xf] = value < 0 ? 1 : 0;
+    this.data.registers[0xf] = value < 0 ? 0 : 1;
     this.data.pc += 2;
   }
   _shiftRightVxVy(x: number, y: number) {
@@ -374,8 +367,8 @@ export class Chip8VirtualMachine {
   }
   _shiftLeftVxVy(x: number, y: number) {
     const shiftOnIndex = this.data.shouldShiftOpcodeUseVY ? y : x;
-    this.data.registers[0xf] = this.data.registers[shiftOnIndex] & 0x80;
-    this.data.registers[x] = this.data.registers[shiftOnIndex] << 1;
+    this.data.registers[0xf] = (this.data.registers[shiftOnIndex] & 0x80) >> 7;
+    this.data.registers[x] = (this.data.registers[shiftOnIndex] << 1) & 0xff;
     this.data.pc += 2;
   }
   _addIVx(x: number) {

@@ -6,7 +6,7 @@ published: true
 ---
 
 <script lang="ts">
-  import { MAZE_ROM, SIERPINSKI_ROM, KEYPAD_ROM } from "$lib/chip8/rom-fetcher";
+  import { MAZE_ROM, BC_TEST_ROM } from "$lib/chip8/rom-fetcher";
   import Chip8Player from "$lib/chip8/Chip8Player.svelte";
 </script>
 
@@ -22,4 +22,4 @@ published: true
 
 ## CHIP-8 in your browser
 
-<Chip8Player dataROM={KEYPAD_ROM} scale={10} />
+<Chip8Player dataROM={BC_TEST_ROM} scale={10} />

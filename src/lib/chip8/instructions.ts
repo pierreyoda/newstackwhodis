@@ -168,13 +168,16 @@ export interface Chip8Instruction<ID extends Chip8InstructionID = Chip8Instructi
   }) => Chip8MatchOpcodeOutputForInstructionID<ID>;
 }
 
-const wordFromNibbles = ([n1, n2, n3]: [n1: number, n2?: number, n3?: number]): number => {
+export const wordFromNibbles = ([n1, n2, n3, n4]: [n1: number, n2?: number, n3?: number, n4?: number]): number => {
   let output = n1;
   if (n2) {
     output |= n2 << 4;
   }
   if (n3) {
     output |= n3 << 8;
+  }
+  if (n4) {
+    output |= n4 << 12;
   }
   return output;
 };
@@ -249,7 +252,7 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
         : false,
   },
   SNE_VX_NN: {
-    id: "SE_VX_NN",
+    id: "SNE_VX_NN",
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x4
         ? {

@@ -1,3 +1,4 @@
+import { wordFromNibbles } from "./instructions";
 import { Chip8VirtualMachine } from "./vm";
 
 // NB: these tests are directly lifted from my older rust-chip8 project:
@@ -77,6 +78,32 @@ describe("Chip8 Virtual Machine", () => {
     expect(vm.data.i).toEqual(0x500); // I should not be changed
 
     expect(vm.data.pc).toEqual(0x0321 + 2 * 8);
+
+    vm.reset();
+    vm.executeOpcode(0xa333);
+    expect(vm.data.i).toEqual(0x333);
+    for (let j = 0x0; j <= 0xc; j++) {
+      vm.data.registers[j] = j;
+    }
+    vm.executeOpcode(0xfc55);
+    for (let j = 0x0; j <= 0xc; j++) {
+      expect(vm.data.memory[0x333 + j]).toEqual(j);
+    }
+    expect(vm.data.memory[0x333 + 0xd]).toEqual(0x00);
+    expect(vm.data.i).toEqual(0x333 + 0xd);
+
+    vm.reset();
+    vm.executeOpcode(0xa400);
+    expect(vm.data.i).toEqual(0x400);
+    for (let j = 0x0; j <= 0xb; j++) {
+      vm.data.memory[0x400 + j] = j;
+    }
+    vm.executeOpcode(0xfb65);
+    for (let j = 0x0; j <= 0xb; j++) {
+      expect(vm.data.registers[j]).toEqual(j);
+    }
+    expect(vm.data.registers[0xc]).toEqual(0x00);
+    expect(vm.data.i).toEqual(0x400);
   });
 
   it("should correctly handle branching", () => {
@@ -125,11 +152,11 @@ describe("Chip8 Virtual Machine", () => {
     vm.executeOpcode(0x6009);
     vm.executeOpcode(0x610f);
     vm.executeOpcode(0x8015); // sub_vx_vy
-    expect(vm.data.registers[0xf]).toEqual(0x1);
+    expect(vm.data.registers[0xf]).toEqual(0x0);
     expect(vm.data.registers[0]).toEqual(0xfa);
     vm.executeOpcode(0x6009);
     vm.executeOpcode(0x8017); // subn_vx_vy
-    expect(vm.data.registers[0xf]).toEqual(0x0);
+    expect(vm.data.registers[0xf]).toEqual(0x1);
     expect(vm.data.registers[0]).toEqual(0x6);
     expect(vm.data.pc).toEqual(0x444 + 2 * 5);
   });
