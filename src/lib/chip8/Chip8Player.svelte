@@ -3,9 +3,10 @@
   import { browser } from "$app/env";
   import { select } from "d3-selection";
 
+  import { isDefined } from "../../utils";
   import { Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
-  import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
   import { chip8AzertyInputsMap, chip8QwertyInputsMap } from "./input";
+  import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
 
   interface ColorRGB {
     r: number;
@@ -83,12 +84,17 @@
         return;
       }
       const keypadIndex = inputsMap[code];
-      if (!keypadIndex) {
+      if (!isDefined(keypadIndex)) {
         return;
+      }
+      latestEventKeyCode = code;
+      for (let i = 0x0; i <= 0xf; i++) {
+        vm.keypad.setIsKeyPressed(i, false);
       }
       vm.keypad.setIsKeyPressed(keypadIndex, true);
       if (isWaitingForKey) {
         vm.endWaitingForKey(keypadIndex);
+        isWaitingForKey = false;
       }
     };
     document.addEventListener("keydown", handleKeydownEvent);
