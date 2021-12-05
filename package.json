@@ -19,7 +19,6 @@
   "dependencies": {
     "d3-path": "3.0.1",
     "d3-selection": "3.0.0",
-    "dayjs": "1.10.7",
     "debug": "4.3.3",
     "lodash.orderby": "4.6.0",
     "node-emoji": "1.11.0"

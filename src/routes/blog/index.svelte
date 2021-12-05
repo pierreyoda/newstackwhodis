@@ -1,5 +1,4 @@
 <script context="module" lang="ts">
-  import dayjs from "dayjs";
   import type { Load } from "@sveltejs/kit";
   import type { BlogPostMeta } from "../../api/posts";
 
