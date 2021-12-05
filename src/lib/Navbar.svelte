@@ -27,6 +27,7 @@
 <style lang="postcss">
   .navbar-container {
     @apply flex items-center w-full p-2;
+    @apply max-w-3xl mx-auto;
     @apply text-gray-lighter;
 
     nav {

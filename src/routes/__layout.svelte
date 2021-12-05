@@ -18,7 +18,7 @@
   export let selectedCategory: NavigationSelectableCategory;
 </script>
 
-<div class="layout-container">
+<div class="layout-container" class:in-blog={selectedCategory === "blog"}>
   <div class="flex flex-col flex-grow w-full">
     <Navbar {selectedCategory} />
     <main class="flex-grow px-2 pt-2 overflow-auto md:px-8">
@@ -38,6 +38,8 @@
 
   .layout-container {
     @apply flex flex-col w-full h-full;
-    @apply max-w-3xl mx-auto;
+    &:not(.in-blog) {
+      @apply max-w-3xl mx-auto;
+    }
   }
 </style>

@@ -45,7 +45,7 @@
     @apply text-white;
 
     :global(> *) {
-      @apply mt-4;
+      @apply mt-4 max-w-3xl mx-auto;
     }
 
     :global(a) {
@@ -60,6 +60,14 @@
     }
     :global(h3) {
       @apply font-semibold mt-6 mb-6;
+    }
+  }
+
+  @screen lg {
+    .post-container {
+      :global(pre) {
+        @apply max-w-5xl;
+      }
     }
   }
 </style>

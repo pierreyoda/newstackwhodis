@@ -31,6 +31,9 @@
 </div>
 
 <style lang="postcss">
+  .container {
+    @apply max-w-3xl mx-auto;
+  }
   .post-meta {
     @apply mb-8;
     &:last-of-type {
