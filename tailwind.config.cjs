@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss/tailwind-config').TailwindConfig} */
 module.exports = {
-  mode: "jit",
-  purge: ["./src/**/*.svelte", "./src/**/*.svelte.md", "./src/**/*.html"],
+  content: ["./src/**/*.svelte", "./src/**/*.svelte.md", "./src/**/*.html"],
   darkMode: "media",
   theme: {
     colors: {
