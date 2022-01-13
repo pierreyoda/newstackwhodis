@@ -1,10 +1,10 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
 
-  export const load: Load = async ({ page: { path } }) => ({
+  export const load: Load = async ({ url }) => ({
     props: {
       selectedCategory: ((): NavigationSelectableCategory =>
-        path === "/blog/about" ? "about" : path.startsWith("/blog") ? "blog" : "projects")(),
+        url.pathname === "/blog/about" ? "about" : url.pathname.startsWith("/blog") ? "blog" : "projects")(),
     },
   });
 </script>
