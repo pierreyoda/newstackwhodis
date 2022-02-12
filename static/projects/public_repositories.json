@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2021-11-26T12:52:16.035Z"
+    "exportDate": "2022-02-12T15:09:11.360Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 9
+      "stargazersCount": 12
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -36,20 +36,20 @@
       "stargazersCount": 7
     },
     {
+      "url": "https://github.com/pierreyoda/GameInc",
+      "name": "GameInc",
+      "description": "Game development studio management game made with Unity.",
+      "fullName": "pierreyoda/GameInc",
+      "forksCount": 4,
+      "stargazersCount": 4
+    },
+    {
       "url": "https://github.com/pierreyoda/rust-chip8",
       "name": "rust-chip8",
       "description": "A simple Chip8 emulator made in Rust.",
       "fullName": "pierreyoda/rust-chip8",
       "forksCount": 0,
       "stargazersCount": 4
-    },
-    {
-      "url": "https://github.com/pierreyoda/GameInc",
-      "name": "GameInc",
-      "description": "Game development studio management game made with Unity.",
-      "fullName": "pierreyoda/GameInc",
-      "forksCount": 4,
-      "stargazersCount": 3
     },
     {
       "url": "https://github.com/pierreyoda/rust-mal",
