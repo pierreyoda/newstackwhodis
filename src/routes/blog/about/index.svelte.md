@@ -9,7 +9,7 @@ My name is Pierre-Yves.
 
 I'm a French Software Engineer.
 
-My main professional specialty is Typescript, both on the front-end (React, Angular, Vue.js) and on the back-end (Node.js, especially with NestJS or Serverless Framework).
+My main professional specialty is Typescript, both on the front-end (React, Angular, Vue.js) and on the back-end (Node.js, especially with NestJS or the Serverless Framework).
 
 I also do **a lot** of Rust for my [personal projects](https://github.com/pierreyoda)!
 
