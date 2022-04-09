@@ -4,7 +4,7 @@
   import { select } from "d3-selection";
 
   import { isDefined } from "../../utils";
-  import { Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
+  import { type Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
   import { chip8AzertyInputsMap, chip8QwertyInputsMap } from "./input";
   import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
 

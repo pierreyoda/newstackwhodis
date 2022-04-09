@@ -3,7 +3,7 @@
   import RangeSlider from "svelte-range-slider-pips";
 
   import LSystemTracingRenderer from "./LSystemTracingRenderer.svelte";
-  import { iteratedLSystem, LSystem, LSystemTrace, traceLSystem } from "./lsystem";
+  import { iteratedLSystem, type LSystem, type LSystemTrace, traceLSystem } from "./lsystem";
 
   export let lsystem: LSystem<string>;
   export let initialAngle: number = 0;
