@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-02-12T15:09:11.360Z"
+    "exportDate": "2022-04-09T14:35:40.783Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 12
+      "stargazersCount": 15
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -88,14 +88,6 @@
       "name": "Tetris",
       "description": "The classic Tetris game, built with Java and Swing.",
       "fullName": "pierreyoda/Tetris",
-      "forksCount": 0,
-      "stargazersCount": 0
-    },
-    {
-      "url": "https://github.com/pierreyoda/vue-animations-test",
-      "name": "vue-animations-test",
-      "description": "Vue.js animations POC with various libraries",
-      "fullName": "pierreyoda/vue-animations-test",
       "forksCount": 0,
       "stargazersCount": 0
     }
