@@ -29,7 +29,7 @@ const config = {
     vite: {
       server: {
         fs: {
-          allow: ["static"]
+          allow: ["static"],
         },
       },
     },
