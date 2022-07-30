@@ -26,13 +26,6 @@ const config = {
       assets: "./build/",
       fallback: null,
     }),
-    vite: {
-      server: {
-        fs: {
-          allow: ["static"],
-        },
-      },
-    },
   },
 };
 
