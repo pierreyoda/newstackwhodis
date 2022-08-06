@@ -1,4 +1,3 @@
-import { wordFromNibbles } from "./instructions";
 import { Chip8VirtualMachine } from "./vm";
 
 // NB: these tests are directly lifted from my older rust-chip8 project:
