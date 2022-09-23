@@ -18,9 +18,6 @@ const config = {
     }),
   ],
   kit: {
-    prerender: {
-      default: true,
-    },
     adapter: staticAdapter({
       pages: "./build/",
       assets: "./build/",
