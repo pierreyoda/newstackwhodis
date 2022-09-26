@@ -5,7 +5,7 @@
 </script>
 
 <li class="mr-8 last:mr-0">
-  <a sveltekit:prefetch {href} class:selected={isSelected}>
+  <a data-sveltekit-prefetch {href} class:selected={isSelected}>
     {label}
   </a>
 </li>

@@ -25,7 +25,7 @@
 <div class="project-card-container" class:highlighted={isHighlighted}>
   <h2 class="project-card-title" class:has-blog-post={!!projectMeta.blogPostSlug}>
     {#if projectMeta.blogPostSlug}
-      <a sveltekit:prefetch href={`/blog/${projectMeta.blogPostSlug}`}>
+      <a data-sveltekit-prefetch href={`/blog/${projectMeta.blogPostSlug}`}>
         {projectMeta.title}
       </a>
     {:else}

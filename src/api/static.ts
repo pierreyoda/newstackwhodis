@@ -2,7 +2,7 @@ import nodeEmojiPkg from "node-emoji";
 const { emojify } = nodeEmojiPkg;
 
 import type { RepositoriesData } from "./fetcher";
-import GithubPublicRepositoriesMeta from "../../static/projects/public_repositories.json";
+import GithubPublicRepositoriesMeta from "./projects/public_repositories.json";
 
 export const parsedRepositoriesData = (): RepositoriesData => {
   const { metadata, githubRepositories }: RepositoriesData = GithubPublicRepositoriesMeta;

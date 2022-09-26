@@ -1,17 +1,13 @@
-<script context="module" lang="ts">
-  export const navigationSelectableCategories = ["blog", "projects", "about"] as const;
-  export type NavigationSelectableCategory = typeof navigationSelectableCategories[number];
-</script>
-
 <script lang="ts">
   import NavbarLink from "./NavbarLink.svelte";
+  import type { NavigationSelectableCategory } from "./types";
 
   export let selectedCategory: NavigationSelectableCategory;
 </script>
 
 <div class="navbar-container">
   <div class="flex items-center">
-    <a sveltekit:prefetch href="/">
+    <a data-sveltekit-prefetch href="/">
       <img class="w-32 h-auto" src="/brand.svg" alt="Praca logo" />
     </a>
   </div>

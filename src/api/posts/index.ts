@@ -24,14 +24,15 @@ export interface BlogPostMeta {
 
 export const getBlogPostMetaBySlug = async ({ slug }: { slug: string }): Promise<BlogPostMeta | null> => {
   try {
-    const filepath = join(postsDirectory, slug, "index.svelte.md");
+    const filepath = join(postsDirectory, slug, "+page.svelte.md");
     const fileContent = await fs.readFile(filepath, "utf-8");
-    const { data } = await compile(fileContent, {
+    const compilationResult = await compile(fileContent, {
       remarkPlugins: [remarkEmoji],
     });
-    return data?.fm
+    console.log("r", compilationResult)
+    return compilationResult?.data?.fm
       ? {
-          ...(data.fm as BlogPostMeta),
+          ...(compilationResult?.data?.fm as BlogPostMeta),
           slug,
         }
       : null;

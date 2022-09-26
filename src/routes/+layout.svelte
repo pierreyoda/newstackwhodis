@@ -1,26 +1,15 @@
-<script context="module" lang="ts">
-  import type { Load } from "@sveltejs/kit";
-
-  export const load: Load = async ({ url }) => ({
-    props: {
-      selectedCategory: ((): NavigationSelectableCategory =>
-        url.pathname === "/blog/about" ? "about" : url.pathname.startsWith("/blog") ? "blog" : "projects")(),
-    },
-  });
-</script>
-
 <script lang="ts">
   import "../app.css";
   import Navbar from "$lib/Navbar.svelte";
   import Footer from "$lib/Footer.svelte";
-  import type { NavigationSelectableCategory } from "$lib/Navbar.svelte";
+  import type { PageData } from "./$types";
 
-  export let selectedCategory: NavigationSelectableCategory;
+  export let data: PageData;
 </script>
 
-<div class="layout-container" class:in-blog={selectedCategory === "blog"}>
+<div class="layout-container" class:in-blog={data.selectedCategory === "blog"}>
   <div class="flex flex-col flex-grow w-full">
-    <Navbar {selectedCategory} />
+    <Navbar selectedCategory={data.selectedCategory} />
     <main class="flex-grow px-2 pt-2 overflow-auto md:px-8">
       <slot />
     </main>

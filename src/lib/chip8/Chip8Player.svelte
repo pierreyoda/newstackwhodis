@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { browser } from "$app/env";
+  import { browser } from "$app/environment";
   import { select } from "d3-selection";
 
   import { isDefined } from "../../utils";

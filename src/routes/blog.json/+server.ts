@@ -1,4 +1,4 @@
-import type { RequestHandler } from "@sveltejs/kit";
+import { json, type RequestHandler } from '@sveltejs/kit';
 
 import { isDefined } from "../../utils";
 import { getBlogPostMetaBySlug, getBlogPostsSlugs } from "../../api/posts";
@@ -10,15 +10,12 @@ export const GET: RequestHandler = async () => {
       .filter(isDefined)
       .filter(meta => meta?.published)
       .sort((a, b) => b.date.localeCompare(a.date));
-    return {
-      body: {
-        postsMeta: JSON.stringify(postsMeta),
-      },
-    };
+    console.log("metaRaw", (await Promise.all(slugs.map(slug => getBlogPostMetaBySlug({ slug })))))
+    return json({
+      postsMeta: JSON.stringify(postsMeta),
+    });
   } catch (e) {
     console.error(e);
-    return {
-      status: 500,
-    };
+    return new Response(undefined, { status: 500 });
   }
 };

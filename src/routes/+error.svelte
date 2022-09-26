@@ -1,15 +1,7 @@
-<script context="module" lang="ts">
-  import type { ErrorLoad } from "@sveltejs/kit";
-
-  export const load: ErrorLoad = ({ error, status }) => ({
-    props: {
-      message: `${status}: ${error.message}`,
-    },
-  });
-</script>
-
 <script lang="ts">
-  export let message: string;
+  import { page } from "$app/stores";
+
+  $: message = `${$page.status}: ${$page.error?.message}`;
 </script>
 
 <div class="container">
