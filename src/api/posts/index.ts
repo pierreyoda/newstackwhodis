@@ -29,7 +29,6 @@ export const getBlogPostMetaBySlug = async ({ slug }: { slug: string }): Promise
     const compilationResult = await compile(fileContent, {
       remarkPlugins: [remarkEmoji],
     });
-    console.log("r", compilationResult)
     return compilationResult?.data?.fm
       ? {
           ...(compilationResult?.data?.fm as BlogPostMeta),

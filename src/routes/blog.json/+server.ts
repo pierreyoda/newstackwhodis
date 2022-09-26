@@ -10,7 +10,6 @@ export const GET: RequestHandler = async () => {
       .filter(isDefined)
       .filter(meta => meta?.published)
       .sort((a, b) => b.date.localeCompare(a.date));
-    console.log("metaRaw", (await Promise.all(slugs.map(slug => getBlogPostMetaBySlug({ slug })))))
     return json({
       postsMeta: JSON.stringify(postsMeta),
     });
