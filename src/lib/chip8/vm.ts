@@ -24,7 +24,7 @@ export interface Chip8VirtualMachineData {
    * Implementation option.
    *
    * Should the shifting opcodes 8XY6 and 8XYE use the original implementation,
-   * i.e. set VX to VY shifted respectively right and left by one bit ?
+   * i.e. set VX to VY shifted respectively right and left by one bit?
    * If false, the VM will instead consider as many ROMs seem to do that Y=X.
    * See http://mattmik.com/chip8.html for more detail.
    */
