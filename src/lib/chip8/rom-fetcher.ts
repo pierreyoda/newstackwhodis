@@ -1,5 +1,3 @@
-import type { LoadInput } from "@sveltejs/kit";
-
 export const hostedROMs = [
   // Tetris
   "TETRIS",
@@ -12,10 +10,10 @@ export const hostedROMs = [
 ] as const;
 export type HostedROM = typeof hostedROMs[number];
 
-export const fetchHostedROM = async (fetch: LoadInput["fetch"], hostedROM: HostedROM): Promise<Uint8Array | null> => {
+export const fetchHostedROM = async (fetcher: typeof fetch, hostedROM: HostedROM): Promise<Uint8Array | null> => {
   const staticPath = `/chip8/ROMS/${hostedROM}`;
   try {
-    const buffer = await fetch(staticPath, { method: "GET" }).then(res => res.arrayBuffer());
+    const buffer = await fetcher(staticPath, { method: "GET" }).then(res => res.arrayBuffer());
     return new Uint8Array(buffer);
   } catch (err) {
     console.error(`Chip8.fetchHostedROM("${hostedROM}") error:`, err);
