@@ -4,8 +4,9 @@
   import { select } from "d3-selection";
 
   import { isDefined } from "../../utils";
-  import { type Chip8ExecutionContext, Chip8VirtualMachine } from "./vm";
-  import { chip8AzertyInputsMap, chip8QwertyInputsMap } from "./input";
+  import Chip8Keypad from "./Chip8Keypad.svelte";
+  import { chip8AzertyInputsMap, chip8QwertyInputsMap, type Chip8KeypadIndex } from "./input";
+  import { Chip8VirtualMachine, type Chip8ExecutionContext } from "./vm";
   import { DISPLAY_WIDTH, DISPLAY_HEIGHT, Chip8Display } from "./display";
 
   interface ColorRGB {
@@ -29,6 +30,8 @@
     g: 255,
     b: 255,
   };
+
+  export let disableKeypad = false;
 
   // CHIP-8 virtual machine timing
   const VM_TICK_RATE_MS = 1000 / 60;
@@ -144,27 +147,40 @@
       }
     };
 
-    // TODO: add trigger button
+
     run();
   });
+
+  const onKeypadKeyPressed = (key: Chip8KeypadIndex) => vm.endWaitingForKey(key);
 </script>
 
-<div
-  bind:this={containerEl}
-  on:click={() => {
-    isPlayerFocused = true;
-  }}
-  on:focus={() => {
-    isPlayerFocused = true;
-  }}
-  on:blur={() => {
-    isPlayerFocused = false;
-  }}
-  class="container"
-/>
+<div class="flex flex-col md:flex-row">
+  <div
+    bind:this={containerEl}
+    on:click={() => {
+      isPlayerFocused = true;
+    }}
+    on:focus={() => {
+      isPlayerFocused = true;
+    }}
+    on:blur={() => {
+      isPlayerFocused = false;
+    }}
+    class="container"
+  />
+  {#if !disableKeypad}
+    <Chip8Keypad onKeyPressed={onKeypadKeyPressed} />
+  {/if}
+</div>
 
 <style lang="postcss">
   .container {
-    @apply rounded;
+    @apply rounded mb-8;
+  }
+
+  @screen md {
+    .container {
+      @apply mr-8;
+    }
   }
 </style>

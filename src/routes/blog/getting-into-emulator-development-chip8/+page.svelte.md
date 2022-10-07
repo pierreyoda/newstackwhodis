@@ -6,13 +6,13 @@ published: true
 ---
 
 <script lang="ts">
-  import { MAZE_ROM, BC_TEST_ROM } from "$lib/chip8/rom-fetcher";
+  import { MAZE_ROM, TETRIS_ROM } from "$lib/chip8/rom-fetcher";
   import Chip8Player from "$lib/chip8/Chip8Player.svelte";
 </script>
 
 # Getting Into Emulator Development with the CHIP-8
 
-<Chip8Player dataROM={MAZE_ROM} scale={10} />
+<Chip8Player dataROM={MAZE_ROM} scale={10} disableKeypad />
 
 ## Emulators
 
@@ -22,4 +22,4 @@ published: true
 
 ## CHIP-8 in your browser
 
-<Chip8Player dataROM={BC_TEST_ROM} scale={10} />
+<Chip8Player dataROM={TETRIS_ROM} scale={10} />

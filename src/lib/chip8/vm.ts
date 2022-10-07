@@ -98,7 +98,7 @@ export class Chip8VirtualMachine {
       return;
     }
 
-    // TODO: can we reduce boilerplate here? inference seems to break
+    // TODO: can we reduce the boilerplate here? inference seems to break
     if (decodedInstruction.id === "CLS") {
       this._clearScreen();
     } else if (decodedInstruction.id === "RET") {
