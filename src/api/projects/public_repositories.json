@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-09-26T14:28:42.265Z"
+    "exportDate": "2022-10-08T08:08:07.758Z"
   },
   "githubRepositories": [
     {
@@ -57,7 +57,7 @@
       "description": "Rust implementation of the Make A Lisp guide.",
       "fullName": "pierreyoda/rust-mal",
       "forksCount": 0,
-      "stargazersCount": 2
+      "stargazersCount": 3
     },
     {
       "url": "https://github.com/pierreyoda/hncli",
