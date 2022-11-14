@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-10-10T19:51:10.780Z"
+    "exportDate": "2022-11-14T17:37:43.668Z"
   },
   "githubRepositories": [
     {
@@ -52,20 +52,20 @@
       "stargazersCount": 4
     },
     {
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
+      "forksCount": 0,
+      "stargazersCount": 3
+    },
+    {
       "url": "https://github.com/pierreyoda/rust-mal",
       "name": "rust-mal",
       "description": "Rust implementation of the Make A Lisp guide.",
       "fullName": "pierreyoda/rust-mal",
       "forksCount": 0,
       "stargazersCount": 3
-    },
-    {
-      "url": "https://github.com/pierreyoda/hncli",
-      "name": "hncli",
-      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
-      "fullName": "pierreyoda/hncli",
-      "forksCount": 0,
-      "stargazersCount": 1
     },
     {
       "url": "https://github.com/pierreyoda/lsystem-renderer",
