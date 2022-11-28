@@ -7,13 +7,15 @@ published: true
 
 # An Hacker News Terminal UI in Rust: concept, architecture and the road to release
 
-// TODO: split in two articles
+// TODO: split in at least two articles
 
 ## Context
 
-[Hacker News](https://news.ycombinator.com/) is a famous social network mostly aimed at engineers and entrepreneurs alike, ran by [Y Combinator](https://www.ycombinator.com/) which, for those unaware, helped launched companies like Stripe, AirBNB or what became known as Twitch in other famous examples. Both were created by the famous Paul Graham.
+[Hacker News](https://news.ycombinator.com/) is a famous social network mostly aimed at engineers and entrepreneurs alike, ran by [Y Combinator](https://www.ycombinator.com/) which, for those unaware, helped launch companies like **Stripe**, **AirBNB** or what became known as **Twitch** in other famous examples. Both were created by the famous Paul Graham.
 
 A Terminal UI is basically an interactive UI that runs directly in your terminal. You may be aware of [htop](https://htop.dev/), a famous process viewer. To go into more detail, many of such applications use the [ncurses](https://invisible-island.net/ncurses/) library under the hood which allows to implement incredibly powerful or beautiful features. ncurses is written in C but has bindings available in many languages, like Python or Javascript, and more recently both Rust and Go.
+
+// TODO: use spotify screenshot
 
 ## Motivation
 
@@ -23,11 +25,16 @@ What I find deeply enjoyable and why I learn so much using this website is first
 
 Many incredibly accomplished people actively go there, and it's not unusual to encounter someone who contributed to or even created things you will use everyday like some critical part of Chrome or Windows, or some incredible new AI project that *will* see use sooner rather than later.
 
+## Original Idea
+
+// TODO: spotify-tui + screenshot (I personally use the official application, but to each its own)
+// TODO: also: htop for technical people
+
 ## Project Description
 
-Here is where my project comes together: my usage of HackerNews is largely read-only when it comes to the comments. I love Rust. I encountered and used tools in the terminal that were mind-blowing. This and more all came together to create [hncli](http://localhost:5173/blog/hncli-architecture).
+Here is where my project comes together: my usage of HackerNews is largely read-only when it comes to the comments. I love Rust. I encountered and used tools in the terminal that were mind-blowing. This and more all came together to create [hncli](). // TODO: link
 
-Long story short, here's what will greet you when you come.
+Long story short, here's what will greet you when you run the project:
 
 // TODO: screenshot => image integration in Mdsvex? relative path ideally
 
@@ -37,7 +44,7 @@ All user interaction is made directly by a tiny set of keyboard keys, with when 
 
 ## Architecture Overview
 
-The rest of the article is more aimed at technical people, but I will do my best to make it so that you don't need to know Rust to follow along. Some precisions will be for those with Rust knowledge, but I will try to keep it high-level so I hope you won't get hung up on the trade-offs I had to make along the way since I won't get into most of them in this article at least.
+This article at technical people, but I will do my best to make it so that you don't need to know Rust to follow along. Some precisions will be for those with Rust knowledge, but I will try to keep it high-level so I hope you won't get hung up on the trade-offs I had to make along the way since I won't get into most of them in this article at least.
 
 As you can see, this is quite a long post that will probably be slit some time in the future. Don't hesitate to skip to the most juicy parts for you if I'm too boring!
 
@@ -82,6 +89,8 @@ Finally, I did hit a show-stopping road block when I discovered that you couldn'
 ### High-Level Architecture
 
 Just for context, I've been learning Rust since 2012, when it was still in beta. I do hope my code is mostly idiomatic but this will be more of a focus on the high-level architectural concepts I've been able to rapidly converge on. I also have the compiler and [clippy](https://github.com/rust-lang/rust-clippy) warnings directly Visual Studio Code, which I exclusively use for Rust. Be aware that some rare clippy hints seem to be false positives in my use case, I might be wrong but this explains why you won't see a zero warnings codebase (yet) if you explore the code. The latest Rust edition (2021) is used, and I've embraced the change away from the "mod.rs" module pattern. All of this is applicable to my other Rust projects, at least those that were worked on since the change.
+
+Do note that many decisions taken will need some context, so I do apologize for the length of this article. This context may be the iterations I've made before reaching the current state the codebase is in, or a show-stopping bug I've encountered and the solution I've reached.
 
 When you look at the main entry point of hncli (main.rs), you can immediately identify two central structures: the client which fetches the data with HTTP requests, and the UI. The UI is initialized with a rendering target, the Crossterm backend writing to stdout, and the client. Let's go deeper!
 
@@ -250,23 +259,225 @@ pub struct AppState {
 
 How do you interact with all this data? By good old accessors, manually written. Just a couple of dozen of lines of boilerplate, and I could write a simple Rust macro to make it terser as I've done in my [Game Boy (Color) emulator](https://github.com/pierreyoda/rustboycolor/blob/main/src/bin/config.rs) for instance. Speaking of which, this emulator project probably will be the subject of one or two write-ups once it runs Tetris with no bugs, sound included. It's been worked on and off (mostly off to be honest) for quite some time now, but may very well one day directly run on this blog with WebAssembly :rocket:
 
-One last thing: I've found at very late in the project that some setters *do* need some business logic.
+One last thing: I've found quite after some time spent on the project that some setters *do* need some business logic.
 
-In the first case, I was confused why navigating back from sub-comments was working erratically, to say the least. Turned out, once you get into a sub-comment of any depth, a data fetch is made by the corresponding Component which allows us to get the freshet comments, which is a good thing on many really hot stories. And, since I don't want to fetch too much, this lead to my issue when navigating back from a sub-comment - the same Component displays a comment a any level, in order to not duplicate code but which is sometimes tricky to deal with. So I was erasing comments. The solution was to merge incoming sub-comments within the existing cached comments. Seems obvious in retrospect.
+In the first case, I was confused why navigating back from sub-comments was working erratically, to say the least. Turned out, once you get into a sub-comment of any depth, a data fetch is made by the corresponding Component which allows us to get the freshet comments, which is a good thing on many really hot stories. And, since I don't want to fetch too much, this lead to my issue when navigating back from a sub-comment. This is due to the same Component displaying a comment a any level, in order to not duplicate code and this proved sometimes really tricky to deal with, including in this case. So I was erasing comments. The solution was to merge incoming sub-comments within the existing cached comments. Seems obvious in retrospect.
 
-The second case I've encountered more or less randomly on some rare stories posted. The bug I was that the number of comments at the top level displayed looked correct, but once you navigated to one of the comments it could not be displayed due to it missing from our cache. After investigation, there was apparently a mismatch between the IDs of the descendants I was initially fetching and the comments I could actually fetch. It's probably an issue on my end, which was fixed by just enforcing data coherency ensuring before updating the comments cache from any depth. The issue has not reappeared for now.
-
-
-#### UI component
-
-####
-
+The second case, I've encountered more or less randomly on some rare stories posted. The bug I was that the number of comments at the top level displayed looked correct, but once you navigated to one of the comments it could not be displayed due to it missing from our cache. After investigation, there was apparently a mismatch between the IDs of the descendants I was initially fetching and the comments I could actually fetch. It's probably an issue on my end, which was fixed by just enforcing data coherency ensuring before updating the comments cache from any depth. The issue has not reappeared for now.
 
 ##### Router component
 
+Just like in a React application for instance (with [react-router](https://reactrouter.com/en/main) being the most used library), the router is responsible for keeping track of the current and previous routes navigated, which (roughly) corresponds to a particular Screen.
+
+Here are all the application routes:
+
+```rust
+/// All the possible routes in the application.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum AppRoute {
+    /// Home screen.
+    Home(HnStoriesSections), // stores the particular Hacker News top section: Home, Ask, Show, Jobs
+    /// Item details screen.
+    ItemDetails(DisplayableHackerNewsItem), //  stores the currently viewed item (in this case top-level = story, job, poll)
+    /// Item sub-comments screen.
+    ItemSubComments(DisplayableHackerNewsItem), // stores the currently viewed item (in this case a comment)
+    /// Settings screen.
+    Settings,
+    /// Help screen.
+    Help,
+}
+```
+
+Here's the definition of the router structure, and its interface (stripped of the [code](https://github.com/pierreyoda/hncli/blob/main/src/ui/router.rs)):
+
+```rust
+/// Stack-based global application router.
+pub struct AppRouter {
+    /// The current navigation stack.
+    ///
+    /// Example: home > story #1 details > comment #2 thread.
+    navigation_stack: Vec<AppRoute>,
+}
+
+impl AppRouter {
+    /// Are we on the root screen, *i.e.* the initial screen showed on application launch?
+    ///
+    /// NB: section tabs like "Ask HN" or similar **do** count as being on the initial screen.
+    pub fn is_on_root_screen(&self) -> bool
+
+    /// Get the current route state.
+
+    /// Push a new navigation route state.
+    pub fn push_navigation_stack(&mut self, route: AppRoute)
+
+    /// Go to the previous navigation route state.
+    pub fn pop_navigation_stack(&mut self) -> Option<AppRoute>
+
+    pub fn build_screen_from_route(route: AppRoute) -> Box<dyn Screen> // in this case, pointer to a heap-allocated generic implementation of the Screen trait (see later)
+```
+
+#### Inputs handling
+
+Basically a bridge between low-level events from crossterm and high-level application actions which are the following (for now):
+
+```rust
+pub enum ApplicationAction {
+    // general
+    OpenExternalOrHackerNewsLink,
+    OpenHackerNewsLink,
+    SelectItem,
+    ToggleHelp,
+    Back,
+    Quit,
+    QuitShortcut,
+    // navigation
+    NavigateUp,
+    NavigateDown,
+    NavigateLeft,
+    NavigateRight,
+    // input
+    InputClear,
+    InputDelete,
+    // home screen
+    HomeToggleSortingOption,
+    HomeToggleSearchMode,
+    // item screen
+    ItemToggleComments,
+    ItemExpandFocusedComment,
+    // settings screen
+    SettingsToggleControl,
+}
+```
+
+I've looked at mouse support, which is technically possible with crossterm, but it does not fit my current UX concept as said in the first article. // TODO: link
+
+The low-level abstraction is as following:
+
+```rust
+/// Abstraction over a key event.
+///
+/// Used to abstract over tui's backend, and to facilitate user configuration.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Key {
+    None, // needed when no event
+    /// Escape key.
+    Escape,
+    /// Enter/Return and Numpad Enter.
+    Enter,
+    /// Backspace key.
+    Backspace,
+    /// Tabulation key.
+    Tab,
+    /// Up arrow.
+    Up,
+    /// Down arrow.
+    Down,
+    /// Left arrow.
+    Left,
+    /// Right arrow.
+    Right,
+    /// Keyboard character.
+    Char(char),
+    /// Unhandled.
+    Other,
+}
+```
+
+There's a key representation function associated for the UI to display, with emojis expect for individual characters. There's also a conversion function from crossterm events to hncli's representation (as `From` for the Rust public).
+
+Same goes for key modifiers:
+
+```rust
+/// Abstraction over a key event modifier.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum KeyModifier {
+    None, // needed when no key modifier
+    Shift,
+    Control,
+}
+```
+
+Here's how it all comes together (short snippet):
+
+```rust
+impl ApplicationAction {
+    pub fn matches_event(&self, inputs: &InputsController) -> bool {
+        use ApplicationAction::*;
+        match self {
+            OpenExternalOrHackerNewsLink => inputs.key == Key::Char('o'),
+            OpenHackerNewsLink => {
+                inputs.modifier == KeyModifier::Shift && inputs.key == Key::Char('o')
+            }
+            // ...
+        }
+    }
+}
+```
+
+Finally, the inputs controller which is the interface exposed to individual Components:
+
+```rust
+/// Application inputs controller.
+///
+/// Bridges between raw inputs and application-level events.
+#[derive(Debug)]
+pub struct InputsController {
+    key: Key,
+    modifier: KeyModifier,
+    active_input_key: Key,
+    active_input_mode: bool,
+}
+```
+
+// TODO: more
+
 #### UI Components
 
+UI components, as popularized by React or Vue.js, are nowadays a very (to say the least) common way to architecture a front-end. From my own experience in front-end frameworks, I wanted right from the start to use them in hncli somehow, and after getting the hang of tui-rs by displaying a very basic list.
+
+```rust
+/// A `tick` is a UI update, in the order of the hundred milliseconds.
+pub type UiTickScalar = u64;
+
+/// A hashable type for application-unique component IDs.
+pub type UiComponentId = &'static str;
+
+/// A `Component` in this Terminal UI context is a self-contained
+/// widget or group of widgets with each their own updating,
+/// events handling and rendering logic.
+#[async_trait]
+pub trait UiComponent {
+    /// Must return a constant, **application-unique** component ID.
+    fn id(&self) -> UiComponentId;
+
+    /// Called at instantiation, before any update or render pass.
+    fn before_mount(&mut self, _ctx: &mut AppContext) {}
+
+    /// Must return `true` if the state should update itself.
+    fn should_update(&mut self, elapsed_ticks: UiTickScalar, ctx: &AppContext) -> Result<bool>;
+
+    /// Update the state from various sources.
+    async fn update(&mut self, client: &mut HnClient, ctx: &mut AppContext) -> Result<()>;
+
+    /// Inputs handler for the component.
+    ///
+    /// Returns true if the active event is to be captured, that is swallowed
+    /// and no longer passed to other components.
+    fn handle_inputs(&mut self, ctx: &mut AppContext) -> Result<bool>;
+
+    /// Renderer for the component.
+    fn render(
+        &mut self,
+        f: &mut Frame<CrosstermBackend<Stdout>>, // the tui-rs rendering handle
+        inside: Rect, // where to render exactly
+        ctx: &AppContext,
+    ) -> Result<()>;
+}
+```
+
 #### Persistent configuration
+
+The required configuration files are stored as a TOML file in the OS-appropriate local user folder, thanks to the [directories](https://github.com/dirs-dev/directories-rs) crate. serde is used for (de)serialization purposes. Loading the configuration, if it already exists, is done at setup by the Ui structure.
 
 ## Vision for 1.0 release
 
@@ -281,6 +492,7 @@ It's been a long enough writing, so here's just a dump of all the various things
 - publish Docker image? the Dockerfile is there and can be improved with little effort, just check if usage is the same as native running
 - optional secure HN account linking to upvote comments (should not be too complicated but password storing must be demonstrably safe for users)
 - user account view
+- mouse support? It does not fit the UX I've implemented for now, but I'm open to it for very precise features. Technically possible.
 - probably more things I've forgotten
 - finally: make the network layer a library, could be useful to some people. Probably requires little CI/CD work to integrate with crates.io/docs.rs but will have to dig deeper into that. If a developer requests it in an issue (and I hope so in a sense), this will be prioritized
 
