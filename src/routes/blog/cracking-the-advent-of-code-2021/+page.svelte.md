@@ -2,7 +2,7 @@
 title: "Cracking the Advent of Code 2021"
 description: "Making an interactive solver to all of the Advent of Code 2021's challenges with Typescript and Svelte(Kit)."
 date: "2022-01-10"
-published: true
+published: false
 ---
 
 # Cracking the Advent of Code 2021
