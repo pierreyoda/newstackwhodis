@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../../styles/prism-shades-of-purple.css";
+  import "../../styles/prism-vs-code-dark.css";
 </script>
 
 <div class="post-container">
