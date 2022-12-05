@@ -27,6 +27,16 @@
     :global(h3) {
       @apply font-semibold mt-6 mb-6;
     }
+    :global(h4) {
+      @apply font-semibold mt-4 mb-4;
+    }
+    :global(h5) {
+      @apply font-light mt-2 mb-2;
+    }
+
+    :global(ul) {
+      @apply list-disc;
+    }
   }
 
   @screen lg {
