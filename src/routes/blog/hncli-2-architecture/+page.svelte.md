@@ -1,48 +1,13 @@
 ---
-title: "An Hacker News Terminal UI in Rust: concept, architecture and the road to release"
-description: "Motivation, concept, high-level overview of the Rust implementation, and the future challenges to come for a 1.0 release."
-date: "2022-11-25"
+title: "An Hacker News Terminal UI: deep-dive into the Rust architecture"
+description: "High-level overview of the Rust architecture and implementation."
+date: "2022-11-26"
 published: true
 ---
 
-# An Hacker News Terminal UI in Rust: concept, architecture and the road to release
+// TODO: link
 
-// TODO: split in at least two articles
-
-## Context
-
-[Hacker News](https://news.ycombinator.com/) is a famous social network mostly aimed at engineers and entrepreneurs alike, ran by [Y Combinator](https://www.ycombinator.com/) which, for those unaware, helped launch companies like **Stripe**, **AirBNB** or what became known as **Twitch** in other famous examples. Both were created by the famous Paul Graham.
-
-A Terminal UI is basically an interactive UI that runs directly in your terminal. You may be aware of [htop](https://htop.dev/), a famous process viewer. To go into more detail, many of such applications use the [ncurses](https://invisible-island.net/ncurses/) library under the hood which allows to implement incredibly powerful or beautiful features. ncurses is written in C but has bindings available in many languages, like Python or Javascript, and more recently both Rust and Go.
-
-// TODO: use spotify screenshot
-
-## Motivation
-
-I personally really enjoy HackerNews and it is my main tool when it comes to keeping in touch with the rest of the industry in which I work, mainly concerning Computer Engineering at large but also for so many other subjects including entrepreneurship, company culture or AI.
-
-What I find deeply enjoyable and why I learn so much using this website is first of all that almost all the aggregated links posted them are to say the list interesting in themselves. That in itself is great. But my main interest in this unique social network is the discussion these articles trigger, where many professionals from all parts of society (with of course a deep bias on tech) bring the kind of exchange that I've not seen anywhere else.
-
-Many incredibly accomplished people actively go there, and it's not unusual to encounter someone who contributed to or even created things you will use everyday like some critical part of Chrome or Windows, or some incredible new AI project that *will* see use sooner rather than later.
-
-## Original Idea
-
-// TODO: spotify-tui + screenshot (I personally use the official application, but to each its own)
-// TODO: also: htop for technical people
-
-## Project Description
-
-Here is where my project comes together: my usage of HackerNews is largely read-only when it comes to the comments. I love Rust. I encountered and used tools in the terminal that were mind-blowing. This and more all came together to create [hncli](). // TODO: link
-
-Long story short, here's what will greet you when you run the project:
-
-// TODO: screenshot => image integration in Mdsvex? relative path ideally
-
-You can read, sort, search for the stories most recently published. Comments can be viewed and navigated easily once inside a story. There are global settings persisted in OS-adapted user storage, and a help page.
-
-All user interaction is made directly by a tiny set of keyboard keys, with when required (rarely) Control or Shift modifiers. I could, with some engineering effort, use mouse events but I did not plan to from the beginning. It may be added some day if I rethink the UX, or if users request it.
-
-## Architecture Overview
+# hncli Rust Architecture Overview
 
 This article at technical people, but I will do my best to make it so that you don't need to know Rust to follow along. Some precisions will be for those with Rust knowledge, but I will try to keep it high-level so I hope you won't get hung up on the trade-offs I had to make along the way since I won't get into most of them in this article at least.
 
@@ -50,9 +15,9 @@ As you can see, this is quite a long post that will probably be slit some time i
 
 You can follow along on the actual source code if you wish so, and I will try my best to keep this article updated but the architecture described here will probably not change much.
 
-### Goal
+## Goal
 
-The required features listed above in the project description were pretty clear right from the start of my project. I am aware that other Hacker News Terminal UIs already do exist, even [an impressive one](https://github.com/aome510/hackernews-TUI) in Rust. I did not look at the code of any of these projects.
+The required features listed in the project description were pretty clear right from the start of my project. I am aware that other Hacker News Terminal UIs already do exist, even [an impressive one](https://github.com/aome510/hackernews-TUI) in Rust. I did not look at the code of any of these projects.
 
 ### Stack
 
@@ -479,21 +444,3 @@ pub trait UiComponent {
 
 The required configuration files are stored as a TOML file in the OS-appropriate local user folder, thanks to the [directories](https://github.com/dirs-dev/directories-rs) crate. serde is used for (de)serialization purposes. Loading the configuration, if it already exists, is done at setup by the Ui structure.
 
-## Vision for 1.0 release
-
-It's been a long enough writing, so here's just a dump of all the various things to do, in no particular priority order:
-
-// TODO: list styling
-
-- polish, polish, polish
-- very simple static website (didn't think about domain name yet). Same GitHub repository would be convenient but I'll have to think about it. I'm not a designer so it will also be minimalist and heavily rely on tailwindcss to not hurt your eyes... This may well be overkill for a niche tool but it would be nice at least for me. A more pragmatic approach short-term would be to just dedicate a page on this blog but we'll see
-- measure binary size on platforms (cross-compile if necessary), see if acceptable, if not try to optimize (switching away from tokio or at the very least tweak its features used is a low hanging fruit as an educated guess)
-- packaging (MacOs, Linux, Windows): largest offering possible but prioritize most used solutions like for instance brew on MacOS. Should be fully handled by the CI/CD through GitHub Actions which sounds time consuming to tackle having never done that. Ideally I'd like binaries directly offered in the Releases on GitHub from CI/CD builds, but priority between these two distribution methods will be easier first and I've never done either of those ever. Will decide when I explore both approaches some more.
-- publish Docker image? the Dockerfile is there and can be improved with little effort, just check if usage is the same as native running
-- optional secure HN account linking to upvote comments (should not be too complicated but password storing must be demonstrably safe for users)
-- user account view
-- mouse support? It does not fit the UX I've implemented for now, but I'm open to it for very precise features. Technically possible.
-- probably more things I've forgotten
-- finally: make the network layer a library, could be useful to some people. Probably requires little CI/CD work to integrate with crates.io/docs.rs but will have to dig deeper into that. If a developer requests it in an issue (and I hope so in a sense), this will be prioritized
-
-So lots of new exciting things to learn and probably a long road ahead if I want to do things properly, since in particular there are no shortcuts (at least none I wish to take) when it comes to distributing binaries with trust on all the major platforms.
