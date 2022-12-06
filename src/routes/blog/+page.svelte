@@ -11,7 +11,7 @@
       The entirety of these blog posts are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license.
     </span>
     See the
-    <ExternalLink href="TODO:link to GitHub">
+    <ExternalLink href="https://github.com/pierreyoda/praca-website/blob/main/src/routes/blog/BLOG_LICENSE">
       Full License Text
     </ExternalLink>
     .
