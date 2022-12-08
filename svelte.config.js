@@ -1,7 +1,9 @@
 import { mdsvex } from "mdsvex";
-import preprocess from "svelte-preprocess";
 import remarkEmoji from "remark-emoji";
+import preprocess from "svelte-preprocess";
 import staticAdapter from "@sveltejs/adapter-static";
+import RemarkImagesMdsveXPluginPackage from "./plugins/remark-images.cjs";
+const { remarkImagesMdsveXPlugin } = RemarkImagesMdsveXPluginPackage;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -11,7 +13,7 @@ const config = {
   preprocess: [
     mdsvex({
       extensions: [".svelte.md", ".md", ".svx"],
-      remarkPlugins: [remarkEmoji],
+      remarkPlugins: [remarkEmoji, remarkImagesMdsveXPlugin],
     }),
     preprocess({
       postcss: true,
