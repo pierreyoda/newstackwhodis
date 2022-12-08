@@ -3,6 +3,7 @@
 </script>
 
 <div class="post-container">
+  <!-- TODO: display date -->
   <slot />
 </div>
 
@@ -36,6 +37,9 @@
 
     :global(ul) {
       @apply list-disc;
+    }
+    :global(ul > li) {
+      @apply pl-2;
     }
   }
 
