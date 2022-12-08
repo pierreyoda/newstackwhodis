@@ -22,7 +22,9 @@
     </nav>
   </div>
   <div class="github-link-container">
-    <ExternalLink href="https://github.com/pierreyoda/praca-website" label="GitHub" />
+    <ExternalLink href="https://github.com/pierreyoda/praca-website">
+      GitHub
+    </ExternalLink>
   </div>
 </div>
 
@@ -42,6 +44,7 @@
   }
 
   .github-link-container {
+    @apply text-white font-semibold;
   }
 
   @screen md {
