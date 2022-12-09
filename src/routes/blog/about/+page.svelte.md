@@ -6,7 +6,7 @@ My name is Pierre-Yves.
 
 I'm a Software Engineer in his late twenties.
 
-## More details about me
+## More details
 
 I started programming at the age of 13, with C and C++, and have not stopped ever since. Having used (ranging from hacking around to **real-world usage**) many languages and libraries, I've been continuously adding to the toolbox at my disposal to **solve problems**.
 
@@ -14,7 +14,7 @@ Professionally, my specialization is in **web technologies**.
 
 I also do **a lot** of Rust for my [personal projects](https://github.com/pierreyoda)!
 
-## The content and stack
+## About this website
 
 The first iteration of this blog was called **newstackwhodis** (which I still to this day think is very funny), and used React and Next.js with [MDX](https://mdxjs.com/), a project which in short allows use of React components directly in your markdown, which was needed for the kind of articles I had in mind.
 
@@ -24,8 +24,9 @@ After a typo in Google, I found out that **Praca** roughly means job or occupati
 
 Early along the way I was finally able to try **SvelteKit** when Sapper was deprecated. It's kind of Svelte's Next.js. I also use [mdsvex](https://mdsvex.com/), Svelte's flavor of MDX.
 
-I've stuck with Vercel for hosting despite letting go of Next.js for hosting, since this website is also fully static. The website at large should be quite performant using Svelte, but the same may not be true of an interactive component in one of my articles especially as I go for more ambitious projects. For instance,
-## The content
+I've stuck with Vercel for hosting despite letting go of Next.js for hosting, since this website is also fully static.
+
+### Content to come
 
 The kind of articles you will see here will generally be backed by fully independent sub-modules in Typescript, with a minimal set of unit tests; they are almost micro-libraries on their own. Not that I would ever publish them on NPM, mind you, since they all are scoped for specific usage inside an article on this website only. They are agnostic from front-end usage though.
 
