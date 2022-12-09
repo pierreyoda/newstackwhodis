@@ -41,8 +41,5 @@
     .title {
       @apply font-semibold text-lychee my-0;
     }
-    .date {
-      @apply text-sm mb-1;
-    }
   }
 </style>
