@@ -2,7 +2,7 @@
 title: "Getting Into Emulator Development with the CHIP-8"
 description: "Introduction to simple emulator development concepts and illustration with an in-browser virtual machine."
 date: "2021-12-20"
-published: true
+published: false
 ---
 
 <script lang="ts">
