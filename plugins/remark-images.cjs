@@ -31,7 +31,7 @@ const RemarkImagesMDsveXPlugin = () => {
 
     visit(tree, "image", node => {
       /** @type string */
-      const url = url;
+      const url = node.url;
       let camelUrl = toCamelCase(url);
       const count = imagesCounts[url] ?? 0;
       const duplicated = images[url];

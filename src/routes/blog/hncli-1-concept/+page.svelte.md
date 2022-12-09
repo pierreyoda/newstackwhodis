@@ -84,6 +84,8 @@ hncli still being intended to be a mostly read-only experience, there is no plan
 
 As said above, mouse support does not fit the scope I had at the start of this project but it may be appropriate for certain features. It would require some refactoring of the architecture though.
 
-## Technical Overview
+## Conclusion
 
-// TODO: relative link that works in all envs
+I sure hope this article was clear enough!
+
+You can read more about the software implementation [here](/blog/hncli-2-architecture).

@@ -15,7 +15,7 @@ You can follow along on the actual source code if you wish so, and I will try my
 
 ## Goal
 
-// TODO: link to concept page
+If you haven'haven't read it yet, I advise you to take a look at the [concept article](/blog/hncli-1-concept).
 
 The required features listed in the project description were pretty clear right from the start of my project. I am aware that other Hacker News Terminal UIs already do exist, even [an impressive one](https://github.com/aome510/hackernews-TUI) in Rust. I did not look at the code of any of these projects.
 
@@ -324,7 +324,7 @@ pub enum ApplicationAction {
 }
 ```
 
-I've looked at mouse support, which is technically possible with crossterm, but it does not fit my current UX concept as said in the concept article. // TODO: link
+I've looked at mouse support, which is technically possible with crossterm, but it does not fit my current UX concept as said in the [concept article](/blog/hncli-1-concept).
 
 The low-level abstraction is as following:
 
