@@ -1,12 +1,14 @@
+# TODO: refactor for SvelteKit
+
 # Dependencies installer
-FROM node:15-alpine AS dependencies
+FROM node:16-alpine AS dependencies
 
 WORKDIR /src/app/praca/website/
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Builder
-FROM node:15-alpine AS builder
+FROM node:16-alpine AS builder
 
 ENV NODE_ENV=production
 WORKDIR /src/app/praca/website/
@@ -16,9 +18,8 @@ COPY --from=dependencies /src/app/praca/website/node_modules ./node_modules
 RUN yarn build
 
 # Runner (production image)
-FROM node:15-alpine AS runner
+FROM node:16-alpine AS runner
 
-ARG X_TAG
 WORKDIR /src/app/praca/website/
 ENV NODE_ENV=production
 COPY --from=builder /src/app/praca/website/next.config.js ./
