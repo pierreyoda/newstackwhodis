@@ -1,11 +1,11 @@
 {
-  "name": "praca-website",
+  "name": "newstackwhodis",
   "version": "0.1.0",
   "private": true,
   "author": "pierreyoda <pierreyoda@users.noreply.github.com>",
   "type": "module",
   "scripts": {
-    "fetch:projects": "yarn cross-env DEBUG=praca:* TS_NODE_PROJECT=./tsconfig.node.json yarn node --experimental-specifier-resolution=node --loader ts-node/esm ./src/api/fetcher.ts",
+    "fetch:projects": "yarn cross-env DEBUG=newstackwhodis:* TS_NODE_PROJECT=./tsconfig.node.json yarn node --experimental-specifier-resolution=node --loader ts-node/esm ./src/api/fetcher.ts",
     "fetch": "yarn fetch:projects",
     "dev": "vite dev",
     "build": "vite build",

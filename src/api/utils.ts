@@ -5,7 +5,7 @@ export type Logger = (logged: string) => void;
 export type LoggerLevel = "warning" | "error" | "info" | "success";
 
 export const instantiateLogger = (domain: string): Record<LoggerLevel, Logger> => {
-  const debug = debugLib(`praca:website:api:${domain}`);
+  const debug = debugLib(`newstackwhodis:website:api:${domain}`);
   return {
     warning: (logged: string) => debug(chalk.yellow(logged)),
     error: (logged: string) => debug(chalk.redBright(logged)),
