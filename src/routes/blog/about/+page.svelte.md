@@ -26,6 +26,8 @@ Early along the way I was finally able to try **SvelteKit** when Sapper was depr
 
 I've stuck with Vercel for hosting despite letting go of Next.js for hosting, since this website is also fully static.
 
+**EDIT**: after checking out the domain names availability, I've ultimately chosen to go with `newstackwhodis`.
+
 ### Content to come
 
 The kind of articles you will see here will generally be backed by fully independent sub-modules in Typescript, with a minimal set of unit tests; they are almost micro-libraries on their own. Not that I would ever publish them on NPM, mind you, since they all are scoped for specific usage inside an article on this website only. They are agnostic from front-end usage though.
