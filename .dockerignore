@@ -1,9 +1,0 @@
-node_modules
-.next
-.vscode
-
-Dockerfile
-.dockerignore
-
-.env
-.env.example
