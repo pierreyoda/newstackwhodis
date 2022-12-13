@@ -5,13 +5,17 @@ date: "2022-11-25"
 published: true
 ---
 
+<script lang="ts">
+  import VideoPlayer from "$lib/VideoPlayer.svelte";
+</script>
+
 # An Hacker News Terminal UI: concept and road to release
 
 ## Original Idea
 
 A couple of years ago, I stumbled across a Spotify client that runs in the console ([GIF source](https://github.com/Rigellute/spotify-tui)):
 
-![spotify-tui GIF from the GitHub README](/hncli/spotify-tui.gif)
+<VideoPlayer src="/hncli/spotify-tui.webm" title="spotify-tui WebM from the GitHub README" />
 
 (I still use the official Spotify client like most people, but to each its own)
 
