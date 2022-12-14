@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-11-24T07:07:41.084Z"
+    "exportDate": "2022-12-14T08:48:57.674Z"
   },
   "githubRepositories": [
     {
@@ -14,7 +14,7 @@
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
       "name": "micropolis-rs",
-      "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and Svelte, with WebAssembly support.",
+      "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
       "stargazersCount": 17
