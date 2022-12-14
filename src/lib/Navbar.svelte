@@ -12,7 +12,7 @@
 <div class="outer-container">
   <div class="w-full justify-center flex items-center mr-12 text-white font-bold py-6">
     <a data-sveltekit-prefetch href="/">
-      newstackwhodis
+      newstackwhodis (Work In Progress)
     </a>
   </div>
   <div class="container">
