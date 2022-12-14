@@ -195,6 +195,7 @@ pub struct AppContext<'a> {
     router: &'a mut AppRouter,
     config: &'a mut AppConfiguration,
     inputs: &'a InputsController,
+    history: &'a mut AppHistory,
     /// Stored to change screen on route change.
     screen: &'a mut Box<dyn Screen>, // heap-allocated storage of a generic implementation of a Screen
 }
@@ -435,6 +436,73 @@ impl InputsController {
 }
 ```
 
+#### Navigation history persistence
+
+The `AppHistory` feature allows Screens and Components to persist a navigation history, which for now is limited to top-level comments under a Hacker News posted item. Here is its definition:
+
+```rust
+/// Maximum number of entries that will be kept in the history file.
+pub const SYNCHRONIZED_HISTORY_ITEMS_LIMIT: usize = 500;
+
+/// Responsible for tracking previous navigation state in a given top-level Hacker News item.
+#[derive(Debug)]
+pub struct AppHistory {
+    /// File-synchronized part of the navigation History.
+    ///
+    /// Reading must be done at application startup, and writing as rarely as possible.
+    synchronized: SynchronizedHistory,
+}
+```
+
+Its current interface is as following:
+
+```rust
+impl AppHistory {
+    pub fn restored() -> Self { /* ... */ }
+
+    /// Persist the history in OS-dependent JSON storage.
+    ///
+    /// Should not be called too often for performance reasons.
+    pub fn persist(&self) { /* ... */ }
+
+    pub fn persist_top_level_comment_id_for_story(
+        &mut self,
+        story_id: HnItemIdScalar,
+        top_level_comment_id: HnItemIdScalar,
+    ) { /* ... */ }
+
+    pub fn restored_top_level_comment_id_for_story(
+        &self,
+        story_id: HnItemIdScalar,
+    ) -> Option<HnItemIdScalar>  { /* ... */ }
+
+    fn get_history_file_path() -> Result<PathBuf> { /* ... */ }
+```
+
+To get into more details, `restored` is called at application startup and `persist` is called from Screens to save the history, while taking into account its bounds: see `SYNCHRONIZED_HISTORY_ITEMS_LIMIT` above, which may be increased in the future.
+
+`AppHistory` uses a private structure named `SynchronizedHistory` to actually store, restore and persist the navigation history:
+
+```rust
+#[derive(Clone, Debug, PartialEq, PartialOrd, Serialize, Deserialize)]
+pub enum SynchronizedHistoryItem {
+    /// Saves the navigation state of a top-level comment for a given Item thread.
+    TopLevelComment(TopLevelCommentHistoryData),
+}
+
+type SynchronizedHistoryItemStorage = HashMap<HnItemIdScalar, SynchronizedHistoryItem>;
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SynchronizedHistory {
+    /// Stores the latest focused top-level comment for a given Hacker News item.
+    ///
+    /// Also keeps track of the insertion datetime to enforce hard limits on the history size.
+    latest_top_level_comments_per_item_map: SynchronizedHistoryItemStorage,
+}
+```
+
+The datetime of each entry is upserted when appropriate, and allows `SynchronizedHistory` to skip its oldest stored entries on persist. The folder of the corresponding `history.json` file is exactly the same as for the configuration handled by `AppConfiguration`.
+
 ### Screens
 
 Screens in hncli must implement the following trait:
@@ -458,6 +526,7 @@ pub trait Screen: Debug + Send {
         inputs: &InputsController,
         router: &mut AppRouter,
         state: &mut AppState,
+        history: &mut AppHistory,
     ) -> (ScreenEventResponse, Option<AppRoute>);
 
     /// Compute the components' layout according to current terminal frame size.
@@ -549,7 +618,7 @@ impl Screen for HomeScreen {
         components_registry: &mut ScreenComponentsRegistry,
         state: &AppState,
     ) {
-        // main layout chunks (think of it as a kind of a column-first flexbox in CSS3)
+        // main layout chunks (think of it as a kind of column-first flexbox in CSS3)
         let main_layout_chunks = Layout::default()
             .direction(Direction::Vertical)
             .margin(2)
@@ -563,7 +632,7 @@ impl Screen for HomeScreen {
             )
             .split(frame_size);
 
-        // ...now we just insert the appropriate components in each of our "chunks"
+        // ...now we just insert the appropriate components in each of our "chunks", by unique ID
         components_registry.insert(
             if state.get_main_search_mode_query().is_some() {
                 SEARCH_ID
@@ -576,10 +645,9 @@ impl Screen for HomeScreen {
         components_registry.insert(OPTIONS_ID, main_layout_chunks[2]);
     }
 }
-
-unsafe impl Send for HomeScreen {}
-
 ```
+
+As you can see, `compute_layout` does a lot of heavy lifting but every implementation in any given Screen is rather terse thanks to `tui-rs`'s Layout abstraction.
 
 ### UI Components
 
@@ -590,7 +658,7 @@ UI components, as popularized by React or Vue.js, are nowadays a very (to say th
 pub type UiTickScalar = u64;
 
 /// A hashable type for application-unique component IDs.
-pub type UiComponentId = &'static str;
+pub type UiComponentId = &'static str; // hardcoded, stack-allocated string
 
 /// A `Component` in this Terminal UI context is a self-contained
 /// widget or group of widgets with each their own updating,
@@ -601,7 +669,7 @@ pub trait UiComponent {
     fn id(&self) -> UiComponentId;
 
     /// Called at instantiation, before any update or render pass.
-    fn before_mount(&mut self, _ctx: &mut AppContext) {}
+    fn before_mount(&mut self, ctx: &mut AppContext) {}
 
     /// Must return `true` if the state should update itself.
     fn should_update(&mut self, elapsed_ticks: UiTickScalar, ctx: &AppContext) -> Result<bool>;
@@ -625,7 +693,13 @@ pub trait UiComponent {
 }
 ```
 
+In all components, `should_update` is a really critical function since it is the one that will be called very often (once every tick, so every ~100 milliseconds). A Component must do its best to do cache invalidation at this step, and allow `update` to be called the least amount of times possible.
+
+As for the `render` function, it is called as fast as the main UI thread allows, which is needed to provide enough responsiveness for the end-user. Some throttling may be applied in the future.
+
 #### Example of a Component - heavily stripped ([code](https://github.com/pierreyoda/hncli/blob/main/src/ui/components/item_details.rs))
+
+`item_details` is probably the simplest component making use of most of the accessible application context - with the notable exception of the Hacker News API client:
 
 ```rust
 /// Item details component.
@@ -655,17 +729,11 @@ impl UiComponent for ItemDetails {
     }
 
     fn should_update(&mut self, _elapsed_ticks: UiTickScalar, ctx: &AppContext) -> Result<bool> {
-      // ...text of currently viewed item must have changed
-      Ok(should_update)
+        // basically, returns: current_item.text (live) != self.text (cached)
     }
 
     async fn update(&mut self, _client: &mut HnClient, ctx: &mut AppContext) -> Result<()> {
-        self.text = if let Some(item) = ctx.get_state().get_currently_viewed_item() {
-            item.text.clone()
-        } else {
-            None
-        };
-        Ok(())
+        // just performs self.text = current_item.text
     }
 
     fn handle_inputs(&mut self, _ctx: &mut AppContext) -> Result<bool> {
@@ -678,10 +746,152 @@ impl UiComponent for ItemDetails {
         inside: Rect,
         ctx: &AppContext,
     ) -> Result<()> {
-        // ...rendering
-
-        Ok(())
+        // ...rendering using first-class widgets of tui-rs, in this case a rounded Block and a multi-lines Paragraph
     }
+}
+```
+
+#### Example of a custom tui-rs widget: components rendering
+
+Rendering comments was a part that I was quite apprehensive about before tackling it.
+
+My first approach was to only deal with top-level comments, which worked very well almost on the first try. When came the time to add nested comments navigation, it was much trickier since I was too stubborn in trying a unified approach: using the same Component for both top and nested comments. This proved to bring a lot of complexity for the sake of staying [DRY](https://www.wikiwand.com/en/Don%27t_repeat_yourself).
+
+One day, I just tried to split the comments Component in two, one top-level and one nested-level, but with keeping a common structure used by both:
+
+```rust
+/// Common (meta-)data between top and nested components.
+#[derive(Debug)]
+pub struct ItemCommentsCommon {
+    pub ticks_since_last_update: u64,
+    pub inputs_debouncer: Debouncer,
+    pub loading: bool,
+    pub widget_state: ItemCommentsWidgetState,
+}
+```
+
+What is peculiar here is the `widget_state`. Given my architecture, I could simply not use `tui-rs`'s approach to stateful widgets so I found this middle ground to just handle state at a Component level and give it to the custom widget on render.
+
+Here is the stripped implementation of this custom `tui-rs` widget, which itself uses another custom widget called `CommentWidget`:
+
+```rust
+/// Custom `tui-rs` widget in charge of displaying a HackerNews Item comments.
+#[derive(Debug)]
+pub struct ItemCommentsWidget<'a> {
+    /// Persistent state.
+    state: &'a ItemCommentsWidgetState,
+    /// Comments of the top-level parent item.
+    comments: &'a DisplayableHackerNewsItemComments,
+}
+
+impl<'a> Widget for ItemCommentsWidget<'a> {
+    fn render(self, area: Rect, buf: &mut Buffer) {
+        // Comment rendering
+        // ...sanity checks and setup
+        let focused_comment_widget = CommentWidget::with_comment(focused_comment);
+        focused_comment_widget.render(
+            area.inner(&Margin {
+                vertical: PADDING,
+                horizontal: PADDING,
+            }),
+            buf,
+        );
+
+        // Footer
+        // ...sanity checks and setup
+        let footer_area = Rect::new(
+            area.left(),
+            area.bottom() - FOOTER_HEIGHT - PADDING,
+            area.width,
+            FOOTER_HEIGHT,
+        );
+        let footer_text = format!("...", /* ... */);
+        buf.set_string( // we directly use tui-rs's low-level rendering facilities
+            (footer_area.right() - footer_area.left()) / 2 - footer_text.len() as u16 / 2, // horizontal centering
+            footer_area.y,
+            footer_text,
+            Style::default().fg(Color::LightBlue), // set the text color
+        )
+    }
+}
+```
+
+Now, here's the corresponding widget state handled by the two parent Components' common structure:
+
+```rust
+/// Persistent state of `ItemCommentsWidget`.
+#[derive(Debug, Default)]
+pub struct ItemCommentsWidgetState {
+    /// ID of the currently focused comment.
+    focused_comment_id: Option<HnItemIdScalar>,
+    /// Index of the currently focused comment, among the parent item's kids (starts at 0).
+    focused_comment_index: Option<usize>,
+    /// Number of same-level comments currently being offered for display.
+    focused_same_level_comments_count: usize,
+    /// If Some, prepare to restore from history navigation state the focused comment.
+    history_should_focus_comment_id: Option<HnItemIdScalar>,
+}
+```
+
+For curiosity's sake, here's the interface offered:
+
+```rust
+impl ItemCommentsWidgetState {
+    pub fn update(
+        &mut self,
+        comments: &DisplayableHackerNewsItemComments,
+        parent_item_kids: &[HnItemIdScalar],
+    ) {
+        self.reconciliate_focused_comment(comments, parent_item_kids);
+    }
+
+    pub fn previous_main_comment(
+        &mut self,
+        parent_item_kids: &[HnItemIdScalar],
+    ) -> Option<HnItemIdScalar> { /** ... */ }
+
+    pub fn next_main_comment(
+        &mut self,
+        parent_item_kids: &[HnItemIdScalar],
+    ) -> Option<HnItemIdScalar> { /** ... */ }
+
+    pub fn get_focused_comment_id(&self) -> Option<HnItemIdScalar> {
+        self.focused_comment_id
+    }
+
+    pub fn restore_focused_comment_id(
+        &mut self,
+        comment_id: HnItemIdScalar,
+        parent_item_kids: &[HnItemIdScalar],
+    ) { /** ... */ }
+
+    pub fn history_prepare_focus_on_comment_id(
+        &mut self,
+        history_focused_comment_id: HnItemIdScalar,
+    ) {
+        self.history_should_focus_comment_id = Some(history_focused_comment_id);
+    }
+
+    pub fn get_focused_same_level_comments_count(&self) -> usize {
+        self.focused_same_level_comments_count
+    }
+
+    /// Reconciliate the currently focused main-level comment when replacing
+    /// the comments of a currently viewed HackerNews item.
+    ///
+    /// Takes into account the past navigation history, if any pending.
+    fn reconciliate_focused_comment(
+        &mut self,
+        comments: &DisplayableHackerNewsItemComments,
+        parent_item_kids: &[HnItemIdScalar],
+    ) { /** ... */ s}
+
+    /// Reset the currently focused main-level comment to the first possible
+    /// main-level comment, if any.
+    fn reset_focused_comment(
+        &mut self,
+        parent_item_kids: &[HnItemIdScalar],
+    ) -> Option<HnItemIdScalar> { /** ... */ }
 }
 ```
 
