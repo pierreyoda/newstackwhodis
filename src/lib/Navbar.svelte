@@ -27,7 +27,7 @@
       </nav>
     </div>
     <div class={githubLinkContainerClasses}>
-      <ExternalLink href="https://github.com/pierreyoda/praca-website">
+      <ExternalLink href="https://github.com/pierreyoda/newstackwhodis">
         GitHub
       </ExternalLink>
     </div>
