@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-12-14T08:48:57.674Z"
+    "exportDate": "2022-12-16T18:33:55.102Z"
   },
   "githubRepositories": [
     {
@@ -38,7 +38,7 @@
     {
       "url": "https://github.com/pierreyoda/GameInc",
       "name": "GameInc",
-      "description": "Game development studio management game made with Unity.",
+      "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
       "fullName": "pierreyoda/GameInc",
       "forksCount": 4,
       "stargazersCount": 4
