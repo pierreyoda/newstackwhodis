@@ -41,4 +41,3 @@ As a teaser, here's the kind of articles in my pipeline, at a more or less advan
 - An introduction to Genetic Algorithms and their applications. The planned interactive demo is the automatic optimization feature of 2D inventory space you can see in many video games, especially in Action-RPGs.
 
 I also have an [almost™ finished](https://github.com/pierreyoda/rustboycolor) Game Boy (Color) emulator in Rust that I would very much like to bring to this website through WebAssembly. The issue I risk to encounter would not be from the Rust side, but more on the rendering side if I go for naive solutions while offering a high refresh rate. This could be be the opportunity to go for some low-level WebGL usage, which sounds like great fun - if maybe overkill.
-

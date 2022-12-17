@@ -47,13 +47,13 @@ Speaking of errors, I use [thiserror](https://github.com/dtolnay/thiserror) just
 
 Two small crates of smaller renown but of huge importance to hncli were needed.
 The first one is [webbrowser](https://github.com/amodm/webbrowser-rs), which allows me to open a link in the default user browser, a feature I wanted right from the start. I would have liked to contribute to thank back the author but it seems quite stable and feature-complete, and has proven reliable in my usage.
-The other one is [html2text](https://github.com/jugglerchris/rust-html2text/), which is basically called twice in my code base but actually does the heavy lifting of converting raw Hacker News content for display in the terminal. This means that the post itself (if it has content) and more generally the comments. It arguably brings a lot of transitive dependencies with it, which essentially come from Mozilla's [Servo](https://servo.org), an ambitious next-gen web browser written in Rust. It's now essentially abandoned, apparently and unfortunately since some Mozilla layoffs. Despite this, from what I've read, a lot of the acquired experience helped Mozilla to successfully and gradually integrate Rust components in Firefox itself in what has been called the [Oxidation project](https://wiki.mozilla.org/Oxidation), Servo being a proving ground for some of the rewritten components.
+The other one is [html2text](https://github.com/jugglerchris/rust-html2text/), which is basically called twice in my codebase but actually does the heavy lifting of converting raw Hacker News content for display in the terminal. This means the post itself (if it has content) and more generally the comments. It arguably brings a lot of transitive dependencies with it, which essentially come from Mozilla's [Servo](https://servo.org), an ambitious next-gen web browser written in Rust. It's now essentially abandoned, apparently and unfortunately since some Mozilla layoffs. Despite this, from what I've read, a lot of the acquired experience helped Mozilla to successfully and gradually integrate Rust components in Firefox itself in what has been called the [Oxidation project](https://wiki.mozilla.org/Oxidation), Servo being a proving ground for some of the rewritten components.
 
 Finally, I did hit a show-stopping road block when I discovered that you couldn't define asynchronous functions in a Trait, but thankfully the [async-trait](https://crates.io/crates/async-trait) crate offers a quite frankly magical one-line macro to make it possible. As of writing this line, official support in the compiler recently [reached Nightly](https://blog.rust-lang.org/inside-rust/2022/11/17/async-fn-in-trait-nightly.html) , with one limitation which doesn't seem to apply to my use case. In concrete terms, this would save me some allocation on the heap when compared to the `async-trait` macro so that's good news!
 
 ## High-Level Architecture
 
-Just for context, I've been learning Rust since 2012, when it was still in beta. I do hope my code is mostly idiomatic but this will be more of a focus on the high-level architectural concepts I've been able to rapidly converge on. I also have the compiler and [clippy](https://github.com/rust-lang/rust-clippy) warnings directly in Visual Studio Code, which I exclusively use for Rust. Be aware that some rare clippy hints seem to be false positives in my use case, I might be wrong but this explains why you won't see a zero warnings codebase (yet) if you explore the code. The latest Rust edition (2021) is used, and I've embraced the change away from the `mod.rs` module pattern. All of this is applicable to my other Rust projects, at least those that were actively worked on since the 2021 edition.
+Just for context, I've been learning Rust since 2012, when it was still in beta. I do hope my code is mostly idiomatic but this will be more of a focus on the high-level architectural concepts I've been able to rapidly converge on. I also have the compiler and [clippy](https://github.com/rust-lang/rust-clippy) warnings directly in Visual Studio Code, which I exclusively use for Rust. Be aware that some rare clippy hints seem to be false positives in my use case, I might be wrong but this explains why you won't see a zero warnings codebase (yet) if you explore the code. The latest Rust edition (2021) is used, and I've embraced the change away from the `mod.rs` module pattern. All of this is applicable to my other Rust projects, at least those that were actively worked on since the 2021 edition went live.
 
 Do note that many trade-offs taken will need some context, so I do apologize for the length of this article. This context may be the iterations I've made before reaching the current state the codebase is in, or a show-stopping bug I've encountered and the solution I've found to solve it.
 
@@ -98,7 +98,7 @@ to instantiate from raw Hacker News data from the client, with error handling.
 
 ### UI Structure
 
-The UI structure is the beating heart of hncli. It makes the terminal handling, client described just above, application describe below and the separate Components all work together, as demonstrated by its fields (some annotations here):
+The UI structure is the beating heart of hncli. It makes the terminal handling, the client described just above, the application described below and the separate Components all work together, as demonstrated by its fields (some annotations here):
 
 ```rust
 pub struct UserInterface {
@@ -112,9 +112,9 @@ pub struct UserInterface {
 
 At initialization, the config is loaded from persistent storage (more later).
 
-Then comes the setup, which spawns the user events handling thread which also sends the "ticks". The multi-threading primitive I've used is the [mpsc](https://doc.rust-lang.org/std/sync/mpsc/) from the standard library, which is a you knew or maybe guessed a Multi-Producer, Single-Consumer FIFO queue. Since I use crossterm, we retrieve the user events to send to the main thread by polling. All Components are then registered, which boils down to inserting a new instance of each into a HashMap with a globally unique ID as a key, for O(1) access. I chose a tick to be 100 milliseconds, and actual precision is by design more than enough for hncli's needs - refreshing the comments every couple of minutes for instance.
+Then comes the setup, which spawns the user events handling thread which also sends the "ticks". The multi-threading primitive I've used is the [mpsc](https://doc.rust-lang.org/std/sync/mpsc/) from the standard library, which is - you knew or maybe guessed - a Multi-Producer, Single-Consumer FIFO queue. Since I use crossterm, we retrieve the user events to send to the main thread by polling. All Components are then registered, which boils down to inserting a new instance of each into a HashMap with a globally unique ID as a key, for `O(1)` access. I chose a tick to be 100 milliseconds, and actual precision is by design more than enough for hncli's needs - refreshing the comments every couple of minutes for instance.
 
-The UI loop of the application, ran in the main thread, looks like this after some cuts and annotations in [the code](https://github.com/pierreyoda/hncli/blob/main/src/ui.rs) for clarity:
+The UI loop of the application, ran in the main thread, looks like this after some cuts and annotations made here in [the code](https://github.com/pierreyoda/hncli/blob/main/src/ui.rs) for clarity:
 
 ```rust
 pub async fn run(&mut self, rx: Receiver<UserInterfaceEvent>) -> Result<()> {
@@ -159,10 +159,10 @@ pub async fn run(&mut self, rx: Receiver<UserInterfaceEvent>) -> Result<()> {
                 let app_context = app.get_context();
                 let inputs = app_context.get_inputs();
                 if inputs.is_active(&ApplicationAction::Quit) {
-                    break 'ui; // a nice feature of Rust you may have picked on: loops can be labeled; useful in nested loops, here used to be mor explicit
+                    break 'ui; // a nice feature of Rust you may have picked on: loops can be labeled; useful in nested loops, here used to be more explicit
                 }
                 if inputs.is_active(&ApplicationAction::QuitShortcut)
-                    && self.can_quit_via_shortcut() // quick shortcut can be toggled in the settings, basically hitting 'q' in any nested screen
+                    && self.can_quit_via_shortcut() // quick shortcut that can be toggled in the settings, basically hitting 'q' in any screen
                 {
                     break 'ui;
                 }
@@ -186,7 +186,7 @@ pub async fn run(&mut self, rx: Receiver<UserInterfaceEvent>) -> Result<()> {
 
 ### Application
 
-This one required quite some iteration, especially due to difficult memory lifetime issues. You may have heard about it if not in Rust, and it's a tough one to learn especially for those coming from a Garbage Collected-only languages, especially coming from a Garbage Collected language like Java, Javascript, C# or Go. In my experience, it's not that often required in typical Rust code, but it does definitely contribute to a high learning curve at the beginning. Maybe by progress in skill, certainly by advances in the compiler, explicit lifetime annotations have been increasingly more rare in my own code for what it's worth.
+This one required quite some iteration, especially due to difficult memory lifetime issues. You may have heard about it if not developing in Rust yourself, and it's a tough one to learn especially for those coming from Garbage Collected languages like Java, Javascript, C# or Go. In my experience, it's not that often required in typical Rust code, but it does definitely contribute to a high learning curve at the beginning. Maybe by progress in my own Rust skills, certainly by advances in the compiler, explicit lifetime annotations have been increasingly more rare in my own code for what it's worth.
 
 ```rust
 /// Interact with application state from the components.
@@ -203,13 +203,13 @@ pub struct AppContext<'a> {
 
 Now that you've seen this snippet, you can see that there is everything centrally stored here for usage by components to actually *do* something.
 
-I know, I know. This looks like globally scoped mutable state. Except it's not, it's owned by our UI structure and, thanks to the numerous Rust guarantees. Long story short, the end of it if that the only synchronization issues I can - and did, and will - encounter leading to bugs is due to business logic issues, which no language can prevent - yet?. More precisely, it boils down to the many moving pieces in hncli badly interacting, and most bugs are really easy to fix. Some, I admit, do require a bit of refactoring but not at the architecture level, just in a few sub-modules or Components.
+I know, I know. This looks like globally scoped mutable state. Except it's not, it's owned by our UI structure and, thanks to the numerous Rust guarantees, is safe. Long story short, the end of it if that the only synchronization issues I can - and did, and will - encounter leading to bugs is due to business logic issues, which no language can prevent - yet?. More precisely, it boils down to the many moving pieces in hncli badly interacting, and most bugs are really easy to fix. Some, I admit, do require a bit of refactoring but not at the architecture level, just in a few sub-modules or Components.
 
-If you look at the [module source code](https://github.com/pierreyoda/hncli/blob/main/src/app.rs), a big chunk of it is in the same file. This was a choice I made to better keep deeply-connected things at the exact same place, and it's a specific architectural aim to not let the Application state grow too much.
+If you look at the [module source code](https://github.com/pierreyoda/hncli/blob/main/src/app.rs), a big chunk of it is in the same file. This was a choice I made to better keep deeply-connected things at the exact same place, and it's a specific architectural aim to not let the Application state grow too much. **EDIT:** I did end up moving `AppState` into its own sub-module.
 
 #### State management
 
-Speaking of state, this is a big one, as anyone on the front-end side which did React, or jQuery, or anything really can tell you. In React, you can react to Redux, MobX, more recently the React hooks API, or any thing in-between. It's quite a big deal in a React codebase, and an ill-advised choice can lead to great headaches years down the line - or much sooner if you're lucky.
+Speaking of state, this is a big one, as anyone on the front-end side which did React, or jQuery, or anything really can tell you. In React, you can use Redux, MobX, more recently the React hooks API, or any thing in-between. It's quite a big deal in a React codebase, and an ill-advised choice can lead to great headaches years down the line - or much sooner if you're lucky.
 
 Basically, we have in our state everything that needs to be read and/or written somehow somewhere. You can see just below the kind of data it stores. I've omitted some fields from the snippet for brevity, but there are at the time I'm writing this only 11 fields in our state. This will probably evolve a little over the time, but will not grow much at this point. Some fields came in just for a specific feature I wanted for which I found out some data did need to be in this scope, after quickly exhausting the other options.
 
@@ -233,7 +233,7 @@ How do you interact with all this data? By good old accessors, manually written.
 
 One last thing: I've found quite after some time spent on the project that some setters *do* need some business logic.
 
-In the first case, I was confused why navigating back from sub-comments was working erratically, to say the least. Turned out, once you get into a sub-comment of any depth, a data fetch is made by the corresponding Component which allows us to get the freshet comments, which is a good thing on many really hot stories. And, since I don't want to fetch too much, this lead to my issue when navigating back from a sub-comment. This is due to the same Component displaying a comment a any level, in order to not duplicate code and this proved sometimes really tricky to deal with, including in this case. So I was erasing comments. The solution was to merge incoming sub-comments within the existing cached comments. Seems obvious in retrospect.
+In the first case, I was confused why navigating back from sub-comments was working erratically, to say the least. Turned out, once you get into a sub-comment of any depth, a data fetch is made by the corresponding Component which allows us to get the freshet comments, which is a good thing on many really hot stories. And, since I don't want to fetch too much, this lead to my issue when navigating back from a sub-comment. This is due to the same Component displaying a comment at any level, in order to not duplicate code and this proved sometimes really tricky to deal with, including in this case. I was erasing parent comments. The solution was to merge incoming sub-comments within the existing cached comments. Seems obvious in retrospect.
 
 The second case, I've encountered more or less randomly on some rare stories posted. The bug I was encountering was that the number of comments at the top level displayed looked correct, but once you navigated to one of the comments it could not be displayed due to it missing from our cache. After investigation, there was apparently a mismatch between the IDs of the descendants I was initially fetching and the comments I could actually fetch. It's probably an issue on my end, which was fixed by just enforcing data coherency, before updating the comments cache from any depth. The issue has not reappeared for now.
 
@@ -248,7 +248,7 @@ Here are all the application routes:
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum AppRoute {
     /// Home screen.
-    Home(HnStoriesSections), // stores the particular Hacker News top section: Home, Ask, Show, Jobs
+    Home(HnStoriesSections), // stores the particular Hacker News top section viewed: Home, Ask, Show, Jobs
     /// Item details screen.
     ItemDetails(DisplayableHackerNewsItem), //  stores the currently viewed item (in this case top-level = story, job, poll)
     /// Item sub-comments screen.
@@ -286,11 +286,12 @@ impl AppRouter {
     pub fn pop_navigation_stack(&mut self) -> Option<AppRoute>
 
     pub fn build_screen_from_route(route: AppRoute) -> Box<dyn Screen> // in this case, pointer to a heap-allocated generic implementation of the Screen trait (see later)
+}
 ```
 
 #### Persistent configuration
 
-The required configuration files are stored as a TOML file in the OS-appropriate local user folder, thanks to the [directories](https://github.com/dirs-dev/directories-rs) crate. serde is used for (de)serialization purposes. Loading the configuration, if it already exists, is done at setup by the Ui structure.
+The required configuration files are stored as a TOML file in the OS-appropriate local user folder, thanks to the [directories](https://github.com/dirs-dev/directories-rs) crate. serde is used for (de)serialization purposes. Loading the configuration, if it already exists, is done at setup by the `Ui` structure.
 
 #### Inputs handling
 
@@ -325,7 +326,7 @@ pub enum ApplicationAction {
 }
 ```
 
-I've looked at mouse support, which is technically possible with crossterm, but it does not fit my current UX concept as said in the [concept article](/blog/hncli-1-concept).
+I've looked at mouse support, which is technically possible with crossterm, but it does not fit the current UX as said in the [concept article](/blog/hncli-1-concept).
 
 The low-level abstraction is as following:
 
@@ -359,7 +360,7 @@ pub enum Key {
 }
 ```
 
-There's a key representation function associated for the UI to display, with emojis expect for individual characters. There's also a conversion function from crossterm events to hncli's representation (as `From` for the Rust public).
+There's a key representation function associated for the UI to display, with emojis except for individual characters. There's also a conversion function from crossterm events to hncli's representation (as `From` for the Rust public).
 
 Same goes for key modifiers:
 
@@ -431,7 +432,7 @@ impl InputsController {
     }
 
     pub fn get_active_input_key(&self) -> Option<(Key, char)> {
-        // get the active (keyboard key, ASCII representation) tuple
+        // get the active (keyboard key, UTF-8 character) tuple
     }
 }
 ```
@@ -509,7 +510,7 @@ Screens in hncli must implement the following trait:
 
 ```rust
 /// Defines layout state by associating each visible component
-/// with a defined target `Rect`.
+/// with a defined rendering target `Rect`.
 pub type ScreenComponentsRegistry = HashMap<UiComponentId, Rect>;
 
 /// A Screen is a self-contained state of the application with its own update and rendering logic.
@@ -539,7 +540,7 @@ pub trait Screen: Debug + Send {
 }
 ```
 
-An active screen handles inputs *before* its active components, which are determined in `compute_layout`. When handling inputs, a tuple containing both the event response and, optionally, the new route to push to the navigation stack.
+An active screen handles inputs *before* its active components, which are determined in `compute_layout`. When handling inputs, a tuple containing both the event response and, optionally, the new route to push to the navigation stack, must be returned.
 
 A screen event response takes the following form:
 
