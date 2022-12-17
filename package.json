@@ -13,8 +13,9 @@
     "type": "yarn tsc --noEmit",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
+    "lint": "eslint --ignore-path .gitignore .",
+    "format": "prettier --ignore-path .gitignore --write .",
+    "format:check": "prettier --ignore-path .gitignore --check .",
     "test": "yarn jest"
   },
   "dependencies": {
@@ -27,14 +28,14 @@
   "devDependencies": {
     "@octokit/rest": "19.0.5",
     "@sveltejs/adapter-static": "1.0.0",
-    "@sveltejs/kit": "1.0.0",
+    "@sveltejs/kit": "1.0.1",
     "@tailwindcss/typography": "0.5.8",
     "@types/d3-path": "3.0.0",
     "@types/d3-selection": "3.0.3",
     "@types/debug": "4.1.7",
     "@types/jest": "29.2.4",
     "@types/lodash.orderby": "4.6.7",
-    "@types/node": "18.11.15",
+    "@types/node": "18.11.16",
     "@types/node-emoji": "1.8.2",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
@@ -43,7 +44,7 @@
     "cross-env": "7.0.3",
     "cssnano": "5.1.14",
     "dotenv": "16.0.3",
-    "eslint": "8.29.0",
+    "eslint": "8.30.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-svelte3": "4.0.0",
     "husky": "8.0.2",
@@ -64,7 +65,7 @@
     "ts-node": "10.9.1",
     "tslib": "2.4.1",
     "typescript": "4.9.4",
-    "unist-util-visit": "^4.1.1",
+    "unist-util-visit": "4.1.1",
     "vite": "4.0.1"
   }
 }
