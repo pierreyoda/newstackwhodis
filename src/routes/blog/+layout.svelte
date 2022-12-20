@@ -45,6 +45,26 @@
     :global(p > code) {
       @apply font-mono font-semibold text-sm;
     }
+
+    /* Table of Contents */
+    :global(.toc) {
+      @apply pb-4;
+    }
+    :global(.toc-level-2) {
+      @apply pl-2;
+    }
+    :global(.toc-level-3) {
+      @apply pl-4;
+    }
+    :global(.toc-level-4) {
+      @apply pl-6;
+    }
+    :global(.toc-level-5) {
+      @apply pl-8;
+    }
+    :global(.toc-level-6) {
+      @apply pl-10;
+    }
   }
 
   @screen lg {

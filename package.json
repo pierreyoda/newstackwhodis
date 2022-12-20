@@ -26,6 +26,7 @@
     "node-emoji": "1.11.0"
   },
   "devDependencies": {
+    "@jsdevtools/rehype-toc": "3.0.2",
     "@octokit/rest": "19.0.5",
     "@sveltejs/adapter-static": "1.0.0",
     "@sveltejs/kit": "1.0.1",
@@ -55,10 +56,9 @@
     "postcss-nested": "6.0.0",
     "prettier": "2.8.1",
     "prettier-plugin-svelte": "2.9.0",
-    "rehype-autolink-headings": "^6.1.1",
-    "rehype-slug": "^5.1.0",
+    "rehype-autolink-headings": "6.1.1",
+    "rehype-slug": "5.1.0",
     "remark-emoji": "3.0.2",
-    "remark-toc": "^8.0.1",
     "svelte": "3.55.0",
     "svelte-check": "2.10.2",
     "svelte-preprocess": "5.0.0",
