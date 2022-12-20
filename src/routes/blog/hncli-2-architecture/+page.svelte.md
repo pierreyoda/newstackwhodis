@@ -13,15 +13,17 @@ As you can see, this is quite a long post that will probably be split some time 
 
 You can follow along on the actual source code if you wish so, and I will try my best to keep this article updated but the architecture described here will probably not change much.
 
+## Table of contents
+
 ## Goal
 
 If you haven't read it yet, I advise you to take a look at the [concept article](/blog/hncli-1-concept).
 
 The required features listed in the project description were pretty clear right from the start of my project. I am aware that other Hacker News Terminal UIs already do exist, even [an impressive one](https://github.com/aome510/hackernews-TUI) in Rust. I did not look at the code of any of these projects.
 
-### Stack
+## Stack
 
-#### UI
+### UI
 
 I chose to not go with ncurses (so [Cursive](https://github.com/gyscos/Cursive) in Rust) in small part due to its apparent complexity but mostly since I aimed at a minimalist design that seemed to really fit a pure Rust library called [tui-rs](https://github.com/fdehau/tui-rs), which I knew from of one of its most famous use cases, a [Spotify TUI](https://github.com/Rigellute/spotify-tui) - with much less scope in the case of hncli.
 
@@ -31,7 +33,7 @@ Additionally, tui-rs promises to allow custom widgets to be implemented via an a
 
 Technically, tui-rs offers no input handling but that is taken care of by the excellent backend which it uses by default, [crossterm](https://github.com/crossterm-rs/crossterm), a pure Rust terminal handling library.
 
-#### Networking
+### Networking
 
 You may have heard about the asynchronous story in Rust, which has been to say the least a huge community-wide undertaking over years which I won't have the time nor the credentials to get into. Long story short, it's been stable since [November 2019](https://blog.rust-lang.org/2019/11/07/Async-await-stable.html) and the whole asynchronous ecosystem has been improving ever more ever since, even though there have been some rough edges here and there.
 
