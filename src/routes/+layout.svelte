@@ -1,10 +1,18 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { inject } from "@vercel/analytics";
+
   import "../app.css";
   import Navbar from "$lib/Navbar.svelte";
   import Footer from "$lib/Footer.svelte";
   import type { PageData } from "./$types";
 
   export let data: PageData;
+
+  onMount(() => {
+    // Enable Vercel Analytics
+    inject();
+  });
 </script>
 
 <div class="layout-container" class:in-blog={data.selectedCategory === "blog"}>
