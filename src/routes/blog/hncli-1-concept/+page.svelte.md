@@ -35,7 +35,7 @@ A Terminal UI is basically an interactive UI that runs directly in your terminal
 
 I personally really enjoy HackerNews and it is my main way of keeping in touch with the rest of the industry in which I work, mainly concerning software engineering at large but also for so many other subjects including hardware, entrepreneurship or AI.
 
-What I find deeply enjoyable and why I learn so much using this website is first of all that almost all the aggregated links posted there are to say the least interesting in themselves. That in itself is great. But my main interest in this in my opinion unique social network is the discussion these articles trigger, where many professionals from many backgrounds (with of course a big bias on tech) bring the kind of exchange that I've personally not seen anywhere else on the internet.
+What I find deeply enjoyable and why I learn so much using this website is first of all that almost all the aggregated links posted there are to say the least interesting in themselves. That alone is great. But my main interest in this in my opinion unique social network is the discussion these articles trigger, where many professionals from many backgrounds (with of course a big bias on tech) bring the kind of exchange that I've personally not seen anywhere else on the internet.
 
 Many incredibly accomplished people actively go there, and it's not unusual to encounter someone who contributed to or even created things you will use everyday - like some critical part of Chrome or Windows, or some incredible new AI project that may see user-facing applications some day.
 
