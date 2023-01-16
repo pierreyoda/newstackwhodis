@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { inject } from "@vercel/analytics";
 
+  import { dev } from "$app/environment";
   import "../app.css";
   import Navbar from "$lib/Navbar.svelte";
   import Footer from "$lib/Footer.svelte";
@@ -9,9 +9,8 @@
 
   export let data: PageData;
 
-  onMount(() => {
-    // Enable Vercel Analytics
-    inject();
+  inject({
+    mode: dev ? "development" : "production",
   });
 </script>
 
