@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2022-12-16T18:33:55.102Z"
+    "exportDate": "2023-01-31T14:49:54.413Z"
   },
   "githubRepositories": [
     {
@@ -33,7 +33,15 @@
       "description": "Simple Game Boy (Color) emulator written in Rust.",
       "fullName": "pierreyoda/rustboycolor",
       "forksCount": 0,
-      "stargazersCount": 7
+      "stargazersCount": 8
+    },
+    {
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
+      "forksCount": 0,
+      "stargazersCount": 6
     },
     {
       "url": "https://github.com/pierreyoda/GameInc",
@@ -50,14 +58,6 @@
       "fullName": "pierreyoda/rust-chip8",
       "forksCount": 0,
       "stargazersCount": 4
-    },
-    {
-      "url": "https://github.com/pierreyoda/hncli",
-      "name": "hncli",
-      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
-      "fullName": "pierreyoda/hncli",
-      "forksCount": 0,
-      "stargazersCount": 3
     },
     {
       "url": "https://github.com/pierreyoda/rust-mal",
