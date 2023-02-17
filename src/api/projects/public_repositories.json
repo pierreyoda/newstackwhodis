@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2023-01-31T14:49:54.413Z"
+    "exportDate": "2023-02-17T16:57:46.226Z"
   },
   "githubRepositories": [
     {
@@ -20,6 +20,14 @@
       "stargazersCount": 17
     },
     {
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
+      "forksCount": 1,
+      "stargazersCount": 15
+    },
+    {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
       "name": "rust-neuralnet",
       "description": "Simple Artificial Neural Network library implemented in Rust.",
@@ -34,14 +42,6 @@
       "fullName": "pierreyoda/rustboycolor",
       "forksCount": 0,
       "stargazersCount": 8
-    },
-    {
-      "url": "https://github.com/pierreyoda/hncli",
-      "name": "hncli",
-      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
-      "fullName": "pierreyoda/hncli",
-      "forksCount": 0,
-      "stargazersCount": 6
     },
     {
       "url": "https://github.com/pierreyoda/GameInc",
