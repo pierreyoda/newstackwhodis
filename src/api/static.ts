@@ -1,4 +1,4 @@
-import nodeEmojiPkg from "node-emoji";
+import * as nodeEmojiPkg from "node-emoji";
 const { emojify } = nodeEmojiPkg;
 
 import type { RepositoriesData } from "./fetcher";
