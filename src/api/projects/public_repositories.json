@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2023-05-22T13:13:29.280Z"
+    "exportDate": "2023-06-03T08:31:50.601Z"
   },
   "githubRepositories": [
     {
@@ -33,7 +33,7 @@
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
       "forksCount": 3,
-      "stargazersCount": 9
+      "stargazersCount": 10
     },
     {
       "url": "https://github.com/pierreyoda/rustboycolor",
