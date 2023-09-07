@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2023-08-02T14:49:24.450Z"
+    "exportDate": "2023-09-07T16:28:38.107Z"
   },
   "githubRepositories": [
     {
@@ -9,7 +9,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 23
+      "stargazersCount": 25
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
@@ -49,7 +49,7 @@
       "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
       "fullName": "pierreyoda/GameInc",
       "forksCount": 4,
-      "stargazersCount": 4
+      "stargazersCount": 5
     },
     {
       "url": "https://github.com/pierreyoda/rust-chip8",
