@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2023-10-09T07:58:27.117Z"
+    "exportDate": "2023-11-27T09:22:13.517Z"
   },
   "githubRepositories": [
     {
@@ -33,7 +33,7 @@
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
       "forksCount": 3,
-      "stargazersCount": 11
+      "stargazersCount": 13
     },
     {
       "url": "https://github.com/pierreyoda/rustboycolor",
@@ -49,7 +49,7 @@
       "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
       "fullName": "pierreyoda/GameInc",
       "forksCount": 4,
-      "stargazersCount": 5
+      "stargazersCount": 6
     },
     {
       "url": "https://github.com/pierreyoda/rust-chip8",
