@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2023-11-27T09:22:13.517Z"
+    "exportDate": "2024-03-24T15:17:50.817Z"
   },
   "githubRepositories": [
     {
@@ -9,7 +9,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 25
+      "stargazersCount": 27
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
@@ -25,7 +25,7 @@
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
       "forksCount": 1,
-      "stargazersCount": 15
+      "stargazersCount": 16
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -36,28 +36,20 @@
       "stargazersCount": 13
     },
     {
+      "url": "https://github.com/pierreyoda/GameInc",
+      "name": "GameInc",
+      "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
+      "fullName": "pierreyoda/GameInc",
+      "forksCount": 4,
+      "stargazersCount": 9
+    },
+    {
       "url": "https://github.com/pierreyoda/rustboycolor",
       "name": "rustboycolor",
       "description": "Simple Game Boy (Color) emulator written in Rust.",
       "fullName": "pierreyoda/rustboycolor",
       "forksCount": 0,
       "stargazersCount": 9
-    },
-    {
-      "url": "https://github.com/pierreyoda/GameInc",
-      "name": "GameInc",
-      "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
-      "fullName": "pierreyoda/GameInc",
-      "forksCount": 4,
-      "stargazersCount": 6
-    },
-    {
-      "url": "https://github.com/pierreyoda/rust-chip8",
-      "name": "rust-chip8",
-      "description": "A simple Chip8 emulator made in Rust.",
-      "fullName": "pierreyoda/rust-chip8",
-      "forksCount": 0,
-      "stargazersCount": 4
     },
     {
       "url": "https://github.com/pierreyoda/rust-mal",
@@ -68,12 +60,20 @@
       "stargazersCount": 4
     },
     {
+      "url": "https://github.com/pierreyoda/rust-chip8",
+      "name": "rust-chip8",
+      "description": "A simple Chip8 emulator made in Rust.",
+      "fullName": "pierreyoda/rust-chip8",
+      "forksCount": 0,
+      "stargazersCount": 3
+    },
+    {
       "url": "https://github.com/pierreyoda/rust-lsystem",
       "name": "rust-lsystem",
       "description": "Create, manipulate and visualize L-systems in Rust.",
       "fullName": "pierreyoda/rust-lsystem",
       "forksCount": 0,
-      "stargazersCount": 2
+      "stargazersCount": 1
     },
     {
       "url": "https://github.com/pierreyoda/lsystem-renderer",
