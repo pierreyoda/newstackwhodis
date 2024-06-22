@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "strictNullChecks": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "verbatimModuleSyntax": false,
   }
 }
