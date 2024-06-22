@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import type { ProjectMeta } from "./ProjectCard.svelte";
   import type { GithubRepositoryMeta } from "../api/fetcher";
-  import type { NavigationSelectableCategory } from "./Navbar.svelte";
+  import type { NavigationSelectableCategory } from "./types";
 
   export type GithubProjectMeta = GithubRepositoryMeta & {
     blogPostSlug: string | null;

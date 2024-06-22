@@ -4,6 +4,5 @@
     "strict": true,
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
-    "verbatimModuleSyntax": false,
   }
 }

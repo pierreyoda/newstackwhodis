@@ -1,14 +1,15 @@
 import { mdsvex } from "mdsvex";
 import remarkEmoji from "remark-emoji";
-import preprocess from "svelte-preprocess";
 import staticAdapter from "@sveltejs/adapter-static";
+import { sveltePreprocess } from "svelte-preprocess";
 import rehypeSlug from "rehype-slug";
 import rehypeToc from "@jsdevtools/rehype-toc";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+
 // import RemarkImagesMdsveXPluginPackage from "./plugins/remark-images.cjs";
 // const { remarkImagesMdsveXPlugin } = RemarkImagesMdsveXPluginPackage;
 
-/** @type {import('@sveltejs/kit').Config} */
+/** @type {import('@sveltejs/kit')} */
 const config = {
   extensions: [".svelte", ".svelte.md", ".svx"],
   // Consult https://github.com/sveltejs/svelte-preprocess
@@ -31,10 +32,9 @@ const config = {
         ],
       ],
     }),
-    preprocess({
+    sveltePreprocess({
       postcss: true,
-    }),
-  ],
+    })],
   kit: {
     adapter: staticAdapter({
       pages: "./build/",
