@@ -4,13 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
+.yarn/install-state.gz
 
 # testing
 /coverage
 
-# SvelteKit
-/build
-/.svelte-kit
+# Next.js
+/.next/
+/out/
 
 # production
 /build
@@ -25,12 +26,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
-# vercel
+# Vercel
 .vercel
-/.vercel_build_output
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
