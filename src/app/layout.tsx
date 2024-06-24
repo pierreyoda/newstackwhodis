@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
-import { headers } from "next/headers";
-import { Footer } from "@/components/Footer";
-import { Navbar, NavigationSelectableCategory } from "@/components/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar, NavigationSelectableCategory } from "@/components/layout/Navbar";
 
 export const metadata: Metadata = {
   title: "newstackwhodis",

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { FunctionComponent } from "react";
-import { ExternalLink } from "./ExternalLink";
+import { ExternalLink } from "../ExternalLink";
 
 interface NavbarLinkProps {
   href: string;

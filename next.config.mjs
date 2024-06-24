@@ -7,6 +7,16 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  webpack: config => ({
+    ...config,
+    resolve: {
+      ...config.resolve,
+      fallback: {
+        ...config.resolve.fallback,
+        fs: false,
+      },
+    },
+  }),
 };
 
 const withMDX = createMDX({
