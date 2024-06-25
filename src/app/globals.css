@@ -3,6 +3,49 @@
 @tailwind utilities;
 
 @layer components {
+  .lsystem-descriptor-container {
+    .section {
+      @apply mt-2;
+
+      p {
+        @apply mb-2;
+      }
+
+      ul>li {
+        @apply mb-1 text-sm;
+
+        .letter {
+          @apply text-space-blue font-semibold;
+        }
+      }
+    }
+  }
+
+  .lsystem-renderer-container {
+    @apply rounded p-3 bg-white text-black;
+
+    .meta {
+      @apply hidden w-full items-center justify-center;
+
+      &:last-of-type {
+        @apply mb-4;
+      }
+
+      .label {
+        @apply text-gray-lighter;
+        @apply mr-2;
+      }
+    }
+  }
+
+  @screen md {
+    .container {
+      .meta {
+        @apply flex;
+      }
+    }
+  }
+
   .blog-post-container {
     @apply text-white;
 

@@ -1,10 +1,17 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import { VideoPlayer } from "./VideoPlayer";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import { FunctionComponent, useEffect, useState } from "react";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+
+import { VideoPlayer } from "./VideoPlayer";
+import { LSystemDescriptorWidget } from "./lsystem/LSystemDescriptorWidget";
+import { LSystemControllableTracingRenderer } from "./lsystem/LSystemControllableTracingRenderer";
 
 const components = {
+  // general
   VideoPlayer,
+  // L-Systems
+  LSystemDescriptorWidget,
+  LSystemControllableTracingRenderer,
 };
 
 interface MdxRendererProps {
