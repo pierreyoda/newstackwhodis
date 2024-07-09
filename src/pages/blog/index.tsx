@@ -23,7 +23,7 @@ const BlogPostsList: FunctionComponent<BlogPostListProps> = ({ metaList }) => (
     </div>
     <h1 className="mb-4 text-4xl font-bold md:mb-12">Posts</h1>
     {metaList.map(({ slug, title, description }) => (
-      <div key={slug} className="mb-8 last-of-type:mb-0">
+      <div key={slug} className="mb-8 last-of-type:mb-0 leading-8">
         <Link href={`/blog/${slug}`}>
           <h2 className="font-semibold text-2xl text-lychee my-0">
             {title}

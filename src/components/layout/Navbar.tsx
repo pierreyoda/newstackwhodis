@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { FunctionComponent } from "react";
+
 import { ExternalLink } from "../ExternalLink";
 
 interface NavbarLinkProps {
@@ -42,11 +43,11 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
           </ul>
         </nav>
       </header>
-    </div>
-    <div className={clsx("font-semibold py-2 md:py-0", category === "blog" && "hidden")}>
-      <ExternalLink href="https://github.com/pierreyoda/newstackwhodis">
-        GitHub
-      </ExternalLink>
+      <div className={clsx("font-semibold py-2 md:py-0", category === "blog" && "opacity-0")}>
+        <ExternalLink href="https://github.com/pierreyoda/newstackwhodis">
+          GitHub
+        </ExternalLink>
+      </div>
     </div>
   </div>
 );
