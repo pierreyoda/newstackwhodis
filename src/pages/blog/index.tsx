@@ -1,16 +1,21 @@
 import Link from "next/link";
-import { NextPage } from "next";
+import { GetStaticProps } from "next";
+import { FunctionComponent } from "react";
 
-import { BlogPostMeta, getBlogPostsMeta } from "@/api/blog";
 import { ExternalLink } from "@/components/ExternalLink";
+import { BlogPostMeta, getBlogPostsMeta } from "@/api/blog";
 
-const BlogPostsList: NextPage<{ metaList: readonly BlogPostMeta[] }> = ({ metaList }) => (
+interface BlogPostListProps {
+  metaList: readonly BlogPostMeta[];
+}
+
+const BlogPostsList: FunctionComponent<BlogPostListProps> = ({ metaList }) => (
   <div className="max-w-3xl mx-auto">
     <div className="mb-8">
       <span className="mb-2">
         The entirety of these blog posts are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license.
       </span>
-      See the
+      See the&nbsp;
       <ExternalLink href="https://github.com/pierreyoda/newstackwhodis/blob/main/src/pages/blog/BLOG_LICENSE">
         Full License Text
       </ExternalLink>
@@ -30,8 +35,10 @@ const BlogPostsList: NextPage<{ metaList: readonly BlogPostMeta[] }> = ({ metaLi
   </div>
 );
 
-BlogPostsList.getInitialProps = async () => ({
-  metaList: await getBlogPostsMeta(),
-});
+export const getStaticProps = (async () => ({
+  props: {
+    metaList: await getBlogPostsMeta(),
+  },
+})) satisfies GetStaticProps<BlogPostListProps>;
 
 export default BlogPostsList;

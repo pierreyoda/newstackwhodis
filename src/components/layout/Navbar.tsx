@@ -11,7 +11,7 @@ interface NavbarLinkProps {
 
 const NavbarLink: FunctionComponent<NavbarLinkProps> = ({ href, label, selected }) => (
   <li className="mr-8 last:mr-0">
-    <Link href={href} className={clsx("cursor-pointer text-white hover:text-lychee", selected && "text-lychee")}>
+    <Link href={href} className={clsx("cursor-pointer hover:text-lychee", selected && "text-lychee")}>
       {label}
     </Link>
   </li>
@@ -26,7 +26,7 @@ interface NavbarProps {
 
 export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
   <div className="flex flex-col">
-    <div className="w-full flex justify-center items-center mr-12 text-white font-bold py-6">
+    <div className="w-full flex justify-center items-center mr-12 font-bold py-6">
       <Link href="/">
         newstackwhodis (Work In Progress)
       </Link>
@@ -43,7 +43,7 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
         </nav>
       </header>
     </div>
-    <div className={clsx("text-white font-semibold py-2 md:py-0", category === "blog" && "hidden")}>
+    <div className={clsx("font-semibold py-2 md:py-0", category === "blog" && "hidden")}>
       <ExternalLink href="https://github.com/pierreyoda/newstackwhodis">
         GitHub
       </ExternalLink>

@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#__next,
+#root {
+  @apply w-full h-full bg-black-darker;
+}
+
+#root {
+  @apply font-sans antialiased text-white;
+}
+
 @layer components {
   .lsystem-descriptor-container {
     .section {
@@ -40,7 +51,7 @@
 
   @screen md {
     .container {
-      .meta {
+      .lsystem-renderer-container {
         @apply flex;
       }
     }
@@ -117,7 +128,9 @@
 
   @screen lg {
     .blog-post-container {
-      @apply max-w-5xl;
+      .remark-highlight {
+        @apply max-w-5xl;
+      }
     }
   }
 }

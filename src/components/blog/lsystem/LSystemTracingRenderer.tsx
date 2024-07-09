@@ -30,7 +30,7 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
     [trace.forState],
   );
 
-  const svgRef = useRef<SVGSVGElement | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   useEffect(
     () => {
       if (!svgRef) {
