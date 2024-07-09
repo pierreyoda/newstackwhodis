@@ -10,13 +10,13 @@ interface BlogPostListProps {
 }
 
 const BlogPostsList: FunctionComponent<BlogPostListProps> = ({ metaList }) => (
-  <div className="max-w-3xl mx-auto">
+  <div className="max-w-3xl mx-auto mt-4">
     <div className="mb-8">
       <span className="mb-2">
         The entirety of these blog posts are licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license.
       </span>
-      See the&nbsp;
-      <ExternalLink href="https://github.com/pierreyoda/newstackwhodis/blob/main/src/pages/blog/BLOG_LICENSE">
+      &nbsp;See the&nbsp;
+      <ExternalLink className="text-lychee" href="https://github.com/pierreyoda/newstackwhodis/blob/main/src/pages/blog/BLOG_LICENSE">
         Full License Text
       </ExternalLink>
       .
@@ -25,7 +25,7 @@ const BlogPostsList: FunctionComponent<BlogPostListProps> = ({ metaList }) => (
     {metaList.map(({ slug, title, description }) => (
       <div key={slug} className="mb-8 last-of-type:mb-0">
         <Link href={`/blog/${slug}`}>
-          <h2 className="font-semibold text-lychee my-0">
+          <h2 className="font-semibold text-2xl text-lychee my-0">
             {title}
           </h2>
         </Link>

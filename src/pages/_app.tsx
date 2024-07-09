@@ -18,7 +18,7 @@ const CustomApp = ({ Component, pageProps, router }: AppProps) => {
         <title>newstackwhodis</title>
         <meta property="description" content="pierreyoda's awesome tech blog" />
       </Head>
-      <div className="flex flex-col grow w-full h-full">
+      <div className="flex flex-col grow w-full">
         <Navbar category={category} />
         <main className={clsx("grow px-2 pt-2 overflow-auto md:px-0", category === "about" || (category === "blog" && !inPostsList) ? "blog-post-container" : "")}>
           <Component {...pageProps} />
