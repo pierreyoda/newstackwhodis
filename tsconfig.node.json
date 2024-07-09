@@ -1,0 +1,24 @@
+{
+  "ts-node": {
+    "esm": true,
+    // "swc": true,
+    "transpileOnly": true,
+    "compilerOptions": {
+      // "swc": true,
+      // "module": "ESNext",
+      // "transpileOnly": true,
+      // "experimentalSpecifierResolution": true
+      // "moduleResolution": "NodeNext",
+      "module": "ESNext",
+      "esModuleInterop": true
+    }
+  },
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmit": true
+  },
+}
