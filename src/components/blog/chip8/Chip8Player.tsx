@@ -1,10 +1,11 @@
 import { select } from "d3-selection";
 import { FunctionComponent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { Chip8ExecutionContext, Chip8VirtualMachine } from "@/content/chip8/vm";
-import { Chip8Display, DISPLAY_HEIGHT, DISPLAY_WIDTH } from "@/content/chip8/display";
+import { isDefined } from "@/utils";
 import { Chip8Keypad } from "./Chip8Keypad";
+import { Chip8ExecutionContext, Chip8VirtualMachine } from "@/content/chip8/vm";
 import { chip8AzertyInputsMap, chip8QwertyInputsMap } from "@/content/chip8/input";
+import { Chip8Display, DISPLAY_HEIGHT, DISPLAY_WIDTH } from "@/content/chip8/display";
 
 interface ColorRGB {
   r: number;
@@ -46,6 +47,8 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   const onColorString = useMemo(() => stringifyColorRGB(onColor), [onColor]);
   const [renderingContext, setRenderingContext] = useState<CanvasRenderingContext2D | null>(null);
   const [refreshDisplay, setRefreshDisplay] = useState<(display: Chip8Display) => void>(() => { });
+  const [isFocused, setIsFocused] = useState(false);
+  const [isWaitingForKey, setIsWaitingForKey] = useState(false);
   const inputsMap = useMemo(
     () => inputScheme === "QWERTY" ? chip8QwertyInputsMap : chip8AzertyInputsMap,
     [inputScheme],
@@ -92,14 +95,37 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
         }
 
         // input handling
+        setIsFocused(false);
+        let latestEventKeyCode: string | null = null;
+        const handleKeydownEvent = (event: KeyboardEvent) => {
+          const { code } = event;
+          if (!isFocused || code === latestEventKeyCode) {
+            return;
+          }
+          const keypadIndex = inputsMap[code];
+          if (!isDefined(keypadIndex)) {
+            return;
+          }
+          latestEventKeyCode = code;
+          for (let i = 0x0; i <= 0xf; i++) {
+            vm.keypad.setIsKeyPressed(i, false);
+          }
+          vm.keypad.setIsKeyPressed(keypadIndex, true);
+          if (isWaitingForKey) {
+            vm.endWaitingForKey(keypadIndex);
+            setIsWaitingForKey(false);
+          }
+        };
+        document.addEventListener("keydown", handleKeydownEvent);
+
+        // clean-up
+        return () => document.removeEventListener("keydown", handleKeydownEvent);
       });
     },
     [scale],
   );
 
   const [running, setRunning] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isWaitingForKey, setIsWaitingForKey] = useState(false);
   const vm = useMemo<Chip8VirtualMachine>(() => {
     const context: Chip8ExecutionContext = {
       onWaitingForKey: () => setIsWaitingForKey(true),
