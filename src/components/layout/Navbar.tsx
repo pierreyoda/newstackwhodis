@@ -12,7 +12,7 @@ interface NavbarLinkProps {
 
 const NavbarLink: FunctionComponent<NavbarLinkProps> = ({ href, label, selected }) => (
   <li className="mr-8 last:mr-0">
-    <Link href={href} className={clsx("cursor-pointer hover:text-lychee", selected && "text-lychee")}>
+    <Link href={href} className={clsx("cursor-pointer hover:text-lychee", selected ? "text-lychee" : "text-white")}>
       {label}
     </Link>
   </li>
