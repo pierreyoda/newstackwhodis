@@ -3,6 +3,7 @@ import rehypeSlug from "rehype-slug";
 import remarkEmoji from "remark-emoji";
 import remarkPrism from "remark-prism";
 import rehypeToc from "@jsdevtools/rehype-toc";
+import remarkFrontmatter from "remark-frontmatter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 /** @type {import("next").NextConfig} */
@@ -22,7 +23,7 @@ const nextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkEmoji, remarkPrism],
+    remarkPlugins: [remarkFrontmatter, remarkEmoji, remarkPrism],
     rehypePlugins: [
       rehypeSlug,
       rehypeAutolinkHeadings,
