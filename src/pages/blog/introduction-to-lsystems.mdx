@@ -6,13 +6,11 @@ published: true
 ---
 
 import {
-  lsystemAlgae,
-  lsystemAlgaeStates,
-  lsystemAlgaeDescriptor,
+  lsystemAlgaeMeta,
   lsystemSierpinski,
   lsystemKochSnowflake,
   lsystemTree,
-} from "./content/lsystem";
+} from "@/content/lsystem/article";
 import { LSystemDescriptorWidget } from "@/components/blog/lsystem/LSystemDescriptorWidget";
 import { LSystemControllableTracingRenderer } from "@/components/blog/lsystem/LSystemControllableTracingRenderer";
 
@@ -26,7 +24,7 @@ An L-System is composed of an alphabet, some constants, an axiom describing the 
 
 For instance, here is Lindenmayer's original L-System modeling the growth of an algae:
 
-<LSystemDescriptorWidget descriptor={lsystemAlgaeDescriptor} />
+<LSystemDescriptorWidget descriptor={lsystemAlgaeMeta.lsystemAlgaeDescriptor} />
 
 The evolution rules then allow us to iterate this L-System as such:
 
@@ -66,6 +64,7 @@ Let's see what this gives us after several iterations (you can control the curre
   lsystem={lsystemSierpinski}
   minGeneration={0}
   maxGeneration={8}
+  initialGeneration={2}
   strokeWidthScale={g => (g + 1) / 50}
 />
 

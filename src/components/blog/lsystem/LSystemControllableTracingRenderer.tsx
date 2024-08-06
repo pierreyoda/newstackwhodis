@@ -20,7 +20,7 @@ interface LSystemControllableTracingRendererProps {
 export const LSystemControllableTracingRenderer: FunctionComponent<LSystemControllableTracingRendererProps> = ({
   lsystem,
   initialAngle = 0,
-  initialGeneration = 0,
+  initialGeneration = 2,
   minGeneration = 0,
   maxGeneration = 6,
   scale = 1.0,
@@ -32,15 +32,14 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
   const lsystemTrace = useMemo(
     (): LSystemTrace => {
       let currentLSystem = { ...lsystem };
+      const currentStatesPerGeneration: Record<number, string> = {};
       for (let currentGeneration = 0; currentGeneration <= forGeneration; currentGeneration++) {
         if (!statesPerGeneration[currentGeneration]) {
-          setStatesPerGeneration(states => ({
-            ...states,
-            [currentGeneration]: iteratedLSystem(currentLSystem),
-          }));
+          currentStatesPerGeneration[currentGeneration] = iteratedLSystem(currentLSystem);
         }
         currentLSystem.generation = currentGeneration;
-        currentLSystem.state = statesPerGeneration[currentGeneration];
+        currentLSystem.state = currentStatesPerGeneration[currentGeneration];
+        setStatesPerGeneration(currentStatesPerGeneration);
       }
       return traceLSystem(currentLSystem, initialAngle);
     },
