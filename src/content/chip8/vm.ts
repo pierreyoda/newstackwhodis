@@ -46,7 +46,7 @@ export class Chip8VirtualMachine {
   display: Chip8Display = new Chip8Display();
   keypad: Chip8Keypad = new Chip8Keypad();
 
-  constructor(private context?: Chip8ExecutionContext) { }
+  constructor(private readonly context?: Chip8ExecutionContext) { }
 
   reset() {
     this.data = initChip8VirtualMachineData();
@@ -55,9 +55,8 @@ export class Chip8VirtualMachine {
 
   loadROM(rom: Uint8Array) {
     this.reset();
-    // the original CHIP-8 interpreters used [0x00..0x200] to store themselves
-    const memoryStart = 0x200;
-    this.data.memory.set(rom, memoryStart);
+    // the original CHIP-8 interpreters used [0x00..0x200[ to store themselves
+    this.data.memory.set(rom, 0x200);
   }
 
   setShouldShiftOpcodeUseVY(shouldShiftOpcodeUseVY: boolean) {

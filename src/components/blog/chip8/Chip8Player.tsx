@@ -1,5 +1,5 @@
 import { select } from "d3-selection";
-import { FunctionComponent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { isDefined } from "@/utils";
 import { Chip8Keypad } from "./Chip8Keypad";
@@ -46,14 +46,14 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   const offColorString = useMemo(() => stringifyColorRGB(offColor), [offColor]);
   const onColorString = useMemo(() => stringifyColorRGB(onColor), [onColor]);
   const [renderingContext, setRenderingContext] = useState<CanvasRenderingContext2D | null>(null);
-  const [refreshDisplay, setRefreshDisplay] = useState<(display: Chip8Display) => void>(() => { });
+  const refreshDisplay = useRef<(display: Chip8Display) => void>(() => { });
   const [isFocused, setIsFocused] = useState(false);
   const [isWaitingForKey, setIsWaitingForKey] = useState(false);
   const inputsMap = useMemo(
     () => inputScheme === "QWERTY" ? chip8QwertyInputsMap : chip8AzertyInputsMap,
     [inputScheme],
   );
-  useLayoutEffect(
+  useEffect(
     () => {
       // sanity check
       if (typeof window === "undefined" || !containerRef.current) {
@@ -72,17 +72,19 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
       if (!context) {
         return;
       }
-      setRenderingContext(context);
 
       // canvas rendering
-      setRefreshDisplay((display: Chip8Display) => {
-        if (!display.data.isDirty || !renderingContext) {
+      refreshDisplay.current = (display: Chip8Display) => {
+        if (!display) {
+          return;
+        }
+        if (!display.data.isDirty || !context) {
           return;
         }
 
-        renderingContext.fillStyle = offColorString;
-        renderingContext.clearRect(0, 0, canvasWidth, canvasHeight);
-        renderingContext.fillStyle = onColorString;
+        context.fillStyle = offColorString;
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        context.fillStyle = onColorString;
         for (let y = 0; y < DISPLAY_HEIGHT; y++) {
           const canvasY = y * scale;
           for (let x = 0; x < DISPLAY_WIDTH; x++) {
@@ -90,7 +92,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
             if (virtualPixel === 0) {
               continue;
             }
-            renderingContext.fillRect(x * scale, canvasY, scale, scale);
+            context.fillRect(x * scale, canvasY, scale, scale);
           }
         }
 
@@ -120,7 +122,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
 
         // clean-up
         return () => document.removeEventListener("keydown", handleKeydownEvent);
-      });
+      };
     },
     [scale],
   );
@@ -134,8 +136,22 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   }, []);
 
   // VM
+  const [intervalHandleTimers, setIntervalHandleTimers] = useState<NodeJS.Timeout | null>(null);
+  const [intervalHandleCpu, setIntervalHandleCpu] = useState<NodeJS.Timeout | null>(null);
   const run = useCallback(
     () => {
+      // clean-up
+      if (intervalHandleTimers) {
+        clearInterval(intervalHandleTimers);
+      }
+      if (intervalHandleCpu) {
+        clearInterval(intervalHandleCpu);
+      }
+
+      // ROM loading
+      if (!rom) {
+        throw new Error("Chip8Player: invalid ROM data");
+      }
       vm.loadROM(rom);
       setRunning(true);
 
@@ -145,9 +161,8 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
           return;
         }
         vm.tick();
-        setTimeout(timersCycle, VM_TICK_RATE_MS);
       };
-      setTimeout(timersCycle, VM_TICK_RATE_MS);
+      setIntervalHandleTimers(setInterval(timersCycle, VM_TICK_RATE_MS));
 
       // CPU
       const cpuCycle = () => {
@@ -156,11 +171,10 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
         }
         vm.step();
         if (vm.display.data.isDirty) {
-          refreshDisplay(vm.display);
+          refreshDisplay.current?.(vm.display);
         }
-        setTimeout(cpuCycle, VM_CPU_TICK_RATE_MS);
       };
-      setTimeout(cpuCycle, VM_CPU_TICK_RATE_MS);
+      setIntervalHandleCpu(setInterval(cpuCycle, VM_CPU_TICK_RATE_MS));
     },
     [rom],
   );
@@ -176,7 +190,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
         onBlur={() => setIsFocused(false)}
       />
       {!disableKeypad && (
-        <Chip8Keypad onKeyPressed={vm.endWaitingForKey} />
+        <Chip8Keypad onKeyPressed={vm.endWaitingForKey.bind(vm)} />
       )}
     </div>
   );
