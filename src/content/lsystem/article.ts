@@ -5,18 +5,24 @@ import {
   lsystemTreeDescriptorFactory,
   lsystemKochSnowflakeDescriptorFactory,
   lsystemSierpinskiTriangleDescriptorFactory,
-} from "@/content/lsystem/lsystem";
+} from "./lsystem";
 
 // Algae
-export { lsystemAlgaeDescriptor };
-export const lsystemAlgae = createLSystem(lsystemAlgaeDescriptor);
-export const lsystemAlgaeStates = [lsystemAlgae.descriptor.axiom];
-for (let i = 1; i <= 6; i++) {
-  const newState = iteratedLSystem(lsystemAlgae);
-  ++lsystemAlgae.generation;
-  lsystemAlgae.state = newState;
-  lsystemAlgaeStates.push(newState);
-}
+export const lsystemAlgaeMeta = (() => {
+  const lsystemAlgae = createLSystem(lsystemAlgaeDescriptor);
+  const lsystemAlgaeStates = [lsystemAlgae.descriptor.axiom];
+  for (let i = 1; i <= 6; i++) {
+    const newState = iteratedLSystem(lsystemAlgae);
+    ++lsystemAlgae.generation;
+    lsystemAlgae.state = newState;
+    lsystemAlgaeStates.push(newState);
+  }
+  return {
+    lsystemAlgae,
+    lsystemAlgaeStates,
+    lsystemAlgaeDescriptor,
+  };
+})();
 
 
 // Sierpinski Triangle

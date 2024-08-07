@@ -1,8 +1,21 @@
-import Slider from "rc-slider";
+import dynamic from "next/dynamic";
 import { FunctionComponent, useMemo, useState } from "react";
 
 import { LSystemTracingRenderer } from "./LSystemTracingRenderer";
 import { LSystem, LSystemTrace, iteratedLSystem, traceLSystem } from "@/content/lsystem/lsystem";
+
+interface ReactSingleSliderProps {
+  start: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+  step: number;
+}
+
+const Slider = dynamic<ReactSingleSliderProps>({
+  ssr: false,
+  loader: () => import("react-slider-kit"),
+});
 
 interface LSystemControllableTracingRendererProps {
   lsystem: LSystem<string>;
@@ -32,18 +45,18 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
   const lsystemTrace = useMemo(
     (): LSystemTrace => {
       let currentLSystem = { ...lsystem };
-      const currentStatesPerGeneration: Record<number, string> = {};
+      const currentStatesPerGeneration: Record<number, string> = { ...statesPerGeneration };
       for (let currentGeneration = 0; currentGeneration <= forGeneration; currentGeneration++) {
         if (!statesPerGeneration[currentGeneration]) {
           currentStatesPerGeneration[currentGeneration] = iteratedLSystem(currentLSystem);
         }
         currentLSystem.generation = currentGeneration;
         currentLSystem.state = currentStatesPerGeneration[currentGeneration];
-        setStatesPerGeneration(currentStatesPerGeneration);
       }
+      setStatesPerGeneration(currentStatesPerGeneration);
       return traceLSystem(currentLSystem, initialAngle);
     },
-    [lsystem, initialAngle],
+    [lsystem, forGeneration, initialAngle],
   );
 
   const strokeWidth = useMemo(
@@ -54,15 +67,13 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
   return (
     <div>
       <div>
-        <span>Generation:&nbsp;</span>
+        <span className="mb-2">Generation:&nbsp;</span>
         <Slider
-          tabIndex={0}
-          value={forGeneration}
-          onChange={v => setForGeneration(v as number)}
+          start={forGeneration}
+          onChange={setForGeneration}
           min={minGeneration}
           max={maxGeneration}
-          step={1}
-          dots={true}
+          step={Math.round(maxGeneration / (minGeneration + 1))}
         />
       </div>
       <div className="mt-6">
