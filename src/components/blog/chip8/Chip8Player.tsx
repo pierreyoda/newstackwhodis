@@ -45,7 +45,6 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const offColorString = useMemo(() => stringifyColorRGB(offColor), [offColor]);
   const onColorString = useMemo(() => stringifyColorRGB(onColor), [onColor]);
-  const [renderingContext, setRenderingContext] = useState<CanvasRenderingContext2D | null>(null);
   const refreshDisplay = useRef<(display: Chip8Display) => void>(() => { });
   const [isFocused, setIsFocused] = useState(false);
   const [isWaitingForKey, setIsWaitingForKey] = useState(false);
@@ -127,7 +126,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
     [scale],
   );
 
-  const [running, setRunning] = useState(false);
+  const running = useRef(false);
   const vm = useMemo<Chip8VirtualMachine>(() => {
     const context: Chip8ExecutionContext = {
       onWaitingForKey: () => setIsWaitingForKey(true),
@@ -153,11 +152,11 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
         throw new Error("Chip8Player: invalid ROM data");
       }
       vm.loadROM(rom);
-      setRunning(true);
+      running.current = true;
 
       // timers
       const timersCycle = () => {
-        if (!running) {
+        if (!running.current) {
           return;
         }
         vm.tick();
@@ -166,7 +165,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
 
       // CPU
       const cpuCycle = () => {
-        if (!running || isWaitingForKey) {
+        if (!running.current || isWaitingForKey) {
           return;
         }
         vm.step();
@@ -185,7 +184,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
     <div className="flex flex-col md:flex-row">
       <div
         ref={containerRef}
-        onClick={() => { setIsFocused(true) }}
+        onClick={() => setIsFocused(true)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
