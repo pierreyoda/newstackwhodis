@@ -30,7 +30,7 @@ export interface LSystemAlphabetVariable {
 export type LSystemAlphabetLetter = LSystemAlphabetConstant | LSystemAlphabetVariable;
 
 export const lsystemAlgaeAlphabet = ["A", "B"] as const;
-export type LSystemAlgaeAlphabet = typeof lsystemAlgaeAlphabet[number];
+export type LSystemAlgaeAlphabet = (typeof lsystemAlgaeAlphabet)[number];
 export const lsystemAlgaeDescriptor: LSystemDescriptor<LSystemAlgaeAlphabet> = {
   name: "Lindenmayer's Algae",
   alphabet: lsystemAlgaeAlphabet,
@@ -48,7 +48,7 @@ export const lsystemAlgaeDescriptor: LSystemDescriptor<LSystemAlgaeAlphabet> = {
 };
 
 export const lsystemSierpinskiTriangleAlphabet = ["F", "G", "+", "-"] as const;
-export type LSystemSierpinskiTriangleAlphabet = typeof lsystemSierpinskiTriangleAlphabet[number];
+export type LSystemSierpinskiTriangleAlphabet = (typeof lsystemSierpinskiTriangleAlphabet)[number];
 export const lsystemSierpinskiTriangleDescriptorFactory = (
   angle: number,
 ): LSystemDescriptor<LSystemSierpinskiTriangleAlphabet> => ({
@@ -79,7 +79,7 @@ export const lsystemSierpinskiTriangleDescriptorFactory = (
 
 // https://www.wikiwand.com/en/Koch_snowflake
 export const lsystemKochSnowflakeAlphabet = ["F", "+", "-"] as const;
-export type LSystemKochSnowflakeAlphabet = typeof lsystemKochSnowflakeAlphabet[number];
+export type LSystemKochSnowflakeAlphabet = (typeof lsystemKochSnowflakeAlphabet)[number];
 export const lsystemKochSnowflakeDescriptorFactory = (
   angle: number,
 ): LSystemDescriptor<LSystemKochSnowflakeAlphabet> => ({
@@ -105,7 +105,7 @@ export const lsystemKochSnowflakeDescriptorFactory = (
 });
 
 export const lsystemTreeAlphabet = ["F", "X", "+", "-", "[", "]"] as const;
-export type LSystemTreeAlphabet = typeof lsystemTreeAlphabet[number];
+export type LSystemTreeAlphabet = (typeof lsystemTreeAlphabet)[number];
 export const lsystemTreeDescriptorFactory = (angle: number): LSystemDescriptor<LSystemTreeAlphabet> => ({
   name: "Tree",
   alphabet: lsystemTreeAlphabet,

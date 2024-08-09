@@ -6,16 +6,16 @@ html,
 body,
 #__next,
 #root {
-  @apply w-full h-full bg-black-darker;
+  @apply h-full w-full bg-black-darker;
 }
 
 #root {
-  @apply font-sans antialiased text-white;
+  @apply font-sans text-white antialiased;
 }
 
 @layer components {
   .project-tag {
-    @apply py-1 rounded-md font-bold text-xs text-gray-lighter mr-2 last:mr-0;
+    @apply mr-2 rounded-md py-1 text-xs font-bold text-gray-lighter last:mr-0;
   }
 
   .lsystem-descriptor-container {
@@ -26,18 +26,18 @@ body,
         @apply mb-2;
       }
 
-      ul>li {
+      ul > li {
         @apply mb-1 text-sm;
 
         .letter {
-          @apply text-space-blue font-semibold;
+          @apply font-semibold text-space-blue;
         }
       }
     }
   }
 
   .lsystem-renderer-container {
-    @apply rounded p-3 bg-white text-black;
+    @apply rounded bg-white p-3 text-black;
 
     .meta {
       @apply hidden w-full items-center justify-center;
@@ -64,8 +64,8 @@ body,
   .blog-post-container {
     @apply text-white;
 
-    >* {
-      @apply mt-4 max-w-3xl mx-auto;
+    > * {
+      @apply mx-auto mt-4 max-w-3xl;
     }
 
     a {
@@ -73,35 +73,35 @@ body,
     }
 
     h1 {
-      @apply font-extrabold text-3xl mb-10;
+      @apply mb-10 text-3xl font-extrabold;
     }
 
     h2 {
-      @apply font-bold text-2xl mt-8 mb-8;
+      @apply mb-8 mt-8 text-2xl font-bold;
     }
 
     h3 {
-      @apply font-bold text-xl mt-6 mb-6;
+      @apply mb-6 mt-6 text-xl font-bold;
     }
 
     h4 {
-      @apply font-semibold text-lg mt-4 mb-4;
+      @apply mb-4 mt-4 text-lg font-semibold;
     }
 
     h5 {
-      @apply font-semibold mt-2 mb-2;
+      @apply mb-2 mt-2 font-semibold;
     }
 
     ul {
       @apply list-disc;
     }
 
-    ul>li {
+    ul > li {
       @apply pl-2;
     }
 
-    p>code {
-      @apply font-mono font-semibold text-sm;
+    p > code {
+      @apply font-mono text-sm font-semibold;
     }
 
     /* Table of Contents */

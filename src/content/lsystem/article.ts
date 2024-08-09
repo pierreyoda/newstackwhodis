@@ -24,7 +24,6 @@ export const lsystemAlgaeMeta = (() => {
   };
 })();
 
-
 // Sierpinski Triangle
 export const lsystemSierpinski = createLSystem(lsystemSierpinskiTriangleDescriptorFactory(120));
 // Koch's Snowflake

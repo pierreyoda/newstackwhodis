@@ -5,15 +5,14 @@ interface LSystemStatesDisplayProps {
   limit?: number;
 }
 
-export const LSystemStatesDisplay: FunctionComponent<LSystemStatesDisplayProps> = ({
-  states,
-  limit,
-}) => {
+export const LSystemStatesDisplay: FunctionComponent<LSystemStatesDisplayProps> = ({ states, limit }) => {
   const limitedStates = useMemo(() => states.slice(0, limit ?? states.length), [states, limit]);
   return (
     <ol>
       {limitedStates.map((state, i) => (
-        <li key={i}>Generation {i} state: {state}</li>
+        <li key={i}>
+          Generation {i} state: {state}
+        </li>
       ))}
     </ol>
   );

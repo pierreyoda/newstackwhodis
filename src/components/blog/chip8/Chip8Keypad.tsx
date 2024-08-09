@@ -27,13 +27,9 @@ interface Chip8KeypadProps {
 }
 
 export const Chip8Keypad: FunctionComponent<Chip8KeypadProps> = ({ onKeyPressed }) => (
-  <div className="grid grid-rows-4 grid-cols-4 gap-x-12 gap-y-4 md:gap-y-2">
+  <div className="grid grid-cols-4 grid-rows-4 gap-x-12 gap-y-4 md:gap-y-2">
     {chip8KeypadIndices.map(keypadIndex => (
-      <Chip8Key
-        key={keypadIndex}
-        label={labelsPerKey[keypadIndex]}
-        onPressed={() => onKeyPressed(keypadIndex)}
-      />
+      <Chip8Key key={keypadIndex} label={labelsPerKey[keypadIndex]} onPressed={() => onKeyPressed(keypadIndex)} />
     ))}
   </div>
 );

@@ -8,13 +8,8 @@ interface ExternalLinkProps {
   className?: string;
 }
 
-export const ExternalLink: FunctionComponent<ExternalLinkProps> = ({
-  href,
-  newTab = true,
-  children,
-  className,
-}) => {
-  const target = useMemo((): HTMLAttributeAnchorTarget => newTab ? "_blank" : "_self", [newTab]);
+export const ExternalLink: FunctionComponent<ExternalLinkProps> = ({ href, newTab = true, children, className }) => {
+  const target = useMemo((): HTMLAttributeAnchorTarget => (newTab ? "_blank" : "_self"), [newTab]);
   return (
     <a href={href} target={target} rel="noopener noreferrer" className={clsx("no-underline", className)}>
       {children}

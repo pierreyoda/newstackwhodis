@@ -45,86 +45,83 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const offColorString = useMemo(() => stringifyColorRGB(offColor), [offColor]);
   const onColorString = useMemo(() => stringifyColorRGB(onColor), [onColor]);
-  const refreshDisplay = useRef<(display: Chip8Display) => void>(() => { });
+  const refreshDisplay = useRef<(display: Chip8Display) => void>(() => {});
   const [isFocused, setIsFocused] = useState(false);
   const [isWaitingForKey, setIsWaitingForKey] = useState(false);
   const inputsMap = useMemo(
-    () => inputScheme === "QWERTY" ? chip8QwertyInputsMap : chip8AzertyInputsMap,
+    () => (inputScheme === "QWERTY" ? chip8QwertyInputsMap : chip8AzertyInputsMap),
     [inputScheme],
   );
-  useEffect(
-    () => {
-      // sanity check
-      if (typeof window === "undefined" || !containerRef.current) {
+  useEffect(() => {
+    // sanity check
+    if (typeof window === "undefined" || !containerRef.current) {
+      return;
+    }
+    const container = select(containerRef.current);
+    container.selectAll("*").remove(); // cleanup
+
+    // canvas creation
+    const [canvasWidth, canvasHeight] = [DISPLAY_WIDTH * scale, DISPLAY_HEIGHT * scale];
+    const canvas = container
+      .append("canvas")
+      .attr("width", DISPLAY_WIDTH * scale)
+      .attr("height", DISPLAY_HEIGHT * scale);
+    const context = canvas.node()?.getContext("2d");
+    if (!context) {
+      return;
+    }
+
+    // canvas rendering
+    refreshDisplay.current = (display: Chip8Display) => {
+      if (!display) {
         return;
       }
-      const container = select(containerRef.current);
-      container.selectAll("*").remove(); // cleanup
-
-      // canvas creation
-      const [canvasWidth, canvasHeight] = [DISPLAY_WIDTH * scale, DISPLAY_HEIGHT * scale];
-      const canvas = container
-        .append("canvas")
-        .attr("width", DISPLAY_WIDTH * scale)
-        .attr("height", DISPLAY_HEIGHT * scale);
-      const context = canvas.node()?.getContext("2d");
-      if (!context) {
+      if (!display.data.isDirty || !context) {
         return;
       }
 
-      // canvas rendering
-      refreshDisplay.current = (display: Chip8Display) => {
-        if (!display) {
+      context.fillStyle = offColorString;
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.fillStyle = onColorString;
+      for (let y = 0; y < DISPLAY_HEIGHT; y++) {
+        const canvasY = y * scale;
+        for (let x = 0; x < DISPLAY_WIDTH; x++) {
+          const virtualPixel = display.data.gfx[y][x];
+          if (virtualPixel === 0) {
+            continue;
+          }
+          context.fillRect(x * scale, canvasY, scale, scale);
+        }
+      }
+
+      // input handling
+      setIsFocused(false);
+      let latestEventKeyCode: string | null = null;
+      const handleKeydownEvent = (event: KeyboardEvent) => {
+        const { code } = event;
+        if (!isFocused || code === latestEventKeyCode) {
           return;
         }
-        if (!display.data.isDirty || !context) {
+        const keypadIndex = inputsMap[code];
+        if (!isDefined(keypadIndex)) {
           return;
         }
-
-        context.fillStyle = offColorString;
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        context.fillStyle = onColorString;
-        for (let y = 0; y < DISPLAY_HEIGHT; y++) {
-          const canvasY = y * scale;
-          for (let x = 0; x < DISPLAY_WIDTH; x++) {
-            const virtualPixel = display.data.gfx[y][x];
-            if (virtualPixel === 0) {
-              continue;
-            }
-            context.fillRect(x * scale, canvasY, scale, scale);
-          }
+        latestEventKeyCode = code;
+        for (let i = 0x0; i <= 0xf; i++) {
+          vm.keypad.setIsKeyPressed(i, false);
         }
-
-        // input handling
-        setIsFocused(false);
-        let latestEventKeyCode: string | null = null;
-        const handleKeydownEvent = (event: KeyboardEvent) => {
-          const { code } = event;
-          if (!isFocused || code === latestEventKeyCode) {
-            return;
-          }
-          const keypadIndex = inputsMap[code];
-          if (!isDefined(keypadIndex)) {
-            return;
-          }
-          latestEventKeyCode = code;
-          for (let i = 0x0; i <= 0xf; i++) {
-            vm.keypad.setIsKeyPressed(i, false);
-          }
-          vm.keypad.setIsKeyPressed(keypadIndex, true);
-          if (isWaitingForKey) {
-            vm.endWaitingForKey(keypadIndex);
-            setIsWaitingForKey(false);
-          }
-        };
-        document.addEventListener("keydown", handleKeydownEvent);
-
-        // clean-up
-        return () => document.removeEventListener("keydown", handleKeydownEvent);
+        vm.keypad.setIsKeyPressed(keypadIndex, true);
+        if (isWaitingForKey) {
+          vm.endWaitingForKey(keypadIndex);
+          setIsWaitingForKey(false);
+        }
       };
-    },
-    [scale],
-  );
+      document.addEventListener("keydown", handleKeydownEvent);
+
+      // clean-up
+      return () => document.removeEventListener("keydown", handleKeydownEvent);
+    };
+  }, [scale]);
 
   const running = useRef(false);
   const vm = useMemo<Chip8VirtualMachine>(() => {
@@ -137,46 +134,43 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   // VM
   const [intervalHandleTimers, setIntervalHandleTimers] = useState<NodeJS.Timeout | null>(null);
   const [intervalHandleCpu, setIntervalHandleCpu] = useState<NodeJS.Timeout | null>(null);
-  const run = useCallback(
-    () => {
-      // clean-up
-      if (intervalHandleTimers) {
-        clearInterval(intervalHandleTimers);
-      }
-      if (intervalHandleCpu) {
-        clearInterval(intervalHandleCpu);
-      }
+  const run = useCallback(() => {
+    // clean-up
+    if (intervalHandleTimers) {
+      clearInterval(intervalHandleTimers);
+    }
+    if (intervalHandleCpu) {
+      clearInterval(intervalHandleCpu);
+    }
 
-      // ROM loading
-      if (!rom) {
-        throw new Error("Chip8Player: invalid ROM data");
+    // ROM loading
+    if (!rom) {
+      throw new Error("Chip8Player: invalid ROM data");
+    }
+    vm.loadROM(rom);
+    running.current = true;
+
+    // timers
+    const timersCycle = () => {
+      if (!running.current) {
+        return;
       }
-      vm.loadROM(rom);
-      running.current = true;
+      vm.tick();
+    };
+    setIntervalHandleTimers(setInterval(timersCycle, VM_TICK_RATE_MS));
 
-      // timers
-      const timersCycle = () => {
-        if (!running.current) {
-          return;
-        }
-        vm.tick();
-      };
-      setIntervalHandleTimers(setInterval(timersCycle, VM_TICK_RATE_MS));
-
-      // CPU
-      const cpuCycle = () => {
-        if (!running.current || isWaitingForKey) {
-          return;
-        }
-        vm.step();
-        if (vm.display.data.isDirty) {
-          refreshDisplay.current?.(vm.display);
-        }
-      };
-      setIntervalHandleCpu(setInterval(cpuCycle, VM_CPU_TICK_RATE_MS));
-    },
-    [rom],
-  );
+    // CPU
+    const cpuCycle = () => {
+      if (!running.current || isWaitingForKey) {
+        return;
+      }
+      vm.step();
+      if (vm.display.data.isDirty) {
+        refreshDisplay.current?.(vm.display);
+      }
+    };
+    setIntervalHandleCpu(setInterval(cpuCycle, VM_CPU_TICK_RATE_MS));
+  }, [rom]);
 
   useEffect(() => run(), [run]);
 
@@ -188,9 +182,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
-      {!disableKeypad && (
-        <Chip8Keypad onKeyPressed={vm.endWaitingForKey.bind(vm)} />
-      )}
+      {!disableKeypad && <Chip8Keypad onKeyPressed={vm.endWaitingForKey.bind(vm)} />}
     </div>
   );
 };

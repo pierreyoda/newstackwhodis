@@ -42,27 +42,21 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
 }) => {
   const [forGeneration, setForGeneration] = useState(initialGeneration);
   const [statesPerGeneration, setStatesPerGeneration] = useState<Record<number, string>>({});
-  const lsystemTrace = useMemo(
-    (): LSystemTrace => {
-      let currentLSystem = { ...lsystem };
-      const currentStatesPerGeneration: Record<number, string> = { ...statesPerGeneration };
-      for (let currentGeneration = 0; currentGeneration <= forGeneration; currentGeneration++) {
-        if (!statesPerGeneration[currentGeneration]) {
-          currentStatesPerGeneration[currentGeneration] = iteratedLSystem(currentLSystem);
-        }
-        currentLSystem.generation = currentGeneration;
-        currentLSystem.state = currentStatesPerGeneration[currentGeneration];
+  const lsystemTrace = useMemo((): LSystemTrace => {
+    let currentLSystem = { ...lsystem };
+    const currentStatesPerGeneration: Record<number, string> = { ...statesPerGeneration };
+    for (let currentGeneration = 0; currentGeneration <= forGeneration; currentGeneration++) {
+      if (!statesPerGeneration[currentGeneration]) {
+        currentStatesPerGeneration[currentGeneration] = iteratedLSystem(currentLSystem);
       }
-      setStatesPerGeneration(currentStatesPerGeneration);
-      return traceLSystem(currentLSystem, initialAngle);
-    },
-    [lsystem, forGeneration, initialAngle],
-  );
+      currentLSystem.generation = currentGeneration;
+      currentLSystem.state = currentStatesPerGeneration[currentGeneration];
+    }
+    setStatesPerGeneration(currentStatesPerGeneration);
+    return traceLSystem(currentLSystem, initialAngle);
+  }, [lsystem, forGeneration, initialAngle]);
 
-  const strokeWidth = useMemo(
-    () => strokeWidthScale(forGeneration),
-    [strokeWidthScale, forGeneration],
-  );
+  const strokeWidth = useMemo(() => strokeWidthScale(forGeneration), [strokeWidthScale, forGeneration]);
 
   return (
     <div>

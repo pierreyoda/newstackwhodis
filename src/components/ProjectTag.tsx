@@ -9,7 +9,5 @@ interface ProjectTagProps {
 }
 
 export const ProjectTag: FunctionComponent<ProjectTagProps> = ({ tag, className }) => (
-  <div className={clsx("project-tag", className)}>
-    {tag}
-  </div>
+  <div className={clsx("project-tag", className)}>{tag}</div>
 );

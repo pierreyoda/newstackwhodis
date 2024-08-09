@@ -46,7 +46,7 @@ export class Chip8VirtualMachine {
   display: Chip8Display = new Chip8Display();
   keypad: Chip8Keypad = new Chip8Keypad();
 
-  constructor(private readonly context?: Chip8ExecutionContext) { }
+  constructor(private readonly context?: Chip8ExecutionContext) {}
 
   reset() {
     this.data = initChip8VirtualMachineData();

@@ -20,5 +20,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noEmit": true
-  },
+  }
 }

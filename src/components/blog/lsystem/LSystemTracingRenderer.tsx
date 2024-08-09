@@ -24,46 +24,43 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
   showGenerationLabel = false,
 }) => {
   const shortenedState = useMemo(
-    () => trace.forState.length > LSYSTEM_STATE_DISPLAY_CUTOFF
-      ? `${trace.forState.substring(0, LSYSTEM_STATE_DISPLAY_CUTOFF)} ...`
-      : trace.forState,
+    () =>
+      trace.forState.length > LSYSTEM_STATE_DISPLAY_CUTOFF
+        ? `${trace.forState.substring(0, LSYSTEM_STATE_DISPLAY_CUTOFF)} ...`
+        : trace.forState,
     [trace.forState],
   );
 
   const svgRef = useRef<SVGSVGElement>(null);
-  useEffect(
-    () => {
-      if (!svgRef) {
-        return;
-      }
-      const svg = select(svgRef.current);
+  useEffect(() => {
+    if (!svgRef) {
+      return;
+    }
+    const svg = select(svgRef.current);
 
-      // cleanup
-      svg.selectAll("*").remove();
+    // cleanup
+    svg.selectAll("*").remove();
 
+    // SVG path elements
+    const line = new Array<string>(trace.positions.length);
+    for (const [i, { x, y }] of trace.positions.entries()) {
+      const type = i === 0 ? "M" : "L";
+      line[i] = `${type}${x * scale},${y * scale}`;
+    }
 
-      // SVG path elements
-      const line = new Array<string>(trace.positions.length);
-      for (const [i, { x, y }] of trace.positions.entries()) {
-        const type = i === 0 ? "M" : "L";
-        line[i] = `${type}${x * scale},${y * scale}`;
-      }
+    // viewport
+    svg
+      .attr("viewBox", [0, 0, trace.width * scale, trace.height * scale].join(" "))
+      .style("height", `${(100 * trace.height) / trace.width}%`);
 
-      // viewport
-      svg
-        .attr("viewBox", [0, 0, trace.width * scale, trace.height * scale].join(" "))
-        .style("height", `${(100 * trace.height) / trace.width}%`);
-
-      // SVG path
-      svg
-        .append("path")
-        .attr("d", line.join(", "))
-        .attr("stroke", strokeColor)
-        .attr("stroke-width", strokeWidth)
-        .attr("fill", "none");
-    },
-    [trace],
-  );
+    // SVG path
+    svg
+      .append("path")
+      .attr("d", line.join(", "))
+      .attr("stroke", strokeColor)
+      .attr("stroke-width", strokeWidth)
+      .attr("fill", "none");
+  }, [trace]);
 
   return (
     <div className="lsystem-renderer-container">

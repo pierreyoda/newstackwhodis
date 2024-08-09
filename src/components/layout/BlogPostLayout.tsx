@@ -7,9 +7,7 @@ interface BlogPostLayoutProps {
 }
 
 const BlogPostLayout: FunctionComponent<BlogPostLayoutProps> = ({ children }) => (
-  <section className="blog-post-container">
-    {children}
-  </section>
+  <section className="blog-post-container">{children}</section>
 );
 
 export default BlogPostLayout;

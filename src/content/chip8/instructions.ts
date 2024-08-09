@@ -68,7 +68,7 @@ export const chip8InstructionsIDs = [
   /// 0xFX65: Fill V0 to VX (included) with values from memory, starting at address I.
   "LD_REGS_MEM_I",
 ] as const;
-export type Chip8InstructionID = typeof chip8InstructionsIDs[number];
+export type Chip8InstructionID = (typeof chip8InstructionsIDs)[number];
 
 export const chip8InstructionParameterTypes = [
   /// Address (NNN).
@@ -80,7 +80,7 @@ export const chip8InstructionParameterTypes = [
   /// 4-bit register identifier (V0 to VF).
   "Register",
 ] as const;
-export type Chip8InstructionParameterType = typeof chip8InstructionParameterTypes[number];
+export type Chip8InstructionParameterType = (typeof chip8InstructionParameterTypes)[number];
 
 type BaseParameter<Type extends Chip8InstructionParameterType = Chip8InstructionParameterType> = {
   type: Type;
@@ -142,8 +142,8 @@ type Chip8InstructionsParametersTypesTable = {
 
 type Chip8MatchOpcodeOutputForInstructionID<ID extends Chip8InstructionID = Chip8InstructionID> =
   | {
-    parameters: Chip8InstructionsParametersTypesTable[ID];
-  }
+      parameters: Chip8InstructionsParametersTypesTable[ID];
+    }
   | false;
 
 export interface Chip8Instruction<ID extends Chip8InstructionID = Chip8InstructionID> {
@@ -192,8 +192,8 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ opcode }) =>
       opcode === 0x00e0
         ? {
-          parameters: [],
-        }
+            parameters: [],
+          }
         : false,
   },
   RET: {
@@ -201,8 +201,8 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ opcode }) =>
       opcode === 0x00ee
         ? {
-          parameters: [],
-        }
+            parameters: [],
+          }
         : false,
   },
   JP_ADDR: {
@@ -210,13 +210,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x1
         ? {
-          parameters: [
-            {
-              type: "Address",
-              address: wordFromNibbles([n1, n2, n3]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
         : false,
   },
   CALL_ADDR: {
@@ -224,13 +224,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x2
         ? {
-          parameters: [
-            {
-              type: "Address",
-              address: wordFromNibbles([n1, n2, n3]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
         : false,
   },
   SE_VX_NN: {
@@ -238,17 +238,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x3
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "ByteConstant",
-              byte: wordFromNibbles([n1, n2]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
         : false,
   },
   SNE_VX_NN: {
@@ -256,17 +256,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x4
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "ByteConstant",
-              byte: wordFromNibbles([n1, n2]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
         : false,
   },
   SE_VX_VY: {
@@ -274,17 +274,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x5 && n1 === 0x0
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   LD_VX_NN: {
@@ -292,17 +292,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x6
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "ByteConstant",
-              byte: wordFromNibbles([n1, n2]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
         : false,
   },
   ADD_VX_NN: {
@@ -310,17 +310,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x7
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "ByteConstant",
-              byte: wordFromNibbles([n1, n2]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
         : false,
   },
   LD_VX_VY: {
@@ -328,17 +328,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x0
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   OR_VX_VY: {
@@ -346,17 +346,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x1
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   AND_VX_VY: {
@@ -364,17 +364,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x2
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   XOR_VX_VY: {
@@ -382,17 +382,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x3
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   ADD_VX_VY: {
@@ -400,17 +400,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x4
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   SUB_VX_VY: {
@@ -418,17 +418,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x5
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   SHR_VX_VY: {
@@ -436,17 +436,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x6
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   SUBN_VX_VY: {
@@ -454,17 +454,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0x7
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   SHL_VX_VY: {
@@ -472,17 +472,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x8 && n1 === 0xe
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   SNE_VX_VY: {
@@ -490,17 +490,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0x9 && n1 === 0x0
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+            ],
+          }
         : false,
   },
   LD_I_ADDR: {
@@ -508,13 +508,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xa
         ? {
-          parameters: [
-            {
-              type: "Address",
-              address: wordFromNibbles([n1, n2, n3]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
         : false,
   },
   JP_ADDR_V0: {
@@ -522,13 +522,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xb
         ? {
-          parameters: [
-            {
-              type: "Address",
-              address: wordFromNibbles([n1, n2, n3]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Address",
+                address: wordFromNibbles([n1, n2, n3]),
+              },
+            ],
+          }
         : false,
   },
   RND_VX_NN: {
@@ -536,17 +536,17 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xc
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "ByteConstant",
-              byte: wordFromNibbles([n1, n2]),
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "ByteConstant",
+                byte: wordFromNibbles([n1, n2]),
+              },
+            ],
+          }
         : false,
   },
   DRW_VX_VY_N: {
@@ -554,21 +554,21 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xd
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-            {
-              type: "Register",
-              registerIndex: n2,
-            },
-            {
-              type: "NibbleConstant",
-              nibble: n1,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+              {
+                type: "Register",
+                registerIndex: n2,
+              },
+              {
+                type: "NibbleConstant",
+                nibble: n1,
+              },
+            ],
+          }
         : false,
   },
   SKP_VX: {
@@ -576,13 +576,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xe && n2 === 0x9 && n1 === 0xe
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   SKNP_VX: {
@@ -590,13 +590,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xe && n2 === 0xa && n1 === 0x1
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_VX_DT: {
@@ -604,13 +604,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x0 && n1 === 0x7
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_VX_KEY: {
@@ -618,13 +618,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x0 && n1 === 0xa
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_DT_VX: {
@@ -632,13 +632,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x1 && n1 === 0x5
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_ST_VX: {
@@ -646,13 +646,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x1 && n1 === 0x8
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   ADD_I_VX: {
@@ -660,13 +660,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x1 && n1 === 0xe
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_I_FONT_VX: {
@@ -674,13 +674,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x2 && n1 === 0x9
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_MEM_I_BCD_VX: {
@@ -688,13 +688,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x3 && n1 === 0x3
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_MEM_I_REGS: {
@@ -702,13 +702,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x5 && n1 === 0x5
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
   LD_REGS_MEM_I: {
@@ -716,13 +716,13 @@ export const chip8InstructionSet: Record<Chip8InstructionID, Chip8Instruction> =
     matchOpcode: ({ n4, n3, n2, n1 }) =>
       n4 === 0xf && n2 === 0x6 && n1 === 0x5
         ? {
-          parameters: [
-            {
-              type: "Register",
-              registerIndex: n3,
-            },
-          ],
-        }
+            parameters: [
+              {
+                type: "Register",
+                registerIndex: n3,
+              },
+            ],
+          }
         : false,
   },
 };

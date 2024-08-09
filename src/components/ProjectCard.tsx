@@ -21,18 +21,21 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ meta }) => {
-  const tags = useMemo<readonly ProjectTagType[]>(() => tagsPerProject[meta.githubFullName] ?? [], [meta.githubFullName]);
+  const tags = useMemo<readonly ProjectTagType[]>(
+    () => tagsPerProject[meta.githubFullName] ?? [],
+    [meta.githubFullName],
+  );
   return (
-    <div className="flex flex-col items-start justify-around p-3 border border-gray-lighter md:rounded-lg">
-      <h2 className="text-lg font-bold border-b-2 border-lychee">
-        {meta.title}
-      </h2>
+    <div className="flex flex-col items-start justify-around border border-gray-lighter p-3 md:rounded-lg">
+      <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
       <p className="py-5 text-sm">{meta.description}</p>
-      <div className="flex flex-wrap items-center w-full py-2">
-        {tags.map(tag => <ProjectTag key={tag} tag={tag} className="mr-2 last:mr-0" />)}
+      <div className="flex w-full flex-wrap items-center py-2">
+        {tags.map(tag => (
+          <ProjectTag key={tag} tag={tag} className="mr-2 last:mr-0" />
+        ))}
       </div>
-      <div className="flex items-center justify-between w-full text-sm">
-        <div className="font-bold rounded hover:text-lychee">
+      <div className="flex w-full items-center justify-between text-sm">
+        <div className="rounded font-bold hover:text-lychee">
           <ExternalLink href={meta.url}>View on GitHub</ExternalLink>
         </div>
         <div className="flex items-center font-semibold">

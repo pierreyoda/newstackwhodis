@@ -9,16 +9,20 @@ interface ProjectsPanelProps {
 }
 
 export const ProjectsPanel: FunctionComponent<ProjectsPanelProps> = ({ content }) => {
-  const projects = useMemo<readonly ProjectMeta[]>(() => content.map((meta) => ({
-    type: "github",
-    url: meta.url,
-    title: meta.name,
-    githubFullName: meta.fullName as GithubWhiteListedRepository,
-    description: meta.description ?? "",
-    githubForksCount: meta.forksCount,
-    githubStars: meta.stargazersCount ?? 0,
-    blogPostSlug: null,
-  })), [content]);
+  const projects = useMemo<readonly ProjectMeta[]>(
+    () =>
+      content.map(meta => ({
+        type: "github",
+        url: meta.url,
+        title: meta.name,
+        githubFullName: meta.fullName as GithubWhiteListedRepository,
+        description: meta.description ?? "",
+        githubForksCount: meta.forksCount,
+        githubStars: meta.stargazersCount ?? 0,
+        blogPostSlug: null,
+      })),
+    [content],
+  );
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
