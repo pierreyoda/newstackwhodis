@@ -66,7 +66,7 @@ const main = async () => {
 
   const outputFilepath = join(outputFolder, "./public_repositories.json");
   const repositoriesDataJson = JSON.stringify(output, null, 2);
-  await fs.writeFile(outputFilepath, repositoriesDataJson);
+  await fs.writeFile(outputFilepath, `${repositoriesDataJson}\n`);
   success("> Done!");
 };
 
