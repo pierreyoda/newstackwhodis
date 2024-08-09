@@ -29,7 +29,7 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
   <div className="flex flex-col">
     <div className="w-full flex justify-center items-center mr-12 font-bold py-6">
       <Link href="/">
-        newstackwhodis (Work In Progress)
+        newstackwhodis
       </Link>
     </div>
     <div className="w-full flex flex-col md:flex-row self-center items-center justify-between">
