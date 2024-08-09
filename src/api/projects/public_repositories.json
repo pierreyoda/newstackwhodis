@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-05-15T10:37:42.918Z"
+    "exportDate": "2024-08-09T18:32:22.122Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 19
+      "stargazersCount": 20
     },
     {
       "url": "https://github.com/pierreyoda/hncli",

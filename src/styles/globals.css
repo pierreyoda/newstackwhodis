@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__next,
+#root {
+  @apply h-full w-full bg-black-darker;
+}
+
+#root {
+  @apply font-sans text-white antialiased;
+}
+
+@layer components {
+  .project-tag {
+    @apply mr-2 rounded-md py-1 text-xs font-bold text-gray-lighter last:mr-0;
+  }
+
+  .lsystem-descriptor-container {
+    .section {
+      @apply mt-2;
+
+      p {
+        @apply mb-2;
+      }
+
+      ul > li {
+        @apply mb-1 text-sm;
+
+        .letter {
+          @apply font-semibold text-space-blue;
+        }
+      }
+    }
+  }
+
+  .lsystem-renderer-container {
+    @apply rounded bg-white p-3 text-black;
+
+    .meta {
+      @apply hidden w-full items-center justify-center;
+
+      &:last-of-type {
+        @apply mb-4;
+      }
+
+      .label {
+        @apply text-gray-lighter;
+        @apply mr-2;
+      }
+    }
+  }
+
+  @screen md {
+    .container {
+      .lsystem-renderer-container {
+        @apply flex;
+      }
+    }
+  }
+
+  .blog-post-container {
+    @apply text-white;
+
+    > * {
+      @apply mx-auto mt-4 max-w-3xl;
+    }
+
+    a {
+      @apply text-lychee;
+    }
+
+    h1 {
+      @apply mb-10 text-3xl font-extrabold;
+    }
+
+    h2 {
+      @apply mb-8 mt-8 text-2xl font-bold;
+    }
+
+    h3 {
+      @apply mb-6 mt-6 text-xl font-bold;
+    }
+
+    h4 {
+      @apply mb-4 mt-4 text-lg font-semibold;
+    }
+
+    h5 {
+      @apply mb-2 mt-2 font-semibold;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ul > li {
+      @apply pl-2;
+    }
+
+    p > code {
+      @apply font-mono text-sm font-semibold;
+    }
+
+    /* Table of Contents */
+    .toc {
+      @apply pb-4;
+    }
+
+    .toc-level-2 {
+      @apply pl-2;
+    }
+
+    .toc-level-3 {
+      @apply pl-4;
+    }
+
+    .toc-level-4 {
+      @apply pl-6;
+    }
+
+    .toc-level-5 {
+      @apply pl-8;
+    }
+
+    .toc-level-6 {
+      @apply pl-10;
+    }
+  }
+
+  @screen lg {
+    .blog-post-container {
+      .remark-highlight {
+        @apply max-w-5xl;
+      }
+    }
+  }
+}

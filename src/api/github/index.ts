@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { Octokit, type RestEndpointMethodTypes } from "@octokit/rest";
 
 import { repositoriesWhiteList } from "./whitelist";
