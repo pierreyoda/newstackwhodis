@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-09-06T15:37:29.898Z"
+    "exportDate": "2024-09-11T12:51:58.534Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
       "forksCount": 1,
-      "stargazersCount": 21
+      "stargazersCount": 22
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
