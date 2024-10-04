@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-09-11T12:51:58.534Z"
+    "exportDate": "2024-10-04T10:49:47.410Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
       "forksCount": 1,
-      "stargazersCount": 22
+      "stargazersCount": 23
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
@@ -33,7 +33,7 @@
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
       "forksCount": 3,
-      "stargazersCount": 13
+      "stargazersCount": 12
     },
     {
       "url": "https://github.com/pierreyoda/GameInc",
