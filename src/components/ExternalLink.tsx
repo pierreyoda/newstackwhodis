@@ -3,6 +3,7 @@ import { FunctionComponent, HTMLAttributeAnchorTarget, ReactNode, useMemo } from
 
 interface ExternalLinkProps {
   href: string;
+  /** True by default. */
   newTab?: boolean;
   children: ReactNode;
   className?: string;

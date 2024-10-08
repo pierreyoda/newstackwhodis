@@ -13,7 +13,8 @@ export interface ProjectMeta {
   description: string;
   githubForksCount: number;
   githubStars: number;
-  blogPostSlug: string | null; // TODO: use this for hncli
+  /** If defined, link title to this URL. */
+  href?: string;
 }
 
 interface ProjectCardProps {
@@ -27,7 +28,13 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ meta }) => {
   );
   return (
     <div className="flex flex-col items-start justify-around border border-gray-lighter p-3 md:rounded-lg">
-      <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
+      {meta.href ? (
+        <ExternalLink href={meta.href}>
+          <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
+        </ExternalLink>
+      ) : (
+        <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
+      )}
       <p className="py-5 text-sm">{meta.description}</p>
       <div className="flex w-full flex-wrap items-center py-2">
         {tags.map(tag => (

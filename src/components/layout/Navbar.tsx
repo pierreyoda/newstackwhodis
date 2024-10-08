@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FunctionComponent } from "react";
 
 import { ExternalLink } from "../ExternalLink";
+import { HNCLI_WEBSITE_URL } from "@/content/constants";
 
 interface NavbarLinkProps {
   href: string;
@@ -41,8 +42,17 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
           </ul>
         </nav>
       </header>
-      <div className={clsx("py-2 font-semibold md:py-0", category === "blog" && "opacity-0")}>
-        <ExternalLink href="https://github.com/pierreyoda/newstackwhodis">GitHub</ExternalLink>
+      <div className="flex font-semibold">
+        <div className="mr-4">
+          <ExternalLink href={HNCLI_WEBSITE_URL} className="hover:text-lychee">
+            hncli
+          </ExternalLink>
+        </div>
+        <div className={clsx("py-2 md:py-0", category === "blog" && "opacity-0")}>
+          <ExternalLink href="https://github.com/pierreyoda/newstackwhodis" className="hover:text-lychee">
+            GitHub
+          </ExternalLink>
+        </div>
       </div>
     </div>
   </div>

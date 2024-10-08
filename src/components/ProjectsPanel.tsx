@@ -1,5 +1,6 @@
 import { FunctionComponent, useMemo } from "react";
 
+import { HNCLI_WEBSITE_URL } from "@/content/constants";
 import { ProjectCard, ProjectMeta } from "./ProjectCard";
 import { GithubRepositoryMeta } from "@/api/github-fetcher";
 import { GithubWhiteListedRepository } from "@/api/github/whitelist";
@@ -20,6 +21,7 @@ export const ProjectsPanel: FunctionComponent<ProjectsPanelProps> = ({ content }
         githubForksCount: meta.forksCount,
         githubStars: meta.stargazersCount ?? 0,
         blogPostSlug: null,
+        href: meta.name === "hncli" ? HNCLI_WEBSITE_URL : undefined,
       })),
     [content],
   );
