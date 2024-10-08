@@ -42,7 +42,7 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
           </ul>
         </nav>
       </header>
-      <div className="flex font-semibold">
+      <div className="flex items-center font-semibold">
         <div className="mr-4">
           <ExternalLink href={HNCLI_WEBSITE_URL} className="hover:text-lychee">
             hncli
