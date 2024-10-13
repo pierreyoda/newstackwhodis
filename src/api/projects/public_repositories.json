@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-08-09T18:32:22.122Z"
+    "exportDate": "2024-10-13T07:49:10.384Z"
   },
   "githubRepositories": [
     {
@@ -12,6 +12,14 @@
       "stargazersCount": 27
     },
     {
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
+      "forksCount": 1,
+      "stargazersCount": 26
+    },
+    {
       "url": "https://github.com/pierreyoda/micropolis-rs",
       "name": "micropolis-rs",
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
@@ -20,20 +28,12 @@
       "stargazersCount": 20
     },
     {
-      "url": "https://github.com/pierreyoda/hncli",
-      "name": "hncli",
-      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
-      "fullName": "pierreyoda/hncli",
-      "forksCount": 1,
-      "stargazersCount": 17
-    },
-    {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
       "name": "rust-neuralnet",
       "description": "Simple Artificial Neural Network library implemented in Rust.",
       "fullName": "pierreyoda/rust-neuralnet",
       "forksCount": 3,
-      "stargazersCount": 13
+      "stargazersCount": 12
     },
     {
       "url": "https://github.com/pierreyoda/GameInc",
