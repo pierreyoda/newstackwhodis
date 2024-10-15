@@ -1,8 +1,16 @@
 {
   "metadata": {
-    "exportDate": "2024-10-13T07:49:10.384Z"
+    "exportDate": "2024-10-15T07:55:28.970Z"
   },
   "githubRepositories": [
+    {
+      "url": "https://github.com/pierreyoda/hncli",
+      "name": "hncli",
+      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
+      "fullName": "pierreyoda/hncli",
+      "forksCount": 1,
+      "stargazersCount": 31
+    },
     {
       "url": "https://github.com/pierreyoda/o2r",
       "name": "o2r",
@@ -10,14 +18,6 @@
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
       "stargazersCount": 27
-    },
-    {
-      "url": "https://github.com/pierreyoda/hncli",
-      "name": "hncli",
-      "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
-      "fullName": "pierreyoda/hncli",
-      "forksCount": 1,
-      "stargazersCount": 26
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
