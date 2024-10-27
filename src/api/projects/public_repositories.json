@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-10-15T07:55:28.970Z"
+    "exportDate": "2024-10-27T10:32:13.157Z"
   },
   "githubRepositories": [
     {
@@ -9,7 +9,7 @@
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
       "forksCount": 1,
-      "stargazersCount": 31
+      "stargazersCount": 34
     },
     {
       "url": "https://github.com/pierreyoda/o2r",
@@ -25,7 +25,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 20
+      "stargazersCount": 21
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
