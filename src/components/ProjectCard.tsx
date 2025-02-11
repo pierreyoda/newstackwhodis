@@ -42,7 +42,7 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ meta }) => {
         ))}
       </div>
       <div className="flex w-full items-center justify-between text-sm">
-        <div className="rounded font-bold hover:text-lychee">
+        <div className="rounded-sm font-bold hover:text-lychee">
           <ExternalLink href={meta.url}>View on GitHub</ExternalLink>
         </div>
         <div className="flex items-center font-semibold">

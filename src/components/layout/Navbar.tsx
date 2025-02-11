@@ -34,8 +34,8 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
     <div className="flex w-full flex-col items-center justify-between self-center md:flex-row">
       <div />
       <header className="mx-auto flex max-w-3xl items-center p-2 text-gray-lighter md:text-xl">
-        <nav className="flex flex-grow items-center">
-          <ul className="flex flex-grow items-center md:text-xl">
+        <nav className="flex grow items-center">
+          <ul className="flex grow items-center md:text-xl">
             <NavbarLink href="/" label="Projects" selected={category === "projects"} />
             <NavbarLink href="/blog" label="Blog" selected={category === "blog"} />
             <NavbarLink href="/blog/about" label="About" selected={category === "about"} />

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2024-11-19T15:23:08.963Z"
+    "exportDate": "2025-02-09T10:36:23.938Z"
   },
   "githubRepositories": [
     {
@@ -25,7 +25,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 21
+      "stargazersCount": 22
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -80,7 +80,7 @@
       "name": "lsystem-renderer",
       "description": "Visualize and edit L-Systems with Qt 5",
       "fullName": "pierreyoda/lsystem-renderer",
-      "forksCount": 0,
+      "forksCount": 1,
       "stargazersCount": 0
     }
   ]
