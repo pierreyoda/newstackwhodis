@@ -1,140 +1,173 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-html,
-body,
-#__next,
-#root {
-  @apply h-full w-full bg-black-darker;
+@theme {
+  --color-*: initial;
+  --color-black-lighter: #2b2b2d;
+  --color-black: #141416;
+  --color-black-darker: #0e0e14;
+
+  --color-gray-lighter: #99989d;
+  --color-gray: #333238;
+
+  --color-space: #2a2b58;
+  --color-lychee: #e04f4f;
+  --color-velvet: #2d0607;
+  --color-space-blue: #1b21dd;
+  --color-pale-red: #d07869;
+  --color-yellow: #f9f871;
+  --color-orange: #f9b163;
+  --color-white: #ffffff;
 }
 
-#root {
-  @apply font-sans text-white antialiased;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-@layer components {
-  .project-tag {
-    @apply mr-2 rounded-md py-1 text-xs font-bold text-gray-lighter last:mr-0;
-  }
+@utility project-tag {
+  @apply mr-2 rounded-md py-1 text-xs font-bold text-gray-lighter last:mr-0;
+}
 
-  .lsystem-descriptor-container {
-    .section {
-      @apply mt-2;
+@utility lsystem-descriptor-container {
+  .section {
+    @apply mt-2;
 
-      p {
-        @apply mb-2;
-      }
-
-      ul > li {
-        @apply mb-1 text-sm;
-
-        .letter {
-          @apply font-semibold text-space-blue;
-        }
-      }
-    }
-  }
-
-  .lsystem-renderer-container {
-    @apply rounded bg-white p-3 text-black;
-
-    .meta {
-      @apply hidden w-full items-center justify-center;
-
-      &:last-of-type {
-        @apply mb-4;
-      }
-
-      .label {
-        @apply text-gray-lighter;
-        @apply mr-2;
-      }
-    }
-  }
-
-  @screen md {
-    .container {
-      .lsystem-renderer-container {
-        @apply flex;
-      }
-    }
-  }
-
-  .blog-post-container {
-    @apply text-white;
-
-    > * {
-      @apply mx-auto mt-4 max-w-3xl;
-    }
-
-    a {
-      @apply text-lychee;
-    }
-
-    h1 {
-      @apply mb-10 text-3xl font-extrabold;
-    }
-
-    h2 {
-      @apply mb-8 mt-8 text-2xl font-bold;
-    }
-
-    h3 {
-      @apply mb-6 mt-6 text-xl font-bold;
-    }
-
-    h4 {
-      @apply mb-4 mt-4 text-lg font-semibold;
-    }
-
-    h5 {
-      @apply mb-2 mt-2 font-semibold;
-    }
-
-    ul {
-      @apply list-disc;
+    p {
+      @apply mb-2;
     }
 
     ul > li {
-      @apply pl-2;
-    }
+      @apply mb-1 text-sm;
 
-    p > code {
-      @apply font-mono text-sm font-semibold;
-    }
-
-    /* Table of Contents */
-    .toc {
-      @apply pb-4;
-    }
-
-    .toc-level-2 {
-      @apply pl-2;
-    }
-
-    .toc-level-3 {
-      @apply pl-4;
-    }
-
-    .toc-level-4 {
-      @apply pl-6;
-    }
-
-    .toc-level-5 {
-      @apply pl-8;
-    }
-
-    .toc-level-6 {
-      @apply pl-10;
-    }
-  }
-
-  @screen lg {
-    .blog-post-container {
-      .remark-highlight {
-        @apply max-w-5xl;
+      .letter {
+        @apply font-semibold text-space-blue;
       }
     }
+  }
+}
+
+@utility lsystem-renderer-container {
+  @apply rounded-sm bg-white p-3 text-black;
+
+  .meta {
+    @apply hidden w-full items-center justify-center;
+
+    &:last-of-type {
+      @apply mb-4;
+    }
+
+    .label {
+      @apply text-gray-lighter;
+      @apply mr-2;
+    }
+  }
+}
+
+@utility container {
+  @media (width >= theme(--breakpoint-md)) {
+    .lsystem-renderer-container {
+      @apply flex;
+    }
+  }
+}
+
+@utility blog-post-container {
+  @apply text-white;
+
+  > * {
+    @apply mx-auto mt-4 max-w-3xl;
+  }
+
+  a {
+    @apply text-lychee;
+  }
+
+  h1 {
+    @apply mb-10 text-3xl font-extrabold;
+  }
+
+  h2 {
+    @apply mb-8 mt-8 text-2xl font-bold;
+  }
+
+  h3 {
+    @apply mb-6 mt-6 text-xl font-bold;
+  }
+
+  h4 {
+    @apply mb-4 mt-4 text-lg font-semibold;
+  }
+
+  h5 {
+    @apply mb-2 mt-2 font-semibold;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ul > li {
+    @apply pl-2;
+  }
+
+  p > code {
+    @apply font-mono text-sm font-semibold;
+  }
+
+  /* Table of Contents */
+  .toc {
+    @apply pb-4;
+  }
+
+  .toc-level-2 {
+    @apply pl-2;
+  }
+
+  .toc-level-3 {
+    @apply pl-4;
+  }
+
+  .toc-level-4 {
+    @apply pl-6;
+  }
+
+  .toc-level-5 {
+    @apply pl-8;
+  }
+
+  .toc-level-6 {
+    @apply pl-10;
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    .remark-highlight {
+      @apply max-w-5xl;
+    }
+  }
+}
+
+@layer utilities {
+  html,
+  body,
+  #__next,
+  #root {
+    @apply h-full w-full bg-black-darker;
+  }
+
+  #root {
+    @apply font-sans text-white antialiased;
   }
 }
