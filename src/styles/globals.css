@@ -84,6 +84,8 @@
   }
 }
 
+/* TODO: bullet points list for about page WIP articles */
+
 @utility blog-post-container {
   @apply text-white;
 
