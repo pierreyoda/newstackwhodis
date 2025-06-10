@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2025-02-09T10:36:23.938Z"
+    "exportDate": "2025-06-10T13:01:29.452Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 27
+      "stargazersCount": 29
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
@@ -25,7 +25,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 22
+      "stargazersCount": 23
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
