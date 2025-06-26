@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2025-06-10T13:01:29.452Z"
+    "exportDate": "2025-06-26T11:14:52.905Z"
   },
   "githubRepositories": [
     {
@@ -14,7 +14,7 @@
     {
       "url": "https://github.com/pierreyoda/o2r",
       "name": "o2r",
-      "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991).",
+      "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991). 50k+ downloads.",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
       "stargazersCount": 29
