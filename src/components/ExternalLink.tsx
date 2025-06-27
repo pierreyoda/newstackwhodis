@@ -12,7 +12,12 @@ interface ExternalLinkProps {
 export const ExternalLink: FunctionComponent<ExternalLinkProps> = ({ href, newTab = true, children, className }) => {
   const target = useMemo((): HTMLAttributeAnchorTarget => (newTab ? "_blank" : "_self"), [newTab]);
   return (
-    <a href={href} target={target} rel="noopener noreferrer" className={clsx("no-underline", className)}>
+    <a
+      href={href}
+      target={target}
+      rel="noopener noreferrer"
+      className={clsx("text-orange hover:text-pale-red no-underline", className)}
+    >
       {children}
     </a>
   );

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FunctionComponent } from "react";
 
 import { ExternalLink } from "../ExternalLink";
-import { HNCLI_WEBSITE_URL } from "@/content/constants";
+import { HNCLI_GITHUB_URL, HNCLI_WEBSITE_NAME, HNCLI_WEBSITE_URL } from "@/content/constants";
 
 interface NavbarLinkProps {
   href: string;
@@ -28,10 +28,13 @@ interface NavbarProps {
 
 export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
   <div className="flex flex-col">
-    <div className="mr-12 flex w-full items-center justify-center py-6 font-bold">
-      <Link href="/">newstackwhodis</Link>
+    <div className="mr-12 flex w-full items-center justify-between py-6 font-bold">
+      <div />
+      <Link href="/">{HNCLI_WEBSITE_NAME}</Link>
+      <div />
     </div>
-    <div className="mx-auto flex w-full items-center justify-between">
+    <div className="flex w-full flex-col items-center justify-between self-center md:flex-row">
+      <div />
       <header className="text-gray-lighter mx-auto flex max-w-3xl items-center p-2 md:text-xl">
         <nav className="flex grow items-center">
           <ul className="flex grow items-center md:text-xl">
@@ -57,6 +60,18 @@ export const Navbar: FunctionComponent<NavbarProps> = ({ category }) => (
           </div>
         </div>
       </header>
+      <div className="flex items-center font-semibold">
+        <div className="mr-4">
+          <ExternalLink href={HNCLI_WEBSITE_URL} className="text-orange hover:text-pale-red">
+            hncli
+          </ExternalLink>
+        </div>
+        <div className={clsx("py-2 md:py-0", category === "blog" && "opacity-0")}>
+          <ExternalLink href={HNCLI_GITHUB_URL} className="text-orange hover:text-pale-red">
+            GitHub
+          </ExternalLink>
+        </div>
+      </div>
     </div>
   </div>
 );

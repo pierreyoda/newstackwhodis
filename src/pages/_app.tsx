@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 import "@/styles/prism-vs-code-dark.css";
 import { Footer } from "@/components/layout/Footer";
+import { HNCLI_WEBSITE_NAME } from "@/content/constants";
 import { Navbar, NavigationSelectableCategory } from "@/components/layout/Navbar";
 
 const CustomApp = ({ Component, pageProps, router }: AppProps) => {
@@ -16,7 +17,7 @@ const CustomApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <div id="root" className={clsx("flex h-full w-full flex-col", category !== "blog" ? "mx-auto max-w-3xl" : "")}>
       <Head>
-        <title>newstackwhodis</title>
+        <title>${HNCLI_WEBSITE_NAME}</title>
         <meta name="description" content="pierreyoda's awesome tech blog" />
       </Head>
       <div className="flex w-full grow flex-col">
