@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 
+import { ProjectsPanel } from "@/components/home/ProjectsPanel";
 import { parsedRepositoriesData } from "@/api/projects/projects";
-import { ProjectsPanel } from "@/components/ProjectsPanel";
 
 const { githubRepositories } = parsedRepositoriesData();
 

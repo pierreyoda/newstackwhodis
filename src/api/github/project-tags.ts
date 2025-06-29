@@ -1,7 +1,7 @@
 import type { GithubWhiteListedRepository } from "./whitelist";
 
-export const projectTags = ["C#", "C++", "Java", "Rust", "React", "Vue.js", "Unity3D", "Typescript"] as const;
-export type ProjectTagType = (typeof projectTags)[number];
+export const PROJECT_TAGS = ["C#", "C++", "Java", "Rust", "React", "Vue.js", "Unity3D", "Typescript"] as const;
+export type ProjectTagType = (typeof PROJECT_TAGS)[number];
 
 export const tagsPerProject: Record<GithubWhiteListedRepository, readonly ProjectTagType[]> = {
   "pierreyoda/o2r": ["C++"],
