@@ -1,24 +1,28 @@
 import { FunctionComponent } from "react";
-import { ProjectTagType } from "@/api/github/project-tags";
-import { SortingProjectTag } from "./ProjectSortingTag";
 
-interface ProjectSortingTagContainerProps {
+import { ProjectTagType } from "@/api/github/project-tags";
+import { SortingProjectTag, SortingProjectTagProps } from "./ProjectSortingTag";
+
+export interface ProjectSortingTagContainerProps {
   /** Invariant: unique tags. */
   selectedTags: readonly ProjectTagType[];
-  onSelectedTagToggled: (tag: ProjectTagType) => void;
+  onSelectedTagToggled: (tag: ProjectTagType, enabled: boolean) => void;
 }
 
 export const SortingProjectTagsContainer: FunctionComponent<ProjectSortingTagContainerProps> = ({
   selectedTags,
   onSelectedTagToggled,
-}) => {
-  return (
-    <div className="grid grid-rows-4 md:grid-rows-8">
-      {selectedTags.map(tag => (
-        <SortingProjectTag key={tag} tag={tag} enabled={selectedTags.includes(tag)} onToggle={onSelectedTagToggled}>
-          {tag}
-        </SortingProjectTag>
-      ))}
-    </div>
-  );
-};
+}) => (
+  <div className="grid grid-rows-4 md:grid-rows-8">
+    {selectedTags.map(tag => (
+      <SortingProjectTag
+        key={tag}
+        tag={tag}
+        selected={selectedTags.includes(tag)}
+        onToggle={selected => onSelectedTagToggled(tag, selected)}
+      >
+        {tag}
+      </SortingProjectTag>
+    ))}
+  </div>
+);
