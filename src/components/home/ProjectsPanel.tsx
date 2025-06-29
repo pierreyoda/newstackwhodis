@@ -3,7 +3,7 @@ import { FunctionComponent, useCallback, useMemo, useState } from "react";
 import { HNCLI_WEBSITE_URL } from "@/content/constants";
 import { ProjectCard, ProjectMeta } from "./ProjectCard";
 import { GithubRepositoryMeta } from "@/api/github-fetcher";
-import { SortingProjectTagsContainer } from "./ProjectSortingTagsContainer";
+import { ProjectSortingTagContainerProps, SortingProjectTagsContainer } from "./ProjectSortingTagsContainer";
 import { PROJECT_TAGS, ProjectTagType, tagsPerProject } from "@/api/github/project-tags";
 import { SortingProjectTagProps } from "./ProjectSortingTag";
 import { ProjectTag } from "./ProjectTag";
@@ -34,17 +34,17 @@ export const ProjectsPanel: FunctionComponent<ProjectsPanelProps> = ({ content }
   );
 
   const [selectedProjectTags, setSelectedProjectTags] = useState<readonly ProjectTagType[]>(PROJECT_TAGS);
-  const onSelectedTagToggled = (tag: ProjectTagType, enabled: boolean) => {
-    setSelectedProjectTags(tags) => {
+  const onSelectedTagToggled: ProjectSortingTagContainerProps["onSelectedTagToggled"] = (tag, enabled) => {
+    setSelectedProjectTags(tags => {
       const set = new Set([...tags]);
       if (enabled) {
         set.add(tag);
       } else {
         set.delete(tag);
       }
-      return set;
-    };
-  }
+      return [...set];
+    });
+  };
 
   const filteredProjects = useMemo(
     () => projects.filter(({ tags }) => tags.some(tag => selectedProjectTags.includes(tag))),
