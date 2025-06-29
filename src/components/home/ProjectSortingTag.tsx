@@ -4,17 +4,17 @@ import { FunctionComponent, ReactNode, useMemo } from "react";
 import { colorsPerTag } from "./constants";
 import { ProjectTagType } from "@/api/github/project-tags";
 
-interface SortingProjectTagProps {
+export interface SortingProjectTagProps {
   tag: ProjectTagType;
-  enabled: boolean;
-  onToggle: (tag: ProjectTagType, enabled: boolean) => void;
+  selected: boolean;
+  onToggle: (enabled: boolean) => void;
   className?: string;
   children: ReactNode;
 }
 
 export const SortingProjectTag: FunctionComponent<SortingProjectTagProps> = ({
   tag,
-  enabled,
+  selected,
   onToggle,
   className,
   children,
@@ -24,7 +24,7 @@ export const SortingProjectTag: FunctionComponent<SortingProjectTagProps> = ({
     <button
       className={clsx("bg-space h-8 rounded-sm", className)}
       style={{ backgroundColor: color }}
-      onClick={_ => onToggle(tag, !enabled)}
+      onClick={_ => onToggle(!selected)}
     >
       {children}
     </button>
