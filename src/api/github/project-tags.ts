@@ -16,4 +16,5 @@ export const tagsPerProject: Record<GithubWhiteListedRepository, readonly Projec
   "pierreyoda/lsystem-renderer": ["C++"],
   "pierreyoda/Tetris": ["Java"],
   "pierreyoda/vue-animations-test": ["Typescript", "Vue.js"],
+  "pierreyoda/linear-automation-actions": ["Typescript"],
 };

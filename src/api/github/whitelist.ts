@@ -11,5 +11,6 @@ export const repositoriesWhiteList = [
   "pierreyoda/lsystem-renderer",
   "pierreyoda/Tetris",
   "pierreyoda/vue-animations-test",
+  "pierreyoda/linear-automation-actions",
 ] as const;
 export type GithubWhiteListedRepository = (typeof repositoriesWhiteList)[number];
