@@ -1,21 +1,8 @@
-import dynamic from "next/dynamic";
 import { FunctionComponent, useMemo, useState } from "react";
 
 import { LSystemTracingRenderer } from "./LSystemTracingRenderer";
 import { LSystem, LSystemTrace, iteratedLSystem, traceLSystem } from "@/content/lsystem/lsystem";
-
-interface ReactSingleSliderProps {
-  start: number;
-  onChange: (value: number) => void;
-  min: number;
-  max: number;
-  step: number;
-}
-
-const Slider = dynamic<ReactSingleSliderProps>({
-  ssr: false,
-  loader: () => import("react-slider-kit"),
-});
+import { LSystemScaleSlider } from "./LSystemScaleSlider";
 
 interface LSystemControllableTracingRendererProps {
   lsystem: LSystem<string>;
@@ -62,12 +49,13 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
     <div>
       <div>
         <span className="mb-2">Generation:&nbsp;</span>
-        <Slider
-          start={forGeneration}
+        <LSystemScaleSlider
+          initialValue={forGeneration}
+          value={forGeneration}
           onChange={setForGeneration}
           min={minGeneration}
           max={maxGeneration}
-          step={Math.round(maxGeneration / (minGeneration + 1))}
+          // step={Math.round(maxGeneration / (minGeneration + 1))}
         />
       </div>
       <div className="mt-6">

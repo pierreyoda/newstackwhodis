@@ -23,9 +23,9 @@
     "d3-selection": "3.0.0",
     "lodash.orderby": "4.6.0",
     "next": "15.5.4",
-    "react": "19.1.1",
+    "rc-slider": "11.1.9",
     "react-dom": "19.1.1",
-    "react-slider-kit": "1.0.0-beta-0"
+    "react": "19.1.1"
   },
   "devDependencies": {
     "@jsdevtools/rehype-toc": "3.0.2",
