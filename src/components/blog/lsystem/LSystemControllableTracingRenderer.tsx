@@ -5,6 +5,7 @@ import { LSystem, LSystemTrace, iteratedLSystem, traceLSystem } from "@/content/
 import { LSystemScaleSlider } from "./LSystemScaleSlider";
 
 interface LSystemControllableTracingRendererProps {
+  // L-System parameters
   lsystem: LSystem<string>;
   initialAngle: number;
   initialGeneration: number;

@@ -248,11 +248,6 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/runtime@^7.10.1", "@babel/runtime@^7.18.3":
-  version "7.27.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
-  integrity sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==
-
 "@babel/template@^7.27.2":
   version "7.27.2"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.27.2.tgz#fa78ceed3c4e7b63ebf6cb39e5852fca45f6809d"
@@ -1276,6 +1271,22 @@
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.7.tgz#eb5014dfd0b03e7f3ba2eeeff506eed89b028058"
   integrity sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==
+
+"@rc-component/slider@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@rc-component/slider/-/slider-1.0.0.tgz#fac767676fb182bf95b18ae6c4b22c8a0fa4be1b"
+  integrity sha512-ZC/ARv2o+VzyLMgEUWyOLV0JTRlJqbFSNegtERoAfPVxCPNt92s5baIp22OW487Wgtk1xCK9GZex8sD/zo91ig==
+  dependencies:
+    "@rc-component/util" "^1.3.0"
+    classnames "^2.2.5"
+
+"@rc-component/util@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@rc-component/util/-/util-1.3.0.tgz#fc8e1ce1e5292592ef7f45839a3c07366288275c"
+  integrity sha512-hfXE04CVsxI/slmWKeSh6du7sSKpbvVdVEZCa8A+2QWDlL97EsCYme2c3ZWLn1uC9FR21JoewlrhUPWO4QgO8w==
+  dependencies:
+    is-mobile "^5.0.0"
+    react-is "^18.2.0"
 
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
@@ -4112,6 +4123,11 @@ is-map@^2.0.3:
   resolved "https://registry.yarnpkg.com/is-map/-/is-map-2.0.3.tgz#ede96b7fe1e270b3c4465e3a465658764926d62e"
   integrity sha512-1Qed0/Hr2m+YqxnM09CjA2d/i6YZNfF6R2oRAOj36eUdS6qIV/huPJNSEpKbupewFs+ZsJlxsjjPbc0/afW6Lw==
 
+is-mobile@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-5.0.0.tgz#1e08a0ef2c38a67bff84a52af68d67bcef445333"
+  integrity sha512-Tz/yndySvLAEXh+Uk8liFCxOwVH6YutuR74utvOcu7I9Di+DwM0mtdPVZNaVvvBUM2OXxne/NhOs1zAO7riusQ==
+
 is-negative-zero@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/is-negative-zero/-/is-negative-zero-2.0.3.tgz#ced903a027aca6381b777a5743069d7376a49747"
@@ -5993,23 +6009,6 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-rc-slider@11.1.9:
-  version "11.1.9"
-  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-11.1.9.tgz#d872130fbf4ec51f28543d62e90451091d6f5208"
-  integrity sha512-h8IknhzSh3FEM9u8ivkskh+Ef4Yo4JRIY2nj7MrH6GQmrwV6mcpJf5/4KgH5JaVI1H3E52yCdpOlVyGZIeph5A==
-  dependencies:
-    "@babel/runtime" "^7.10.1"
-    classnames "^2.2.5"
-    rc-util "^5.36.0"
-
-rc-util@^5.36.0:
-  version "5.44.4"
-  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.44.4.tgz#89ee9037683cca01cd60f1a6bbda761457dd6ba5"
-  integrity sha512-resueRJzmHG9Q6rI/DfK6Kdv9/Lfls05vzMs1Sk3M2P+3cJa+MakaZyWY8IPfehVuhPJFKrIY1IK4GqbiaiY5w==
-  dependencies:
-    "@babel/runtime" "^7.18.3"
-    react-is "^18.2.0"
-
 react-dom@19.1.1:
   version "19.1.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.1.tgz#2daa9ff7f3ae384aeb30e76d5ee38c046dc89893"
@@ -6359,6 +6358,11 @@ saxes@^5.0.1:
   integrity sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==
   dependencies:
     xmlchars "^2.2.0"
+
+scheduler@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.26.0.tgz#4ce8a8c2a2095f13ea11bf9a445be50c555d6337"
+  integrity sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==
 
 section-matter@^1.0.0:
   version "1.0.0"

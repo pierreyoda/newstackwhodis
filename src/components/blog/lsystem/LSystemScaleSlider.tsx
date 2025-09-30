@@ -1,4 +1,5 @@
-import Slider from "rc-slider";
+import Slider from "@rc-component/slider";
+import "@rc-component/slider/assets/index.css";
 import { FunctionComponent } from "react";
 
 interface LSystemScaleSliderProps {
@@ -17,7 +18,4 @@ export const LSystemScaleSlider: FunctionComponent<LSystemScaleSliderProps> = ({
   onChange,
   min,
   max,
-}) => {
-  // return <div />;
-  return <Slider min={min} max={max} defaultValue={initialValue} value={value} onChange={v => onChange(v as number)} />;
-};
+}) => <Slider min={min} max={max} defaultValue={initialValue} value={value} onChange={v => onChange(v as number)} />;
