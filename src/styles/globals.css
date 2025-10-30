@@ -173,4 +173,10 @@
   #root {
     @apply font-sans text-white antialiased;
   }
+
+  .hide-toc {
+    .toc {
+      @apply hidden;
+    }
+  }
 }
