@@ -25,6 +25,7 @@ const CustomApp = ({ Component, pageProps, router }: AppProps) => {
           className={clsx(
             "grow overflow-auto px-2 pt-2 md:px-0",
             category === "about" || (category === "blog" && !inPostsList) ? "blog-post-container" : "",
+            category === "about" ? "hide-toc" : "",
           )}
         >
           <Component {...pageProps} />
