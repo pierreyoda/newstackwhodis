@@ -6,7 +6,7 @@ interface LSystemStatesDisplayProps {
 }
 
 export const LSystemStatesDisplay: FunctionComponent<LSystemStatesDisplayProps> = ({ states, limit }) => {
-  const limitedStates = useMemo(() => states.slice(0, limit ?? states.length), [states, limit]);
+  const limitedStates: readonly string[] = useMemo(() => states.slice(0, limit ?? states.length), [states, limit]);
   return (
     <ol>
       {limitedStates.map((state, i) => (

@@ -49,14 +49,13 @@ export const LSystemControllableTracingRenderer: FunctionComponent<LSystemContro
   return (
     <div>
       <div>
-        <span className="mb-2">Generation:&nbsp;</span>
+        <span className="mb-2">Generation: {lsystemTrace.forGeneration}</span>
         <LSystemScaleSlider
           initialValue={forGeneration}
           value={forGeneration}
           onChange={setForGeneration}
           min={minGeneration}
           max={maxGeneration}
-          // step={Math.round(maxGeneration / (minGeneration + 1))}
         />
       </div>
       <div className="mt-6">
