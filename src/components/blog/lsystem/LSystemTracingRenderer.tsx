@@ -1,4 +1,3 @@
-import { select } from "d3-selection";
 import { FunctionComponent, useEffect, useMemo, useRef } from "react";
 
 import { LSystemTrace } from "@/content/lsystem/lsystem";
@@ -33,13 +32,15 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
 
   const svgRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
-    if (!svgRef) {
+    if (!svgRef.current) {
       return;
     }
-    const svg = select(svgRef.current);
+    const svg = svgRef.current;
 
     // cleanup
-    svg.selectAll("*").remove();
+    for (const svgChild of svg.children) {
+      svg.removeChild(svgChild);
+    }
 
     // SVG path elements
     const line = new Array<string>(trace.positions.length);
@@ -49,17 +50,16 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
     }
 
     // viewport
-    svg
-      .attr("viewBox", [0, 0, trace.width * scale, trace.height * scale].join(" "))
-      .style("height", `${(100 * trace.height) / trace.width}%`);
+    svg.setAttribute("viewBox", [0, 0, trace.width * scale, trace.height * scale].join(" "));
+    svg.style["height"] = `${(100 * trace.height) / trace.width}%`;
 
     // SVG path
-    svg
-      .append("path")
-      .attr("d", line.join(", "))
-      .attr("stroke", strokeColor)
-      .attr("stroke-width", strokeWidth)
-      .attr("fill", "none");
+    const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    svgPath.setAttribute("d", line.join(", "));
+    svgPath.setAttribute("stroke", strokeColor);
+    svgPath.setAttribute("stroke-width", strokeWidth.toString());
+    svgPath.setAttribute("fill", "none");
+    svg.appendChild(svgPath);
   }, [trace]);
 
   return (

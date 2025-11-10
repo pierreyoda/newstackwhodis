@@ -1,4 +1,3 @@
-import { select } from "d3-selection";
 import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { isDefined } from "@/utils";
@@ -57,16 +56,20 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
     if (typeof window === "undefined" || !containerRef.current) {
       return;
     }
-    const container = select(containerRef.current);
-    container.selectAll("*").remove(); // cleanup
+    const container = containerRef.current;
+
+    // cleanup
+    for (const containerChild of container.children) {
+      container.removeChild(containerChild);
+    }
 
     // canvas creation
     const [canvasWidth, canvasHeight] = [DISPLAY_WIDTH * scale, DISPLAY_HEIGHT * scale];
-    const canvas = container
-      .append("canvas")
-      .attr("width", DISPLAY_WIDTH * scale)
-      .attr("height", DISPLAY_HEIGHT * scale);
-    const context = canvas.node()?.getContext("2d");
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("width", `${DISPLAY_WIDTH * scale}`);
+    canvas.setAttribute("height", `${DISPLAY_HEIGHT * scale}`);
+    container.appendChild(canvas);
+    const context = canvas.getContext("2d");
     if (!context) {
       return;
     }
