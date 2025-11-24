@@ -1,4 +1,4 @@
-// TODO: maybe setup into working remark/rehype Mdsvex plugin
+// TODO: maybe setup into working remark/rehype MDX plugin
 
 import { FunctionComponent } from "react";
 
