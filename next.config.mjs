@@ -1,7 +1,6 @@
 import createMDX from "@next/mdx";
 import rehypeSlug from "rehype-slug";
 import remarkEmoji from "remark-emoji";
-import remarkPrism from "remark-prism";
 import rehypeToc from "@jsdevtools/rehype-toc";
 import remarkFrontmatter from "remark-frontmatter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -23,7 +22,7 @@ const nextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkFrontmatter, remarkEmoji, remarkPrism],
+    remarkPlugins: [remarkFrontmatter, remarkEmoji],
     rehypePlugins: [
       rehypeSlug,
       rehypeAutolinkHeadings,
