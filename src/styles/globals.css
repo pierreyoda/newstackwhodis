@@ -126,8 +126,8 @@
     @apply pl-2;
   }
 
-  p > code {
-    @apply font-mono text-sm font-semibold;
+  pre > code {
+    @apply font-mono text-sm font-medium;
   }
 
   /* Table of Contents */
