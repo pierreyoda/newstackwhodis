@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2025-10-07T07:29:20.464Z"
+    "exportDate": "2026-02-10T09:46:34.217Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991). 50k+ downloads.",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 29
+      "stargazersCount": 30
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
@@ -25,7 +25,7 @@
       "description": "The classic Micropolis (Sim City 1) game rewritten in Rust and React, with WebAssembly support.",
       "fullName": "pierreyoda/micropolis-rs",
       "forksCount": 1,
-      "stargazersCount": 25
+      "stargazersCount": 24
     },
     {
       "url": "https://github.com/pierreyoda/rust-neuralnet",
@@ -36,19 +36,19 @@
       "stargazersCount": 12
     },
     {
-      "url": "https://github.com/pierreyoda/GameInc",
-      "name": "GameInc",
-      "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
-      "fullName": "pierreyoda/GameInc",
-      "forksCount": 4,
-      "stargazersCount": 9
-    },
-    {
       "url": "https://github.com/pierreyoda/rustboycolor",
       "name": "rustboycolor",
       "description": "Simple Game Boy (Color) emulator written in Rust.",
       "fullName": "pierreyoda/rustboycolor",
       "forksCount": 0,
+      "stargazersCount": 10
+    },
+    {
+      "url": "https://github.com/pierreyoda/GameInc",
+      "name": "GameInc",
+      "description": "Game development studio management game made with Unity. Custom homemade language for scripting.",
+      "fullName": "pierreyoda/GameInc",
+      "forksCount": 4,
       "stargazersCount": 9
     },
     {
