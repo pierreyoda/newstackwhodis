@@ -128,6 +128,18 @@
 
   pre > code {
     @apply font-mono text-sm font-medium;
+
+    /* line numbers: https://github.com/shikijs/shiki/issues/3 */
+    counter-reset: step;
+    counter-increment: step calc(var(--start, 1) - 1);
+    > span::before {
+      content: counter(step);
+      counter-increment: step;
+      @apply w-4 mr-6 inline-block text-right text-light-orange;
+      &:last-child {
+        @apply hidden;
+      }
+    }
   }
 
   /* Table of Contents */
