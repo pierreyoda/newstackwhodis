@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2026-02-10T09:46:34.217Z"
+    "exportDate": "2026-04-26T17:29:52.016Z"
   },
   "githubRepositories": [
     {
@@ -17,7 +17,7 @@
       "description": "Open Rodent's Revenge is a C++ remake of the famous Microsoft game \"Rodent's Revenge\" (1991). 50k+ downloads.",
       "fullName": "pierreyoda/o2r",
       "forksCount": 0,
-      "stargazersCount": 30
+      "stargazersCount": 32
     },
     {
       "url": "https://github.com/pierreyoda/micropolis-rs",
