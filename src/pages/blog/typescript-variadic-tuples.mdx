@@ -1,0 +1,124 @@
+---
+title: "An application of Typescript variadic tuples"
+description: "In a AWS Serverless context, see how Typescript variadic tuples can help parse entry parameters in a type-safe and convenient manner."
+date: "2022-06-24"
+published: true
+---
+
+# An application of Typescript variadic tuples
+
+## Typescript variadic tuples
+
+Introduced in Typescript 4.0, variadic tuples are a way to type a given function's array parameters. TODO:
+
+## Context
+
+As part of working for a previous company as a R&D Software Engineer, I was asked to migrate an old C# .NET micro-service with a from-scratch one in Node.js and AWS Serverless.
+
+To this end, the Serverless micro-service had, among other functionalities, a wide variety of endpoints each deployed as a singular AWS Lambda serverless function.
+The issue was, that each of these functions required various input parameters that took a lot of the function code to process.
+
+This led me to migrate to - at the time - the beta version of [Typescript 4.0](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#variadic-tuple-types) which allowed me to write a quite DRY handling of input parameters, with all of the complexity handled at the Typescript typings level.
+
+In the following chapters, we will refer to this micro-library as `parameters-lib`.
+
+### Types of input parameters for a Lambda function
+
+In AWS Serverless, a lambda function can have various input parameter:
+
+- Query parameters like `?query=value`
+- Multiple query parameters like `?multi=1&multi=2`
+- Route parameters, just like `id=5` in the following route path: `/get/5`
+- Headers in the input request
+
+For every `type` of parameter, the value to process is found in the Lambda route's input event, which comes as follow:
+
+```ts twoslash
+// AWS typings (shortened)
+export interface APIGatewayProxyEvent {
+  body: string | null;
+  // Header input values
+  headers: { [name: string]: string };
+  // Route parameters values
+  pathParameters: { [name: string]: string } | null;
+  // Query parameters values
+  queryStringParameters: { [name: string]: string } | null;
+  // Multiple query parameters values
+  multiValueQueryStringParameters: { [name: string]: string[] } | null;
+  /** ...other input event values */
+}
+```
+
+In `parameters-lib`, this translates to the following code:
+
+```typescript twoslash
+export type LambdaInputEventSource =
+  | "headers",
+  | "pathParameters",
+  | "queryStringParameters",
+  | "multiValueQueryStringParameters"
+;
+// here, we narrow APIGatewayProxyEvent to what is of interest
+export type LambdaInputEvent = Partial<Pick<APIGatewayProxyEvent, LambdaInputEventSource>>;
+//          ^?
+
+// Dev-friendly names for each type of input parameter
+export type LambdaEventParamType = "query" | "multi-query" | "route" | "header";
+```
+
+### Definition and dispatching of Lambda input parameters
+
+First off, let's start with the two possible results for a given input parameter:
+
+```typescript
+export interface LambdaEventParamParserSuccess<T> {
+  value: T;
+}
+
+export interface LambdaEventParamParserFailure {
+  message: string;
+}
+
+export type LambdaEventParamParserResult<T> = LambdaEventParamParserSuccess<T> | LambdaEventParamParserFailure;
+```
+
+With this comes a [type predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) allowing type-safe distinction between these two types:
+
+```typescript
+export const lambdaEventParamParserResultIsFailure = <T>(
+  result: LambdaEventParamParserResult<T>,
+): result is LambdaEventParamParserFailure => !!(result as LambdaEventParamParserFailure).message;
+```
+
+We then need three types which, combined together, allow complete definition of an input parameter and its processing.
+
+```typescript
+/** Value parser for input parameters. */
+export type LambdaEventParamParser<T> = (
+  raw: string,
+  type: LambdaEventParamType,
+  name: string,
+  event: LambdaInputEvent,
+) => LambdaEventParamParserResult<T>;
+
+/** Value validator for input parameters. Return true if valid. */
+export type LambdaEventParamValidator<T> = (
+  value: T,
+  type: LambdaEventParamType,
+  name: string,
+) =>
+  | true
+  | {
+      message: string;
+    };
+
+/** Definition of an input parameter */
+export interface LambdaEventParamMeta<T, Type extends LambdaEventParamType, Required extends boolean> {
+  name: string;
+  type: Type;
+  required: Required;
+  parser: LambdaEventParamParser<T>;
+  /** A single input parameter can have several validators. */
+  validators: LambdaEventParamValidator<T>[];
+}
+```
