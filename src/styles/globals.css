@@ -39,7 +39,7 @@
 }
 
 @utility project-tag {
-  @apply mr-2 rounded-md py-1 text-xs font-bold text-gray-lighter last:mr-0;
+  @apply text-gray-lighter mr-2 rounded-md py-1 text-xs font-bold last:mr-0;
 }
 
 @utility lsystem-descriptor-container {
@@ -54,7 +54,7 @@
       @apply mb-1 text-sm;
 
       .letter {
-        @apply font-semibold text-space-blue;
+        @apply text-space-blue font-semibold;
       }
     }
   }
@@ -103,19 +103,19 @@
   }
 
   h2 {
-    @apply mb-8 mt-8 text-2xl font-bold;
+    @apply mt-8 mb-8 text-2xl font-bold;
   }
 
   h3 {
-    @apply mb-6 mt-6 text-xl font-bold;
+    @apply mt-6 mb-6 text-xl font-bold;
   }
 
   h4 {
-    @apply mb-4 mt-4 text-lg font-semibold;
+    @apply mt-4 mb-4 text-lg font-semibold;
   }
 
   h5 {
-    @apply mb-2 mt-2 font-semibold;
+    @apply mt-2 mb-2 font-semibold;
   }
 
   ul {
@@ -167,7 +167,7 @@
   body,
   #__next,
   #root {
-    @apply h-full w-full bg-black-darker;
+    @apply bg-black-darker h-full w-full;
   }
 
   #root {

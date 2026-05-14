@@ -6,7 +6,7 @@ interface Chip8KeyProps {
 }
 
 export const Chip8Key: FunctionComponent<Chip8KeyProps> = ({ label, onPressed }) => (
-  <button className="h-8 w-8 rounded-sm bg-space" onClick={onPressed}>
+  <button className="bg-space h-8 w-8 rounded-sm" onClick={onPressed}>
     {label}
   </button>
 );

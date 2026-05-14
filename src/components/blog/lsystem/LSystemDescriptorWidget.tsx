@@ -34,8 +34,8 @@ export const LSystemDescriptorWidget: FunctionComponent<LSystemDescriptorWidgetP
   );
 
   return (
-    <div className="lsystem-descriptor-container rounded-sm bg-white p-3 text-black-lighter">
-      <p className="mb-2 border-b border-lychee text-lg font-semibold">{descriptor.name}</p>
+    <div className="lsystem-descriptor-container text-black-lighter rounded-sm bg-white p-3">
+      <p className="border-lychee mb-2 border-b text-lg font-semibold">{descriptor.name}</p>
       <p>Axiom: {descriptor.axiom}</p>
       {constants.length > 0 && (
         <div className="section">

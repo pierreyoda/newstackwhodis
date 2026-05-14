@@ -27,13 +27,13 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ meta }) => {
     [meta.githubFullName],
   );
   return (
-    <div className="flex flex-col items-start justify-around border border-gray-lighter p-3 md:rounded-lg">
+    <div className="border-gray-lighter flex flex-col items-start justify-around border p-3 md:rounded-lg">
       {meta.href ? (
         <ExternalLink href={meta.href}>
-          <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
+          <h2 className="border-lychee border-b-2 text-lg font-bold">{meta.title}</h2>
         </ExternalLink>
       ) : (
-        <h2 className="border-b-2 border-lychee text-lg font-bold">{meta.title}</h2>
+        <h2 className="border-lychee border-b-2 text-lg font-bold">{meta.title}</h2>
       )}
       <p className="py-5 text-sm">{meta.description}</p>
       <div className="flex w-full flex-wrap items-center py-2">
@@ -42,12 +42,12 @@ export const ProjectCard: FunctionComponent<ProjectCardProps> = ({ meta }) => {
         ))}
       </div>
       <div className="flex w-full items-center justify-between text-sm">
-        <div className="rounded-sm font-bold hover:text-lychee">
+        <div className="hover:text-lychee rounded-sm font-bold">
           <ExternalLink href={meta.url}>View on GitHub</ExternalLink>
         </div>
         <div className="flex items-center font-semibold">
           {meta.githubForksCount > 0 && (
-            <p className="mr-4 text-orange">
+            <p className="text-orange mr-4">
               {meta.githubForksCount} fork{meta.githubForksCount > 1 ? "s" : ""}
             </p>
           )}
