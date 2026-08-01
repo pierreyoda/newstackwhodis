@@ -3,16 +3,11 @@ import createMDX from "@next/mdx";
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-  webpack: config => ({
-    ...config,
-    resolve: {
-      ...config.resolve,
-      fallback: {
-        ...config.resolve.fallback,
-        fs: false,
-      },
+  turbopack: {
+    resolveAlias: {
+      fs: { browser: "./src/empty.js" },
     },
-  }),
+  },
 };
 
 const withMDX = createMDX({
