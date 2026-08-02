@@ -2,6 +2,7 @@
   "name": "newstackwhodis",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.19.0",
   "scripts": {
     "fetch:projects": "cross-env DEBUG=newstackwhodis:* tsx --tsconfig ./tsconfig.node.json ./src/api/github-fetcher.ts",
     "fetch": "pnpm run fetch:projects",
@@ -14,7 +15,7 @@
     "test": "jest"
   },
   "engines": {
-    "node": "^24"
+    "node": "^26"
   },
   "dependencies": {
     "@rc-component/slider": "1.1.1",
