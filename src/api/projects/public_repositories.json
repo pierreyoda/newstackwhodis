@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "exportDate": "2026-08-01T10:21:21.227Z"
+    "exportDate": "2026-08-18T18:36:04.887Z"
   },
   "githubRepositories": [
     {
@@ -8,8 +8,8 @@
       "name": "hncli",
       "description": "A Terminal User Interface-based application for browsing Hacker News, written in :crab: Rust.",
       "fullName": "pierreyoda/hncli",
-      "forksCount": 1,
-      "stargazersCount": 41
+      "forksCount": 2,
+      "stargazersCount": 49
     },
     {
       "url": "https://github.com/pierreyoda/o2r",
