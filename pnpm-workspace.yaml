@@ -3,3 +3,5 @@ allowBuilds:
   esbuild: false
   sharp: false
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - postcss@8.5.33
