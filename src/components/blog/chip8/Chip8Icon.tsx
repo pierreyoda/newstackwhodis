@@ -1,12 +1,18 @@
 import { FunctionComponent, ReactNode } from "react";
 
-export type Chip8IconName = "rotate" | "up" | "down" | "left" | "right" | "chevron" | "play";
+export type Chip8IconName = "rotate" | "reset" | "up" | "down" | "left" | "right" | "chevron" | "play";
 
 const iconPaths: Record<Chip8IconName, ReactNode> = {
   rotate: (
     <>
       <path d="M20 12a8 8 0 1 1-2.34-5.662" />
       <path d="M20 4v5h-5" />
+    </>
+  ),
+  reset: (
+    <>
+      <path d="M4 12a8 8 0 1 0 2.34-5.66" />
+      <path d="M4 4v5h5" />
     </>
   ),
   up: (

@@ -131,7 +131,7 @@ export const Chip8TetrisPlayer: FunctionComponent<Chip8TetrisPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isKeypadShown, setIsKeypadShown] = useState(false);
   const [pressedKeys, setPressedKeys] = useState<ReadonlySet<Chip8KeypadIndex>>(() => new Set());
-  const { containerRef, pressKey, releaseKey, releaseAllKeys } = useChip8VirtualMachine({
+  const { containerRef, pressKey, releaseKey, releaseAllKeys, resetVm } = useChip8VirtualMachine({
     rom: TETRIS_ROM,
     scale,
     vmTickRateMsFactor,
@@ -150,6 +150,11 @@ export const Chip8TetrisPlayer: FunctionComponent<Chip8TetrisPlayerProps> = ({
       nextKeys.delete(keypadIndex);
       return nextKeys;
     });
+  };
+
+  const resetGame = () => {
+    resetVm();
+    setPressedKeys(new Set());
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -267,15 +272,28 @@ export const Chip8TetrisPlayer: FunctionComponent<Chip8TetrisPlayerProps> = ({
         </div>
       </div>
 
-      <button
-        type="button"
-        aria-expanded={isKeypadShown}
-        className="text-light-orange hover:text-orange flex min-h-11 items-center gap-1.5 self-start text-sm"
-        onClick={() => setIsKeypadShown(isShown => !isShown)}
-      >
-        <Chip8Icon name="chevron" className={clsx("h-3.5 w-3.5 transition-transform", isKeypadShown && "rotate-90")} />
-        {isKeypadShown ? "Hide the full CHIP-8 keypad" : "Show the full CHIP-8 keypad"}
-      </button>
+      <div className="flex flex-wrap items-center justify-between gap-x-6">
+        <button
+          type="button"
+          aria-expanded={isKeypadShown}
+          className="text-light-orange hover:text-orange flex min-h-11 items-center gap-1.5 text-sm"
+          onClick={() => setIsKeypadShown(isShown => !isShown)}
+        >
+          <Chip8Icon
+            name="chevron"
+            className={clsx("h-3.5 w-3.5 transition-transform", isKeypadShown && "rotate-90")}
+          />
+          {isKeypadShown ? "Hide the full CHIP-8 keypad" : "Show the full CHIP-8 keypad"}
+        </button>
+        <button
+          type="button"
+          className="text-light-orange hover:text-orange flex min-h-11 items-center gap-1.5 text-sm"
+          onClick={resetGame}
+        >
+          <Chip8Icon name="reset" className="h-3.5 w-3.5" />
+          Reset game
+        </button>
+      </div>
       {isKeypadShown && (
         <div className="flex flex-wrap items-start gap-8">
           <Chip8Keypad onKeyPressed={press} onKeyReleased={release} pressedKeys={pressedKeys} />

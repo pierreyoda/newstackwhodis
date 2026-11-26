@@ -198,5 +198,12 @@ export const useChip8VirtualMachine = ({
     }
   };
 
-  return { containerRef, pressKey, releaseKey, releaseAllKeys };
+  /** Restart the ROM from scratch (its first screen gets drawn even while paused, see `BOOT_FRAMES`). */
+  const resetVm = () => {
+    releaseAllKeys();
+    vm.loadROM(rom);
+    frameCounter.current = 0;
+  };
+
+  return { containerRef, pressKey, releaseKey, releaseAllKeys, resetVm };
 };
