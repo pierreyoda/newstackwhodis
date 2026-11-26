@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { FunctionComponent } from "react";
 
 import { Chip8Key } from "./Chip8Key";
@@ -24,12 +25,22 @@ const labelsPerKey: Record<Chip8KeypadIndex, string> = {
 
 interface Chip8KeypadProps {
   onKeyPressed: (key: Chip8KeypadIndex) => void;
+  onKeyReleased: (key: Chip8KeypadIndex) => void;
+  /** Keys to show as held down. */
+  pressedKeys?: ReadonlySet<Chip8KeypadIndex>;
 }
 
-export const Chip8Keypad: FunctionComponent<Chip8KeypadProps> = ({ onKeyPressed }) => (
+export const Chip8Keypad: FunctionComponent<Chip8KeypadProps> = ({ onKeyPressed, onKeyReleased, pressedKeys }) => (
   <div className="grid grid-cols-4 grid-rows-4 gap-x-12 gap-y-4 md:gap-y-2">
     {chip8KeypadIndices.map(keypadIndex => (
-      <Chip8Key key={keypadIndex} label={labelsPerKey[keypadIndex]} onPressed={() => onKeyPressed(keypadIndex)} />
+      <Chip8Key
+        key={keypadIndex}
+        className={clsx("h-8 w-8 rounded-sm", pressedKeys?.has(keypadIndex) ? "bg-orange text-black" : "bg-space")}
+        onPressed={() => onKeyPressed(keypadIndex)}
+        onReleased={() => onKeyReleased(keypadIndex)}
+      >
+        {labelsPerKey[keypadIndex]}
+      </Chip8Key>
     ))}
   </div>
 );
