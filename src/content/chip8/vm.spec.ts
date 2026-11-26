@@ -61,7 +61,7 @@ describe("Chip8 Virtual Machine", () => {
     expect(vm.data.memory[0x500 + 1]).toEqual(0x22);
     expect(vm.data.memory[0x500 + 2]).toEqual(0x33);
     expect(vm.data.memory[0x500 + 3]).toEqual(0x21);
-    expect(vm.data.i).toEqual(0x500 + 4);
+    expect(vm.data.i).toEqual(0x500); // I should not be changed
     expect(vm.data.pc).toEqual(0x321 + 2 * 6);
 
     vm.data.memory[0x500 + 0] = 0x12;
@@ -89,7 +89,7 @@ describe("Chip8 Virtual Machine", () => {
       expect(vm.data.memory[0x333 + j]).toEqual(j);
     }
     expect(vm.data.memory[0x333 + 0xd]).toEqual(0x00);
-    expect(vm.data.i).toEqual(0x333 + 0xd);
+    expect(vm.data.i).toEqual(0x333); // I should not be changed
 
     vm.reset();
     vm.executeOpcode(0xa400);

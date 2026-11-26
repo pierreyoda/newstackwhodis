@@ -301,11 +301,15 @@ export class Chip8VirtualMachine {
     this.data.memory[this.data.i + 2] = (vx % 100) % 10;
     this.data.pc += 2;
   }
+  /**
+   * NB: the original COSMAC VIP interpreter also incremented I by X + 1 for
+   * FX55 and FX65. Like most modern ROMs (and test ROMs such as BC_test) expect,
+   * I is left unchanged here, consistently with `_loadRegistersMemoryI`.
+   */
   _loadMemoryIRegisters(x: number) {
     for (let j = 0; j <= x; j++) {
       this.data.memory[this.data.i + j] = this.data.registers[j];
     }
-    this.data.i += x + 1;
     this.data.pc += 2;
   }
   _loadRegistersMemoryI(x: number) {
