@@ -5,14 +5,16 @@ date: "2021-12-20"
 published: true
 ---
 
-import { MAZE_ROM, TETRIS_ROM } from "@/content/chip8/article";
+import { MAZE_ROM, SIERPINSKI_ROM, TETRIS_ROM } from "@/content/chip8/article";
 import { Chip8Player } from "@/components/blog/chip8/Chip8Player";
 
 # Getting Into Emulator Development with the CHIP-8
 
-<Chip8Player rom={MAZE_ROM} scale={10} disableKeypad />
+<Chip8Player rom={MAZE_ROM} scale={10} disableKeypad vmTickRateMsFactor={2} />
 
 ## Emulators
+
+<Chip8Player rom={SIERPINSKI_ROM} scale={15} disableKeypad vmTickRateMsFactor={25} />
 
 ## Common Emulator Development Concepts
 
@@ -20,4 +22,4 @@ import { Chip8Player } from "@/components/blog/chip8/Chip8Player";
 
 ## CHIP-8 in your browser
 
-<Chip8Player rom={TETRIS_ROM} scale={10} />
+<Chip8Player rom={TETRIS_ROM} scale={10} vmTickRateMsFactor={10} />

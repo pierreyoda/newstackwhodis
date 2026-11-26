@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FunctionComponent, useEffect, useMemo, useRef, useState } from "react";
 
 import { isDefined } from "@/utils";
 import { Chip8Keypad } from "./Chip8Keypad";
@@ -14,8 +14,8 @@ interface ColorRGB {
 const stringifyColorRGB = ({ r, g, b }: ColorRGB) => `rgb(${r}, ${g}, ${b})`;
 
 // CHIP-8 virtual machine timing
-const VM_TICK_RATE_MS = 1000 / 60;
-const VM_CPU_TICK_RATE_MS = 1000 / 240;
+const VM_TIMERS_RATE_HZ = 60;
+const VM_CPU_RATE_HZ = 240;
 
 interface Chip8PlayerProps {
   /** ROM content to play. */
@@ -30,6 +30,11 @@ interface Chip8PlayerProps {
   inputScheme?: "QWERTY" | "AZERTY";
   /** Hide CHIP-8 virtual keypad? */
   disableKeypad?: boolean;
+  /**
+   * CPU speed factor (1 by default i.e. 240 instructions per second, 2 for double speed).
+   * Delay and sound timers always run at 60Hz.
+   */
+  vmTickRateMsFactor?: number;
 }
 
 export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
@@ -39,6 +44,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   onColor = { r: 255, g: 255, b: 255 },
   inputScheme = "QWERTY",
   disableKeypad = false,
+  vmTickRateMsFactor = 1,
 }) => {
   // Display & input management
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,6 +102,7 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
           context.fillRect(x * scale, canvasY, scale, scale);
         }
       }
+      display.data.isDirty = false;
 
       // input handling
       setIsFocused(false);
@@ -126,7 +133,6 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
     };
   }, [scale]);
 
-  const running = useRef(false);
   const vm = useMemo<Chip8VirtualMachine>(() => {
     const context: Chip8ExecutionContext = {
       onWaitingForKey: () => setIsWaitingForKey(true),
@@ -135,47 +141,31 @@ export const Chip8Player: FunctionComponent<Chip8PlayerProps> = ({
   }, []);
 
   // VM
-  const [intervalHandleTimers, setIntervalHandleTimers] = useState<NodeJS.Timeout | null>(null);
-  const [intervalHandleCpu, setIntervalHandleCpu] = useState<NodeJS.Timeout | null>(null);
-  const run = useCallback(() => {
-    // clean-up
-    if (intervalHandleTimers) {
-      clearInterval(intervalHandleTimers);
-    }
-    if (intervalHandleCpu) {
-      clearInterval(intervalHandleCpu);
-    }
-
-    // ROM loading
+  useEffect(() => {
     if (!rom) {
       throw new Error("Chip8Player: invalid ROM data");
     }
     vm.loadROM(rom);
-    running.current = true;
 
-    // timers
-    const timersCycle = () => {
-      if (!running.current) {
-        return;
-      }
+    // Browsers clamp setInterval to ~4ms, so running one instruction per callback caps the CPU
+    // at ~240Hz whatever the speed factor. Instead, each 60Hz frame ticks the timers once and
+    // runs as many instructions as the speed factor requires (fractions carry over).
+    const cpuCyclesPerFrame = (VM_CPU_RATE_HZ / VM_TIMERS_RATE_HZ) * vmTickRateMsFactor;
+    let pendingCpuCycles = 0;
+    const frame = () => {
       vm.tick();
-    };
-    setIntervalHandleTimers(setInterval(timersCycle, VM_TICK_RATE_MS));
-
-    // CPU
-    const cpuCycle = () => {
-      if (!running.current || isWaitingForKey) {
-        return;
+      pendingCpuCycles += cpuCyclesPerFrame;
+      for (; pendingCpuCycles >= 1; pendingCpuCycles--) {
+        vm.step();
       }
-      vm.step();
       if (vm.display.data.isDirty) {
-        refreshDisplay.current?.(vm.display);
+        refreshDisplay.current(vm.display);
       }
     };
-    setIntervalHandleCpu(setInterval(cpuCycle, VM_CPU_TICK_RATE_MS));
-  }, [rom]);
+    const intervalHandle = setInterval(frame, 1000 / VM_TIMERS_RATE_HZ);
 
-  useEffect(() => run(), [run]);
+    return () => clearInterval(intervalHandle);
+  }, [vm, rom, vmTickRateMsFactor]);
 
   return (
     <div className="flex flex-col md:flex-row">
