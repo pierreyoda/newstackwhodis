@@ -1,13 +1,25 @@
-import { FunctionComponent, useEffect, useMemo, useRef } from "react";
+import { FunctionComponent, useEffect, useMemo, useRef, useState } from "react";
 
 import { LSystemTrace } from "@/content/lsystem/lsystem";
 
 const LSYSTEM_STATE_DISPLAY_CUTOFF = 50;
 
+/**
+ * Thinnest on-screen stroke, in CSS pixels.
+ *
+ * The stroke width is in drawing units, and the drawing doubles or triples in size with each generation:
+ * once scaled down to fit the screen, high generations would otherwise fade out to (almost) nothing.
+ */
+const MIN_STROKE_WIDTH_PX = 1;
+
+/** Fixed precision, so that the server-rendered SVG is identical to the client-rendered one. */
+const round = (value: number) => Math.round(value * 100) / 100;
+
 interface LSystemTracingRendererProps {
   trace: LSystemTrace;
   // rendering parameters
   scale: number;
+  /** In drawing units, i.e. relative to the length of a single segment (before scaling). */
   strokeWidth: number;
   strokeColor: string;
   showCurrentState?: boolean;
@@ -30,37 +42,31 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
     [trace.forState],
   );
 
+  // Rendered declaratively (rather than in an effect), so that the drawing is part of the server-rendered HTML.
+  const { width, height, pathData } = useMemo(
+    () => ({
+      width: round(trace.width * scale),
+      height: round(trace.height * scale),
+      pathData: trace.positions
+        .map(({ x, y }, i) => `${i === 0 ? "M" : "L"}${round(x * scale)},${round(y * scale)}`)
+        .join(""),
+    }),
+    [trace, scale],
+  );
+
+  // On-screen width of the drawing, to keep its stroke visible however much it is scaled down.
   const svgRef = useRef<SVGSVGElement>(null);
+  const [renderedWidth, setRenderedWidth] = useState<number | null>(null);
   useEffect(() => {
-    if (!svgRef.current) {
+    const svg = svgRef.current;
+    if (!svg) {
       return;
     }
-    const svg = svgRef.current;
-
-    // cleanup
-    for (const svgChild of svg.children) {
-      svg.removeChild(svgChild);
-    }
-
-    // SVG path elements
-    const line = new Array<string>(trace.positions.length);
-    for (const [i, { x, y }] of trace.positions.entries()) {
-      const type = i === 0 ? "M" : "L";
-      line[i] = `${type}${x * scale},${y * scale}`;
-    }
-
-    // viewport
-    svg.setAttribute("viewBox", [0, 0, trace.width * scale, trace.height * scale].join(" "));
-    svg.style["height"] = `${(100 * trace.height) / trace.width}%`;
-
-    // SVG path
-    const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    svgPath.setAttribute("d", line.join(", "));
-    svgPath.setAttribute("stroke", strokeColor);
-    svgPath.setAttribute("stroke-width", strokeWidth.toString());
-    svgPath.setAttribute("fill", "none");
-    svg.appendChild(svgPath);
-  }, [trace]);
+    const observer = new ResizeObserver(([entry]) => setRenderedWidth(entry.contentRect.width));
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, []);
+  const minStrokeWidth = renderedWidth ? (MIN_STROKE_WIDTH_PX * width) / renderedWidth : 0;
 
   return (
     <div className="lsystem-renderer-container">
@@ -76,7 +82,9 @@ export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererPro
           {trace.forGeneration}
         </div>
       )}
-      <svg ref={svgRef} />
+      <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} className="h-auto w-full">
+        <path d={pathData} fill="none" stroke={strokeColor} strokeWidth={Math.max(strokeWidth, minStrokeWidth)} />
+      </svg>
     </div>
   );
 };
