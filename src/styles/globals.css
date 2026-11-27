@@ -42,49 +42,6 @@
   @apply text-gray-lighter mr-2 rounded-md py-1 text-xs font-bold last:mr-0;
 }
 
-@utility lsystem-descriptor-container {
-  .section {
-    @apply mt-2;
-
-    p {
-      @apply mb-2;
-    }
-
-    ul > li {
-      @apply mb-1 text-sm;
-
-      .letter {
-        @apply text-space-blue font-semibold;
-      }
-    }
-  }
-}
-
-@utility lsystem-renderer-container {
-  @apply rounded-sm bg-white p-3 text-black;
-
-  .meta {
-    @apply hidden w-full items-center justify-center;
-
-    &:last-of-type {
-      @apply mb-4;
-    }
-
-    .label {
-      @apply text-gray-lighter;
-      @apply mr-2;
-    }
-  }
-}
-
-@utility container {
-  @media (width >= theme(--breakpoint-md)) {
-    .lsystem-renderer-container {
-      @apply flex;
-    }
-  }
-}
-
 /* TODO: bullet points list for about page WIP articles */
 
 @utility blog-post-container {

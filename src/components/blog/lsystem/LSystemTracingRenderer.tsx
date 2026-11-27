@@ -2,8 +2,6 @@ import { FunctionComponent, useEffect, useMemo, useRef, useState } from "react";
 
 import { LSystemTrace } from "@/content/lsystem/lsystem";
 
-const LSYSTEM_STATE_DISPLAY_CUTOFF = 50;
-
 /**
  * Thinnest on-screen stroke, in CSS pixels.
  *
@@ -17,74 +15,72 @@ const round = (value: number) => Math.round(value * 100) / 100;
 
 interface LSystemTracingRendererProps {
   trace: LSystemTrace;
-  // rendering parameters
-  scale: number;
-  /** In drawing units, i.e. relative to the length of a single segment (before scaling). */
-  strokeWidth: number;
-  strokeColor: string;
-  showCurrentState?: boolean;
-  showGenerationLabel?: boolean;
+  /** Drawing units per segment. */
+  scale?: number;
+  /** In drawing units (a segment being `scale` long). */
+  strokeWidth?: number;
+  /** Any CSS color. */
+  strokeColor?: string;
+  /** Accessible description of the drawing. */
+  label: string;
 }
 
 export const LSystemTracingRenderer: FunctionComponent<LSystemTracingRendererProps> = ({
   trace,
   scale = 1.0,
   strokeWidth = 0.0075,
-  strokeColor = "#141416",
-  showCurrentState = false,
-  showGenerationLabel = false,
+  strokeColor = "var(--color-orange)",
+  label,
 }) => {
-  const shortenedState = useMemo(
-    () =>
-      trace.forState.length > LSYSTEM_STATE_DISPLAY_CUTOFF
-        ? `${trace.forState.substring(0, LSYSTEM_STATE_DISPLAY_CUTOFF)} ...`
-        : trace.forState,
-    [trace.forState],
-  );
-
   // Rendered declaratively (rather than in an effect), so that the drawing is part of the server-rendered HTML.
-  const { width, height, pathData } = useMemo(
-    () => ({
-      width: round(trace.width * scale),
-      height: round(trace.height * scale),
+  const { width, height, viewBox, pathData } = useMemo(() => {
+    const width = round(trace.width * scale);
+    const height = round(trace.height * scale);
+    // room for the stroke (and its round caps) around the outermost segments, which would be clipped otherwise
+    const padding = round(strokeWidth / 2);
+    return {
+      width,
+      height,
+      viewBox: [-padding, -padding, width + 2 * padding, height + 2 * padding].map(round).join(" "),
       pathData: trace.positions
         .map(({ x, y }, i) => `${i === 0 ? "M" : "L"}${round(x * scale)},${round(y * scale)}`)
         .join(""),
-    }),
-    [trace, scale],
-  );
+    };
+  }, [trace, scale, strokeWidth]);
 
-  // On-screen width of the drawing, to keep its stroke visible however much it is scaled down.
+  // On-screen size of the drawing, to keep its stroke visible however much it is scaled down.
   const svgRef = useRef<SVGSVGElement>(null);
-  const [renderedWidth, setRenderedWidth] = useState<number | null>(null);
+  const [renderedSize, setRenderedSize] = useState<{ width: number; height: number } | null>(null);
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) {
       return;
     }
-    const observer = new ResizeObserver(([entry]) => setRenderedWidth(entry.contentRect.width));
+    const observer = new ResizeObserver(([{ contentRect }]) =>
+      setRenderedSize({ width: contentRect.width, height: contentRect.height }),
+    );
     observer.observe(svg);
     return () => observer.disconnect();
   }, []);
-  const minStrokeWidth = renderedWidth ? (MIN_STROKE_WIDTH_PX * width) / renderedWidth : 0;
+  const minStrokeWidth = useMemo(() => {
+    if (!renderedSize?.width || !renderedSize.height || !width) {
+      return 0;
+    }
+    // the drawing is fitted (and centered) within the SVG box: the most constrained dimension sets its scale
+    const pixelsPerUnit = Math.min(renderedSize.width / width, height ? renderedSize.height / height : Infinity);
+    return MIN_STROKE_WIDTH_PX / pixelsPerUnit;
+  }, [renderedSize, width, height]);
 
   return (
-    <div className="lsystem-renderer-container">
-      {showCurrentState && (
-        <div className="meta">
-          <span className="label">State:&nbsp;</span>
-          {shortenedState}
-        </div>
-      )}
-      {showGenerationLabel && (
-        <div className="meta">
-          <span className="label">Generation:&nbsp;</span>
-          {trace.forGeneration}
-        </div>
-      )}
-      <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} className="h-auto w-full">
-        <path d={pathData} fill="none" stroke={strokeColor} strokeWidth={Math.max(strokeWidth, minStrokeWidth)} />
-      </svg>
-    </div>
+    <svg ref={svgRef} role="img" aria-label={label} viewBox={viewBox} className="h-auto max-h-[75vh] w-full">
+      <path
+        d={pathData}
+        fill="none"
+        style={{ stroke: strokeColor }}
+        strokeWidth={Math.max(strokeWidth, minStrokeWidth)}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 };
