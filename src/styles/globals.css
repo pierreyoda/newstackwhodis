@@ -38,10 +38,6 @@
   }
 }
 
-@utility project-tag {
-  @apply text-gray-lighter mr-2 rounded-md py-1 text-xs font-bold last:mr-0;
-}
-
 /* TODO: bullet points list for about page WIP articles */
 
 @utility blog-post-container {

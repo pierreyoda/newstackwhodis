@@ -9,5 +9,7 @@ interface ProjectTagProps {
 }
 
 export const ProjectTag: FunctionComponent<ProjectTagProps> = ({ tag, className }) => (
-  <div className={clsx("project-tag", className)}>{tag}</div>
+  <span className={clsx("bg-space block rounded-md px-2 py-0.5 text-xs font-semibold text-white", className)}>
+    {tag}
+  </span>
 );
